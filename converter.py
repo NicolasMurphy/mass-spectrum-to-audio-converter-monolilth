@@ -2,7 +2,7 @@ import numpy as np
 from scipy.io.wavfile import write
 import os
 
-SAMPLING_RATE = 44100
+SAMPLING_RATE = 96000
 DURATION = 5.0
 INTENSITY_THRESHOLD = 0.1  # Adjust as needed
 
@@ -45,7 +45,7 @@ def generate_combined_wav_file(spectrum_data, output_file):
 
 def convert_all_txt_to_wav(directory="."):
     for file_name in os.listdir(directory):
-        if file_name.endswith(".txt"):
+        if file_name.endswith(".txt") and file_name != "requirements.txt":
             base_name = os.path.splitext(file_name)[0]
             txt_path = os.path.join(directory, file_name)
             wav_path = os.path.join(directory, base_name + ".wav")
