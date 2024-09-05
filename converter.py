@@ -4,7 +4,7 @@ import os
 
 SAMPLING_RATE = 44100
 DURATION = 5.0
-INTENSITY_THRESHOLD = 20  # Adjust as needed
+INTENSITY_THRESHOLD = 0.1  # Adjust as needed
 
 
 def generate_sine_wave(freq, intensity, duration=DURATION, sample_rate=SAMPLING_RATE):
