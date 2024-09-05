@@ -2,6 +2,13 @@
 
 A project for converting mass spectrum `.txt` files into `.wav` files.
 
+## Project Initialization:
+
+1. Clone the repository to your local machine.
+2. Navigate to the project directory.
+3. Install the necessary dependencies by running:
+   `pip install -r requirements.txt`
+
 ## Instructions:
 
 1. Go to [HMDB](https://hmdb.ca/) (or any database that includes Spectra data).
