@@ -1,9 +1,10 @@
 import numpy as np
 from scipy.io.wavfile import write
+import os
 
 SAMPLING_RATE = 44100
 DURATION = 5.0
-INTENSITY_THRESHOLD = 0.4
+INTENSITY_THRESHOLD = 20  # Adjust as needed
 
 
 def generate_sine_wave(freq, intensity, duration=DURATION, sample_rate=SAMPLING_RATE):
@@ -37,16 +38,21 @@ def generate_combined_wav_file(spectrum_data, output_file):
         combined_wave += sine_wave
 
     combined_wave = combined_wave / np.max(np.abs(combined_wave))
-
     combined_wave = np.int16(combined_wave * np.iinfo(np.int16).max)
 
     write(output_file, SAMPLING_RATE, combined_wave)
-    print(f"WAV file generated: {output_file}")
+
+
+def convert_all_txt_to_wav(directory="."):
+    for file_name in os.listdir(directory):
+        if file_name.endswith(".txt"):
+            base_name = os.path.splitext(file_name)[0]
+            txt_path = os.path.join(directory, file_name)
+            wav_path = os.path.join(directory, base_name + ".wav")
+
+            spectrum_data = read_spectrum_file(txt_path)
+            generate_combined_wav_file(spectrum_data, wav_path)
 
 
 if __name__ == "__main__":
-    spectrum_file = "spectrum.txt"
-    output_wav = "output.wav"
-
-    spectrum_data = read_spectrum_file(spectrum_file)
-    generate_combined_wav_file(spectrum_data, output_wav)
+    convert_all_txt_to_wav()
