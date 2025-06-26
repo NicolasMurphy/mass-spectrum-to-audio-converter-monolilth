@@ -19,7 +19,7 @@ Instead of manually grabbing a text file from HMDB, it would be more seamless to
   - Duration: `5 seconds`
   - Intensity threshold: `0.1`
   - m/z transformation: `value * 5 + 200`
-- Audio preview would be ideal before downloading the file.
+- Audio preview would be ideal before downloading the file. Maybe even a keyboard to play around with the sample at different frequencies (if I end up deciding to go this route, a react front end would be necessary, flask would be limited in this regard)
 
 **Technical Specifications**
 
@@ -32,3 +32,12 @@ This allows everything to be handled within a single Python-based app, reducing 
 I've used Django before, but Flask is more lightweight and minimal, making it a better fit.
 
 The full Flask app will likely be hosted on Render, with GitHub integration for auto-deploys.
+
+Additional thought: If I do decide to implement a keyboard, a react frontend would be necessary.
+
+**Quick Note:**
+
+Previously leaned toward using higher-pitched base tones in the generated audio, under the assumption that it would preserve more detail when pitch-shifting.
+However, that's incorrect — starting with **lower-pitched** sounds is better, since **more samples are used** when shifting audio upward.
+This results in better resolution and fidelity, especially when stretching or transposing the output later.
+Probably a good idea some help text of this somewhere on the web app.
