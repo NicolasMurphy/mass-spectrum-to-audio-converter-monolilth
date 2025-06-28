@@ -1,15 +1,17 @@
-### [2025-06-27] HMDB Fetching Script Working
+### [2025-06-27] HMDB Script and MassBank API Fetch
 
 - **Goals:**
   - Automate fetching `.txt` files from HMDB for a given metabolite
-  - Assess performance/reliability of HMDB as a data source
+  - Explore MassBank as a faster and more structured alternative to HMDB
+  - Lay groundwork for full pipeline: metabolite input → audio output
 
 - **Notes:**
-  - Script returns parsed `(m/z, intensity)` tuples
-  - Considered a frontend-only build in React, but opted for a backend-based approach (Flask) to allow future database use
-  - HMDB is quite slow — worth exploring alternatives like MassBank or PubChem
+  - Initial script for HMDB fetching completed and functional, but HMDB is slow and less reliable
+  - MassBank API script successfully implemented; returns `(m/z, intensity)` tuples via structured JSON
+  - Considered a frontend-only build in React, but opted for backend approach (Flask) to support database use in the future
+  - Plan is to prioritize MassBank moving forward due to performance and consistency
 
 - **Next Steps:**
-  - Integrate fetcher with `converter.py` for full end-to-end audio generation
-  - Evaluate performance of alternative databases (MassBank, MoNA)
-  - Begin building minimal Flask app with route for input → `.wav` output
+  - Integrate MassBank fetcher with `converter.py` for end-to-end audio generation
+  - Begin Flask app: route for user input → `.wav` response
+  - Optionally revisit MoNA or PubChem later for supplemental data
