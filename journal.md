@@ -40,4 +40,4 @@ Additional thought: If I do decide to implement a keyboard, a react frontend wou
 Previously leaned toward using higher-pitched base tones in the generated audio, under the assumption that it would preserve more detail when pitch-shifting.
 However, that's incorrect — starting with **lower-pitched** sounds is better, since **more samples are used** when shifting audio upward.
 This results in better resolution and fidelity, especially when stretching or transposing the output later.
-Probably a good idea some help text of this somewhere on the web app.
+Making a note to include some help text of this on the web app.
