@@ -1,4 +1,4 @@
-### [2025-06-29] MassBank Integration and End-to-End WAV Generation
+### [2025-06-29] MassBank Integration, Flask API, and Frontend Preview
 
 - **Goals:**
 
@@ -6,6 +6,7 @@
   - Connect spectrum data to audio converter pipeline
   - Begin replacing legacy `.txt`-based workflow with automated CLI tool
   - Build minimal Flask API for serving audio previews
+  - Implement basic HTML frontend for testing and preview
 
 - **Notes:**
 
@@ -14,11 +15,10 @@
   - Verified the script returns `(m/z, intensity)` tuples, compatible with the existing audio converter
   - Basic Flask API endpoint `/generate?compound=NAME` is now functional — returns a `.wav` file using a `BytesIO` stream
   - Removed unused files: `generate_from_massbank.py` and `fetch_hmdb.py`
-  - Cleaned up `requirements.txt` by removing `beautifulsoup4`
+  - Removed unused dependency: `beautifulsoup4`
 
 - **Next Steps:**
-  - Add better error handling and response formatting for the API
-  - Explore frontend options for previewing audio and downloading files
+  - Display compound name in frontend; ensure download includes compound-specific filename
   - Add fallback support for compounds not found in MassBank (e.g., MoNA or PubChem)
 
 ### [2025-06-27] HMDB Script and MassBank API Fetch
