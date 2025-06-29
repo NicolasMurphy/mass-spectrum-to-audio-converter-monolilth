@@ -1,11 +1,32 @@
+### [2025-06-29] MassBank Integration and End-to-End WAV Generation
+
+- **Goals:**
+
+  - Fetch mass spectrum data via the MassBank API
+  - Connect spectrum data to audio converter pipeline
+  - Begin replacing legacy `.txt`-based workflow with automated CLI tool
+
+- **Notes:**
+
+  - `get_massbank_peaks.py` was renamed to `massbank.py` for clarity
+  - New CLI tool `generate_from_massbank.py` was created to fetch data and generate `.wav` files in one step
+  - Verified the script returns `(m/z, intensity)` tuples, compatible with the existing audio converter
+
+- **Next Steps:**
+  - Begin building Flask backend for audio preview and download
+  - Create minimal API endpoint that accepts compound name and returns generated audio
+  - Explore fallback options for compounds not found in MassBank (e.g., MoNA or PubChem)
+
 ### [2025-06-27] HMDB Script and MassBank API Fetch
 
 - **Goals:**
+
   - Automate fetching `.txt` files from HMDB for a given metabolite
   - Explore MassBank as a faster and more structured alternative to HMDB
   - Lay groundwork for full pipeline: metabolite input → audio output
 
 - **Notes:**
+
   - Initial script for HMDB fetching completed and functional, but HMDB is slow and less reliable
   - MassBank API script successfully implemented; returns `(m/z, intensity)` tuples via structured JSON
   - Considered a frontend-only build in React, but opted for backend approach (Flask) to support database use in the future

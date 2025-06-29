@@ -1,5 +1,13 @@
 # Mass Spectrum to Audio Converter
 
+A project for converting mass spectrum values into `.wav` files.
+
+Currently in progress - concept is outlined in journal.md.
+
+### Legacy implementation:
+
+# Mass Spectrum to Audio Converter
+
 A project for converting mass spectrum `.txt` files into `.wav` files.
 
 ## Project Initialization:
