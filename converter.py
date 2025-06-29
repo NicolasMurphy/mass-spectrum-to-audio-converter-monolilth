@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.io.wavfile import write
+import io
 # import os
 
 SAMPLING_RATE = 96000
@@ -18,20 +19,22 @@ def mz_to_frequency(mz_value):
     return 200 + (mz_value * 5)
 
 
-def generate_combined_wav_file(spectrum_data, output_file):
+def generate_combined_wav_bytes(spectrum_data):
     t = np.linspace(0, DURATION, int(SAMPLING_RATE * DURATION), False)
     combined_wave = np.zeros_like(t)
 
     for mz, intensity in spectrum_data:
-        if intensity >= INTENSITY_THRESHOLD:
-            freq = mz_to_frequency(mz)
-            sine_wave = generate_sine_wave(freq, intensity)
-            combined_wave += sine_wave
+        freq = mz_to_frequency(mz)
+        sine_wave = generate_sine_wave(freq, intensity)
+        combined_wave += sine_wave
 
     combined_wave = combined_wave / np.max(np.abs(combined_wave))
     combined_wave = np.int16(combined_wave * np.iinfo(np.int16).max)
 
-    write(output_file, SAMPLING_RATE, combined_wave)
+    wav_buffer = io.BytesIO()
+    write(wav_buffer, SAMPLING_RATE, combined_wave)
+    wav_buffer.seek(0)
+    return wav_buffer
 
 
 # --- Legacy file-based approach (currently unused) ---
