@@ -26,7 +26,10 @@ def get_massbank_peaks(compound_name):
 
     peak_values = record_data.get("peak", {}).get("peak", {}).get("values", [])
     spectrum = [(p["mz"], p["intensity"]) for p in peak_values]
-    return spectrum
+    title = record_data.get("title", "")
+    compound_actual = title.split(";")[0].strip() if title else "Unknown Compound"
+
+    return spectrum, accession, compound_actual
 
 
 if __name__ == "__main__":

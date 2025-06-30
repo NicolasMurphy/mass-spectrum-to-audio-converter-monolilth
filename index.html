@@ -1,61 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mass Spectrum to Audio Converter</title>
-</head>
-<body>
-  <h1>Mass Spectrum to Audio Converter</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mass Spectrum to Audio Converter</title>
+  </head>
+  <body>
+    <h1>Mass Spectrum to Audio Converter</h1>
 
-  <input type="text" id="compoundInput" placeholder="Enter compound name..." />
-  <button onclick="fetchAudio()">Generate Audio</button>
+    <input
+      type="text"
+      id="compoundInput"
+      placeholder="Enter compound name..."
+    />
+    <button onclick="fetchAudio()">Generate Audio</button>
 
-  <p id="status"></p>
-  <audio id="audioPlayer" controls style="display:none;"></audio>
-  <a id="downloadLink" style="display:none;">Download WAV</a>
+    <p id="status"></p>
+    <p id="metaInfo" style="display: none"></p>
+    <audio id="audioPlayer" controls style="display: none"></audio>
+    <a id="downloadLink" style="display: none">Download WAV</a>
 
-  <script>
-    async function fetchAudio() {
-      const compound = document.getElementById("compoundInput").value.trim();
-      const status = document.getElementById("status");
-      const audio = document.getElementById("audioPlayer");
-      const link = document.getElementById("downloadLink");
+    <script>
+      async function fetchAudio() {
+        const compound = document.getElementById("compoundInput").value.trim();
+        const status = document.getElementById("status");
+        const metaInfo = document.getElementById("metaInfo");
+        const audio = document.getElementById("audioPlayer");
+        const link = document.getElementById("downloadLink");
 
-      if (!compound) {
-        status.textContent = "Please enter a compound name.";
-        return;
-      }
-
-      status.textContent = "Fetching audio...";
-      audio.style.display = "none";
-      link.style.display = "none";
-
-      try {
-        const response = await fetch(`/generate?compound=${encodeURIComponent(compound)}`);
-        if (!response.ok) {
-          const error = await response.json();
-          status.textContent = `Error: ${error.error}`;
+        if (!compound) {
+          status.textContent = "Please enter a compound name.";
           return;
         }
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
+        status.textContent = "Fetching audio...";
+        audio.style.display = "none";
+        link.style.display = "none";
+        metaInfo.style.display = "none"; // NEW
 
-        // Set audio player
-        audio.src = url;
-        audio.style.display = "block";
+        try {
+          const response = await fetch(
+            `/generate?compound=${encodeURIComponent(compound)}`
+          );
+          if (!response.ok) {
+            const error = await response.json();
+            status.textContent = `Error: ${error.error}`;
+            return;
+          }
 
-        // Set download link
-        link.href = url;
-        link.download = `${compound}.wav`;
-        link.textContent = "Download WAV";
-        link.style.display = "inline";
-        status.textContent = "Success!";
-      } catch (e) {
-        status.textContent = `Error: ${e.message}`;
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+
+          // extract metadata from headers
+          const compoundName = response.headers.get("X-Compound") || compound;
+          const accession = response.headers.get("X-Accession") || "unknown";
+
+          // update metadata display
+          metaInfo.textContent = `Compound: ${compoundName} | Accession: ${accession}`;
+          metaInfo.style.display = "block";
+
+          // Set audio player
+          audio.src = url;
+          audio.style.display = "block";
+
+          // Set download link using compound-accession format
+          link.href = url;
+          link.download = `${compoundName}-${accession}.wav`;
+          link.textContent = "Download WAV";
+          link.style.display = "inline";
+
+          status.textContent = "Success!";
+        } catch (e) {
+          status.textContent = `Error: ${e.message}`;
+        }
       }
-    }
-  </script>
-</body>
+    </script>
+  </body>
 </html>

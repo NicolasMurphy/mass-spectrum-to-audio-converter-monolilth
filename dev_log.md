@@ -7,6 +7,7 @@
   - Begin replacing legacy `.txt`-based workflow with automated CLI tool
   - Build minimal Flask API for serving audio previews
   - Implement basic HTML frontend for testing and preview
+  - Display compound name in frontend; ensure download includes compound and accession
 
 - **Notes:**
 
@@ -18,8 +19,14 @@
   - Removed unused dependency: `beautifulsoup4`
 
 - **Next Steps:**
-  - Display compound name in frontend; ensure download includes compound-specific filename
+  - Deploy on Render for live access and testing
+  - Make accession in frontend a hyperlink to the corresponding MassBank record
+  - Add sliders or controls for adjusting sample rate, duration, threshold, frequency equation.
   - Add fallback support for compounds not found in MassBank (e.g., MoNA or PubChem)
+  - Implement autocomplete (potential for misleading the user to believe a compound is available)
+  - (Further down the line)
+    - Use React for frontend - implement keyboard
+    - Implement database - display "recently searched/downloaded compounds"
 
 ### [2025-06-27] HMDB Script and MassBank API Fetch
 

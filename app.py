@@ -17,14 +17,18 @@ def generate_audio():
         return {"error": "No compound provided"}, 400
 
     try:
-        spectrum = get_massbank_peaks(compound)
+        spectrum, accession, compound_actual = get_massbank_peaks(compound)
         wav_buffer = generate_combined_wav_bytes(spectrum)
-        return send_file(
+        response = send_file(
             wav_buffer,
             mimetype="audio/wav",
             as_attachment=True,
-            download_name=f"{compound}.wav",
+            download_name=f"{compound_actual}-{accession}.wav",
         )
+        response.headers["X-Compound"] = compound_actual
+        response.headers["X-Accession"] = accession
+        return response
+
     except Exception as e:
         return {"error": str(e)}, 500
 
