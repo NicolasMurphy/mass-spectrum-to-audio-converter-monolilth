@@ -56,7 +56,9 @@
           const accession = response.headers.get("X-Accession") || "unknown";
 
           // update metadata display
-          metaInfo.textContent = `Compound: ${compoundName} | Accession: ${accession}`;
+          const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${accession}`;
+          metaInfo.innerHTML = `Compound: ${compoundName} | Accession: <a href="${accessionUrl}" target="_blank">${accession}</a>`;
+
           metaInfo.style.display = "block";
 
           // Set audio player
