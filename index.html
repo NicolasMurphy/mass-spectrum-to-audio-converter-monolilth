@@ -76,6 +76,13 @@
           status.textContent = `Error: ${e.message}`;
         }
       }
+      document // user clicks enter to generate audio
+        .getElementById("compoundInput")
+        .addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            fetchAudio();
+          }
+        });
     </script>
   </body>
 </html>
