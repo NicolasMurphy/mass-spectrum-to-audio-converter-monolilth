@@ -1,8 +1,10 @@
 from flask import Flask, request, send_file, send_from_directory
 from converter import generate_combined_wav_bytes
 from massbank import get_massbank_peaks
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:5173", "https://your-frontend.vercel.app"])
 
 
 @app.route("/")
