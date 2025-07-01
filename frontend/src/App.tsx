@@ -1,26 +1,29 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState } from "react";
+import type { KeyboardEvent } from "react";
 
 function App() {
-  const [compound, setCompound] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
-  const [audioUrl, setAudioUrl] = useState<string>('');
-  const [compoundName, setCompoundName] = useState<string>('');
-  const [accession, setAccession] = useState<string>('');
+  const [compound, setCompound] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [audioUrl, setAudioUrl] = useState<string>("");
+  const [compoundName, setCompoundName] = useState<string>("");
+  const [accession, setAccession] = useState<string>("");
 
   const handleFetch = async () => {
     if (!compound.trim()) {
-      setStatus('Please enter a compound name.');
+      setStatus("Please enter a compound name.");
       return;
     }
 
-    setStatus('Fetching audio...');
-    setAudioUrl('');
-    setCompoundName('');
-    setAccession('');
+    setStatus("Fetching audio...");
+    setAudioUrl("");
+    setCompoundName("");
+    setAccession("");
 
     try {
       const response = await fetch(
-        `https://mass-spectrum-to-audio-converter.onrender.com/generate?compound=${encodeURIComponent(compound)}`
+        `https://mass-spectrum-to-audio-converter.onrender.com/generate?compound=${encodeURIComponent(
+          compound
+        )}`
       );
 
       if (!response.ok) {
@@ -32,24 +35,28 @@ function App() {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
 
-      setCompoundName(response.headers.get('X-Compound') || compound);
-      setAccession(response.headers.get('X-Accession') || 'unknown');
+      setCompoundName(response.headers.get("X-Compound") || compound);
+      setAccession(response.headers.get("X-Accession") || "unknown");
       setAudioUrl(url);
-      setStatus('Success!');
-    } catch (err: any) {
-      setStatus(`Error: ${err.message}`);
+      setStatus("Success!");
+    } catch (err) {
+      if (err instanceof Error) {
+        setStatus(`Error: ${err.message}`);
+      } else {
+        setStatus("An unknown error occurred.");
+      }
     }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleFetch();
+    if (e.key === "Enter") handleFetch();
   };
 
   const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${accession}`;
   const downloadName = `${compoundName}-${accession}.wav`;
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div style={{ padding: "1rem" }}>
       <h1>Mass Spectrum to Audio Converter</h1>
       <input
         type="text"
@@ -64,7 +71,7 @@ function App() {
 
       {compoundName && accession && (
         <p>
-          Compound: {compoundName} | Accession:{' '}
+          Compound: {compoundName} | Accession:{" "}
           <a href={accessionUrl} target="_blank" rel="noopener noreferrer">
             {accession}
           </a>
