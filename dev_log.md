@@ -1,3 +1,23 @@
+### [2025-06-30] Frontend Enhancements & Deployment
+
+- **Goals:**
+
+  - Deploy working version via Render
+  - Make accession a clickable link to MassBank record
+  - User should be able to click enter to generate audio
+
+- **Notes:**
+
+  - Ended up needing to manually grab the SSL cert from MassBank, put the cert in /certs
+
+- **Next Steps:**
+  - Add sliders or controls for adjusting sample rate, duration, threshold, frequency equation.
+  - Search by accession
+  - Fallback support?
+  - Autocomplete
+  - Need to consider if it's better to switch to React Frontend now or later
+  - Consider multiple alogrithms: linear, logarithmic, inverse, etc.
+
 ### [2025-06-29] MassBank Integration, Flask API, and Frontend Preview
 
 - **Goals:**
