@@ -1,10 +1,10 @@
 import requests
 import sys
-import certifi
+import os
 
 
 def get_massbank_peaks(compound_name):
-    cafile = certifi.where()
+    cafile = os.path.join(os.path.dirname(__file__), "certs", "massbank.eu.crt")
     r = requests.get(
         "https://massbank.eu/MassBank-api/records/search",
         params={"compound_name": compound_name},
