@@ -55,9 +55,9 @@ function App() {
   const downloadName = `${compoundName}-${accession}.wav`;
 
   return (
-    <div data-theme="corporate" className="hero min-h-screen bg-base-100">
+    <div data-theme="corporate" className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col w-full max-w-xl">
-        <div className="card bg-base-200 w-full">
+        <div className="card bg-neutral-content w-full">
           <div className="card-body">
             <h1 className="text-3xl font-bold text-center mb-2">
               Mass Spectrum to Audio
@@ -77,7 +77,7 @@ function App() {
             </button>
 
             {status && (
-              <p className="text-sm text-info text-center mb-2">{status}</p>
+              <p className="text-sm text-center mb-2">{status}</p>
             )}
 
             {compoundName && accession && (
@@ -88,7 +88,7 @@ function App() {
                   <span className="font-semibold">Accession:</span>{" "}
                   <a
                     href={accessionUrl}
-                    className="link"
+                    className="link text-info"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -99,7 +99,7 @@ function App() {
             )}
 
             {audioUrl && (
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex flex-col items-center gap-6">
                 <audio controls src={audioUrl} className="w-full" />
                 <a
                   href={audioUrl}
