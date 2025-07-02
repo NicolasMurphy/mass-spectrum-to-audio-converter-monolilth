@@ -17,6 +17,7 @@
   - Fallback support?
   - Autocomplete
   - Consider multiple alogrithms: linear, logarithmic, inverse, etc.
+  - multiple database support?
 
 ### [2025-06-30] Frontend Enhancements & Deployment
 
