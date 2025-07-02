@@ -1,3 +1,22 @@
+### [2025-06-30] Create and Deploy React Frontend
+
+- **Goals:**
+
+  - Create frontend with React with same functionality
+  - Style with Tailwind and DaisyUI
+  - Deploy with Vercel
+
+- **Notes:**
+
+  - Added CORS origins in backend to avoid CORS errorss
+
+- **Next Steps:**
+  - Add sliders or controls for adjusting sample rate, duration, threshold, frequency equation.
+  - Search by accession
+  - Fallback support?
+  - Autocomplete
+  - Consider multiple alogrithms: linear, logarithmic, inverse, etc.
+
 ### [2025-06-30] Frontend Enhancements & Deployment
 
 - **Goals:**
