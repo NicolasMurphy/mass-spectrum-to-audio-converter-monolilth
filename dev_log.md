@@ -1,4 +1,4 @@
-### [2025-06-30] Create and Deploy React Frontend
+### [2025-07-01] Create and Deploy React Frontend
 
 - **Goals:**
 
@@ -8,7 +8,8 @@
 
 - **Notes:**
 
-  - Added CORS origins in backend to avoid CORS errorss
+  - Added CORS origins/headers in backend to avoid CORS errors
+  - Separate deployments by folder (frontend/ to Vercel, backend/ to Render)
 
 - **Next Steps:**
   - Add sliders or controls for adjusting sample rate, duration, threshold, frequency equation.
