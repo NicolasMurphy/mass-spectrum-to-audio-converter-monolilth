@@ -19,16 +19,21 @@
     </a>
     <h1>Mass Spectrum to Audio Converter</h1>
 
+    <label for="compoundInput">Compound Name</label><br />
     <input
       type="text"
       id="compoundInput"
-      placeholder="Enter compound name..."
-    />
+      placeholder="e.g. biotin"
+    /><br /><br />
+
+    <label for="sampleRateInput">Sample Rate (Hz)</label><br />
     <input
       type="number"
       id="sampleRateInput"
-      placeholder="Enter sample rate (e.g. 96000)"
-    />
+      placeholder="e.g. 96000"
+      value="96000"
+    /><br /><br />
+
     <button onclick="fetchAudio()">Generate Audio</button>
 
     <p id="status"></p>
