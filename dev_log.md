@@ -3,14 +3,15 @@
 - **Goals:**
 
   - Add `offset` parameter to backend
+  - Switch to path-based routing for algorithm: `/<database>/<algorithm>`
   - Display before and after of all m/z and intensity values for offset in debugger
 
 - **Notes:**
 
   - For the `offset` in def `mz_to_frequency` - need to change this to be offset by a single value for simplicity (+2000-3000 seems reasonable).
   - Need to consider negative offsets causing frequencies below 0hz - seems like this will cause the sine wave to flip in phase. Consider adding a `if freq <= 0: continue `in def `generate_sine_wave`
-  - consider creating a `/linear/` path for the API, may need to rename `mz_to_frequency` to `mz_to_frequency_linear`
-  -
+  - Create `/linear/` path for the API, rename `mz_to_frequency` to `mz_to_frequency_linear`
+  - Considered a query param for algorithm, but used a path instead since the algorithm defines the resource
 
 - **Next Steps:**
   -
