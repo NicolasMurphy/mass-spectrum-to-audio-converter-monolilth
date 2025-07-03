@@ -66,7 +66,7 @@ function App() {
         <div className="card bg-neutral-content w-full">
           <div className="card-body">
             <h1 className="text-3xl font-bold text-center mb-2">
-              Mass Spectrum to Audio
+              Mass Spectrum to Audio Converter
             </h1>
 
             <div className="form-control mb-4">
