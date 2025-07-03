@@ -24,6 +24,11 @@
       id="compoundInput"
       placeholder="Enter compound name..."
     />
+    <input
+      type="number"
+      id="sampleRateInput"
+      placeholder="Enter sample rate (e.g. 96000)"
+    />
     <button onclick="fetchAudio()">Generate Audio</button>
 
     <p id="status"></p>
@@ -50,9 +55,15 @@
         metaInfo.style.display = "none";
 
         try {
+          const sampleRate = document
+            .getElementById("sampleRateInput")
+            .value.trim();
           const response = await fetch(
-            `/generate?compound=${encodeURIComponent(compound)}`
+            `/massbank?compound=${encodeURIComponent(
+              compound
+            )}&sample_rate=${sampleRate}`
           );
+
           if (!response.ok) {
             const error = await response.json();
             status.textContent = `Error: ${error.error}`;

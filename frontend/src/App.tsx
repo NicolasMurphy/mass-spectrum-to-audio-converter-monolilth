@@ -8,6 +8,7 @@ function App() {
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [compoundName, setCompoundName] = useState<string>("");
   const [accession, setAccession] = useState<string>("");
+  const [sampleRate, setSampleRate] = useState<string>("96000");
 
   const handleFetch = async () => {
     if (!compound.trim()) {
@@ -22,7 +23,12 @@ function App() {
 
     try {
       const response = await fetch(
-        `https://mass-spectrum-to-audio-converter.onrender.com/generate?compound=${encodeURIComponent(compound)}`
+        // `http://localhost:5000/massbank?compound=${encodeURIComponent(
+        //   compound
+        // )}&sample_rate=${sampleRate}`
+        `https://mass-spectrum-to-audio-converter.onrender.com/massbank?compound=${encodeURIComponent(
+          compound
+        )}&sample_rate=${sampleRate}`
       );
 
       if (!response.ok) {
@@ -63,27 +69,55 @@ function App() {
               Mass Spectrum to Audio
             </h1>
 
-            <input
-              type="text"
-              placeholder="Enter compound name..."
-              className="input input-bordered w-full mb-4"
-              value={compound}
-              onChange={(e) => setCompound(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
+            <div className="form-control mb-4">
+              <label className="label">
+                <span className="label-text font-semibold">Compound Name</span>
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. biotin"
+                className="input input-bordered w-full"
+                value={compound}
+                onChange={(e) => setCompound(e.target.value)}
+                onKeyDown={handleKeyDown}
+              />
+            </div>
 
-            <button className="btn btn-primary w-full mb-4" onClick={handleFetch}>
+            <div className="form-control mb-4">
+              <label className="label">
+                <span className="label-text font-semibold">
+                  Sample Rate (Hz)
+                </span>
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 96000"
+                className="input input-bordered w-full"
+                value={sampleRate}
+                onChange={(e) => setSampleRate(e.target.value)}
+              />
+              <label className="label">
+                <span className="label-text-alt text-xs text-gray-500">
+                  Higher sample rates retain higher fidelity if you plan to
+                  pitch-shift or time-stretch the audio.
+                </span>
+              </label>
+            </div>
+
+            <button
+              className="btn btn-primary w-full mb-4"
+              onClick={handleFetch}
+            >
               Generate Audio
             </button>
 
-            {status && (
-              <p className="text-sm text-center mb-2">{status}</p>
-            )}
+            {status && <p className="text-sm text-center mb-2">{status}</p>}
 
             {compoundName && accession && (
               <div className="text-center mb-4">
                 <p>
-                  <span className="font-semibold">Compound:</span> {compoundName}
+                  <span className="font-semibold">Compound:</span>{" "}
+                  {compoundName}
                   <br />
                   <span className="font-semibold">Accession:</span>{" "}
                   <a
