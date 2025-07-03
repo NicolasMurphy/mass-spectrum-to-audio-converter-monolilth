@@ -1,3 +1,20 @@
+### [2025-07-02] Sample Rate Support & Endpoint Refactor
+
+- **Goals:**
+
+  - Refactor `/generate` to `/massbank` for a more RESTful API
+  - Add `sample_rate` parameter to backend
+  - Update React frontend to support sample rate input
+  - Improve Flask HTML debugger
+
+- **Notes:**
+
+  - Added a query URL in the debugger
+  - Observed that deploying frontend and backend can cause temporary breakage
+
+- **Next Steps:**
+  - Add support for `duration`, `threshold`, `frequency equation`
+
 ### [2025-07-01] Create and Deploy React Frontend
 
 - **Goals:**

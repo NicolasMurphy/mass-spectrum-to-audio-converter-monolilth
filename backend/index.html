@@ -8,7 +8,7 @@
   <body>
     <p>Hey!</p>
     <p>What are you doing?</p>
-    <p>This is the backend!</p>
+    <p>This is the debugger!</p>
     <p>Go check out the frontend over here!</p>
 
     <a
@@ -40,6 +40,8 @@
     <p id="metaInfo" style="display: none"></p>
     <audio id="audioPlayer" controls style="display: none"></audio>
     <a id="downloadLink" style="display: none">Download WAV</a>
+    <p>query URL:</strong></p>
+    <p id="rawUrl" style="font-family: monospace; color: #555"></p>
 
     <script>
       async function fetchAudio() {
@@ -63,11 +65,12 @@
           const sampleRate = document
             .getElementById("sampleRateInput")
             .value.trim();
-          const response = await fetch(
-            `/massbank?compound=${encodeURIComponent(
-              compound
-            )}&sample_rate=${sampleRate}`
-          );
+          const queryUrl = `/massbank?compound=${encodeURIComponent(
+            compound
+          )}&sample_rate=${sampleRate}`;
+          document.getElementById("rawUrl").textContent = queryUrl;
+
+          const response = await fetch(queryUrl);
 
           if (!response.ok) {
             const error = await response.json();
