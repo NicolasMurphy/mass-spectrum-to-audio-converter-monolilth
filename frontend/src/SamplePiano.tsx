@@ -50,7 +50,7 @@ export default function SamplePiano({ audioUrl }: Props) {
   };
 
   return (
-    <div className="mt-6 scale-[0.6] sm:scale-100 px-auto">
+    <div className="mt-6 scale-[0.6] sm:scale-100 mx-2">
       <Piano
         noteRange={{ first: firstNote, last: lastNote }}
         playNote={playNote}
