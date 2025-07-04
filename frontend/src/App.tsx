@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { KeyboardEvent } from "react";
 import "./App.css";
+import SamplePiano from "./SamplePiano";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -197,6 +198,7 @@ function App() {
             </p>
           </div>
         </div>
+        {audioUrl && <SamplePiano audioUrl={audioUrl} />}
       </div>
     </div>
   );
