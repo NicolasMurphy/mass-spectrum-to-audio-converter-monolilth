@@ -20,11 +20,15 @@ export default function SamplePiano({ audioUrl }: Props) {
 
   useEffect(() => {
     if (audioUrl) {
-      const loadBuffer = async () => {
-        const newBuffer = await new Tone.ToneAudioBuffer(audioUrl);
-        setBuffer(newBuffer);
-      };
-      loadBuffer();
+      const buffer = new Tone.ToneAudioBuffer({
+        url: audioUrl,
+        onload: () => {
+          setBuffer(buffer);
+        },
+        onerror: (err) => {
+          console.error("Buffer load error:", err);
+        },
+      });
     }
   }, [audioUrl]);
 
