@@ -22,13 +22,21 @@ def serve_frontend():
 @app.route("/massbank", methods=["GET"])
 def generate_audio():
     compound = request.args.get("compound")
-    sample_rate = request.args.get("sample_rate", type=int) or 96000  # fallback to default
+    sample_rate = (
+        request.args.get("sample_rate", type=int) or 96000
+    )  # fallback to default
+
+    if not 3500 <= sample_rate <= 192000:
+        return {"error": "Sample rate must be between 3500 and 192000"}, 400
+
     if not compound:
         return {"error": "No compound provided"}, 400
 
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
-        wav_buffer = generate_combined_wav_bytes(spectrum, sample_rate=sample_rate)  # pass sample rate
+        wav_buffer = generate_combined_wav_bytes(
+            spectrum, sample_rate=sample_rate
+        )  # pass sample rate
         response = send_file(
             wav_buffer,
             mimetype="audio/wav",

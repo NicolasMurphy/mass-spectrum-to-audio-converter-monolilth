@@ -16,6 +16,16 @@ function App() {
       return;
     }
 
+    const sampleRateNum = Number(sampleRate);
+    if (
+      isNaN(sampleRateNum) ||
+      sampleRateNum < 3500 ||
+      sampleRateNum > 192000
+    ) {
+      setStatus("Sample rate must be between 3500 and 192000.");
+      return;
+    }
+
     setStatus("Fetching audio...");
     setAudioUrl("");
     setCompoundName("");
@@ -95,6 +105,8 @@ function App() {
                 className="input input-bordered w-full"
                 value={sampleRate}
                 onChange={(e) => setSampleRate(e.target.value)}
+                min={3500}
+                max={192000}
               />
             </div>
 
