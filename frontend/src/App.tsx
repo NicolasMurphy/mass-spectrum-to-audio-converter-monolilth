@@ -1,15 +1,16 @@
 import { useState } from "react";
 import type { KeyboardEvent } from "react";
 import "./App.css";
-//
+
 function App() {
   const [compound, setCompound] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [compoundName, setCompoundName] = useState<string>("");
   const [accession, setAccession] = useState<string>("");
-  const [sampleRate, setSampleRate] = useState<string>("96000");
   const [offset, setOffset] = useState<string>("300");
+  const [sampleRate, setSampleRate] = useState<string>("96000");
+  const [duration, setDuration] = useState<string>("5");
 
   const handleFetch = async () => {
     if (!compound.trim()) {
@@ -27,6 +28,12 @@ function App() {
       return;
     }
 
+    const durationNum = Number(duration);
+    if (isNaN(durationNum) || durationNum < 0.01 || durationNum > 30) {
+      setStatus("Duration must be between 0.01 and 30.");
+      return;
+    }
+
     setStatus("Fetching audio...");
     setAudioUrl("");
     setCompoundName("");
@@ -36,10 +43,10 @@ function App() {
       const response = await fetch(
         // `http://localhost:5000/massbank/linear?compound=${encodeURIComponent(
         //   compound
-        // )}&sample_rate=${sampleRate}&offset=${offset}`
+        // )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`
         `https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=${encodeURIComponent(
           compound
-        )}&sample_rate=${sampleRate}&offset=${offset}`
+        )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`
       );
 
       if (!response.ok) {
@@ -73,7 +80,7 @@ function App() {
 
   return (
     <div data-theme="corporate" className="min-h-screen bg-base-200">
-      <div className="justify-items-center pt-8 flex-col w-full px-4">
+      <div className="justify-items-center p-8 flex-col w-full px-4">
         <div className="card bg-neutral-content w-full max-w-md">
           <div className="card-body">
             <h1 className="text-3xl font-bold text-center mb-2">
@@ -96,6 +103,35 @@ function App() {
 
             <div className="form-control mb-4">
               <label className="label">
+                <span className="label-text font-semibold">Offset (m/z)</span>
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 300"
+                className="input input-bordered w-full"
+                value={offset}
+                onChange={(e) => setOffset(e.target.value)}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Shifts all m/z values before pitch conversion.
+              </p>
+            </div>
+
+            <div className="form-control mb-4">
+              <label className="label">
+                <span className="label-text font-semibold">Duration</span>
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 5"
+                className="input input-bordered w-full"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+              />
+            </div>
+
+            <div className="form-control mb-4">
+              <label className="label">
                 <span className="label-text font-semibold">
                   Sample Rate (Hz)
                 </span>
@@ -109,22 +145,6 @@ function App() {
                 min={3500}
                 max={192000}
               />
-            </div>
-
-            <div className="form-control mb-4">
-              <label className="label">
-                <span className="label-text font-semibold">Offset (m/z)</span>
-              </label>
-              <input
-                type="number"
-                placeholder="e.g. 300"
-                className="input input-bordered w-full"
-                value={offset}
-                onChange={(e) => setOffset(e.target.value)}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Shifts all m/z values before pitch conversion.
-              </p>
             </div>
 
             <button
@@ -167,6 +187,10 @@ function App() {
                 </a>
               </div>
             )}
+            <p className="text-xs text-gray-500 mt-2">
+              Protip: If you plan to use the .wav in a sampler, download a lower
+              pitched sample with a higher sample rate to retain fidelity.
+            </p>
           </div>
         </div>
       </div>

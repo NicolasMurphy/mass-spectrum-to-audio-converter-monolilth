@@ -29,8 +29,8 @@ def generate_audio():
     if not compound:
         return {"error": "No compound provided"}, 400
 
-    if not (0.01 <= duration <= 10):
-        return {"error": "Duration must be between 0.01 and 10 seconds."}, 400
+    if not (0.01 <= duration <= 30):
+        return {"error": "Duration must be between 0.01 and 30 seconds."}, 400
 
     if not 3500 <= sample_rate <= 192000:
         return {"error": "Sample rate must be between 3500 and 192000"}, 400
