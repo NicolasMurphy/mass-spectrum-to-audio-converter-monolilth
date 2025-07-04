@@ -50,13 +50,13 @@ export default function SamplePiano({ audioUrl }: Props) {
   };
 
   return (
-    <div className="mt-6 scale-[0.6] sm:scale-100 mx-2 px-2">
+    <div className="mt-6">
       <Piano
+        width={window.innerWidth < 600 ? window.innerWidth - 32 : 600}
         noteRange={{ first: firstNote, last: lastNote }}
         playNote={playNote}
         stopNote={() => {}}
         keyboardShortcuts={keyboardShortcuts}
-        width={600}
       />
     </div>
   );
