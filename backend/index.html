@@ -34,18 +34,31 @@
       value="96000"
     /><br /><br />
 
+    <label for="offsetInput">Offset (m/z)</label><br />
+    <input
+      type="number"
+      id="offsetInput"
+      placeholder="e.g. 300"
+      value="300"
+    /><br /><br />
+
     <button onclick="fetchAudio()">Generate Audio</button>
 
     <p id="status"></p>
     <p id="metaInfo" style="display: none"></p>
     <audio id="audioPlayer" controls style="display: none"></audio>
     <a id="downloadLink" style="display: none">Download WAV</a>
-    <p>query URL:</strong></p>
+    <p>query URL:</p>
     <p id="rawUrl" style="font-family: monospace; color: #555"></p>
 
     <script>
       async function fetchAudio() {
         const compound = document.getElementById("compoundInput").value.trim();
+        const sampleRate = document
+          .getElementById("sampleRateInput")
+          .value.trim();
+        const offset = document.getElementById("offsetInput").value.trim();
+
         const status = document.getElementById("status");
         const metaInfo = document.getElementById("metaInfo");
         const audio = document.getElementById("audioPlayer");
@@ -65,9 +78,9 @@
           const sampleRate = document
             .getElementById("sampleRateInput")
             .value.trim();
-          const queryUrl = `/massbank?compound=${encodeURIComponent(
+          const queryUrl = `/massbank/linear?compound=${encodeURIComponent(
             compound
-          )}&sample_rate=${sampleRate}`;
+          )}&sample_rate=${sampleRate}&offset=${offset}`;
           document.getElementById("rawUrl").textContent = queryUrl;
 
           const response = await fetch(queryUrl);

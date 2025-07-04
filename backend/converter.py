@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.io.wavfile import write
 import io
+
 # import traceback
 
 # SAMPLING_RATE = 96000
@@ -15,18 +16,18 @@ def generate_sine_wave(freq, intensity, duration=DURATION, sample_rate=96000):
     return wave
 
 
-def mz_to_frequency(mz_value):
-    return 200 + (mz_value * 5)
+def mz_to_frequency_linear(mz_value, offset=300):
+    return mz_value + offset
 
 
-def generate_combined_wav_bytes(spectrum_data, sample_rate=96000):
+def generate_combined_wav_bytes(spectrum_data, sample_rate=96000, offset=300):
     # print(f"Generating audio with sample_rate={sample_rate}")
     # traceback.print_stack()
     t = np.linspace(0, DURATION, int(sample_rate * DURATION), False)
     combined_wave = np.zeros_like(t)
 
     for mz, intensity in spectrum_data:
-        freq = mz_to_frequency(mz)
+        freq = mz_to_frequency_linear(mz, offset=offset)
         sine_wave = generate_sine_wave(
             freq, intensity, duration=DURATION, sample_rate=sample_rate
         )

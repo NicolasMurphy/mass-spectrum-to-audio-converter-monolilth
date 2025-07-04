@@ -9,6 +9,7 @@ function App() {
   const [compoundName, setCompoundName] = useState<string>("");
   const [accession, setAccession] = useState<string>("");
   const [sampleRate, setSampleRate] = useState<string>("96000");
+  const [offset, setOffset] = useState<string>("300");
 
   const handleFetch = async () => {
     if (!compound.trim()) {
@@ -33,12 +34,12 @@ function App() {
 
     try {
       const response = await fetch(
-        // `http://localhost:5000/massbank?compound=${encodeURIComponent(
+        // `http://localhost:5000/massbank/linear?compound=${encodeURIComponent(
         //   compound
-        // )}&sample_rate=${sampleRate}`
-        `https://mass-spectrum-to-audio-converter.onrender.com/massbank?compound=${encodeURIComponent(
+        // )}&sample_rate=${sampleRate}&offset=${offset}`
+        `https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=${encodeURIComponent(
           compound
-        )}&sample_rate=${sampleRate}`
+        )}&sample_rate=${sampleRate}&offset=${offset}`
       );
 
       if (!response.ok) {
@@ -108,6 +109,22 @@ function App() {
                 min={3500}
                 max={192000}
               />
+            </div>
+
+            <div className="form-control mb-4">
+              <label className="label">
+                <span className="label-text font-semibold">Offset (m/z)</span>
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 300"
+                className="input input-bordered w-full"
+                value={offset}
+                onChange={(e) => setOffset(e.target.value)}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Shifts all m/z values before pitch conversion.
+              </p>
             </div>
 
             <button
