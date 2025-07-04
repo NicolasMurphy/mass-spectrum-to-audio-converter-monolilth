@@ -1,28 +1,63 @@
-# Mass Spectrum to Audio Converter
+## Mass Spectrum to Audio Converter
 
-A project for converting mass spectrum values into `.wav` files.
+This tool converts mass spectrometry data into audio by mapping spectral peaks to sine wave frequencies.
 
-Currently in progress - concept is outlined in journal.md.
+---
 
-### Legacy implementation:
+### Try It Live
 
-# Mass Spectrum to Audio Converter
+[mass-spectrum-to-audio-converter.vercel.app](https://mass-spectrum-to-audio-converter.vercel.app)
 
-A project for converting mass spectrum `.txt` files into `.wav` files.
+---
 
-## Project Initialization:
+### About the Project
 
-1. Clone the repository to your local machine.
-2. Navigate to the project directory.
-3. Install the necessary dependencies by running:
-   `pip install -r requirements.txt`
+This project fetches spectral data from the [MassBank](https://massbank.eu/) database, extracts m/z (mass-to-charge) values and intensities, and converts them into sine waves. You can control parameters like offset, duration, and sample rate to shape the resulting audio.
 
-## Instructions:
+- **Backend**: Python, Flask, MassBank API, deployed via Render
+- **Frontend**: React, Tailwind (via DaisyUI), Vite, deployed via Vercel
+- **Local API Endpoint Example**:
+  `GET /massbank/linear?compound=biotin&sample_rate=96000&offset=300&duration=5.0`
 
-1. Go to [HMDB](https://hmdb.ca/) (or any database that includes Spectra data).
-2. Search for a chemical (drug, hormone, protein, etc.).
-3. Click on the chemical, scroll down to the **Spectra** section, and click "View Spectrum".
-4. Find the "Generated list of m/z values for the spectrum (TXT)" and click "Download file".
-5. Copy and paste the values into a `.txt` file in the root directory of this project.
-6. Run `python converter.py`, and the script will convert the `.txt` file(s) into `.wav` file(s) with the same name.
-7. You may need to adjust the `INTENSITY_THRESHOLD` in order to get clean sounding audio.
+Learn more about the motivation and creative inspiration in [my blog post](https://www.nicolasmurphy.com/blog/mass-spectrometry-music)
+
+---
+
+### Run Locally
+
+To run this project on your machine:
+
+1. **Clone the repository**
+   `git clone https://github.com/your-username/mass-spectrum-to-audio-converter.git`
+   `cd mass-spectrum-to-audio-converter`
+
+2. **Start the backend**
+
+- Navigate to the backend folder:
+  `cd backend`
+- Install dependencies:
+  `pip install -r requirements.txt`
+- Run the Flask app:
+  `python app.py`
+- Visit the dev testing sandbox at: http://localhost:5000
+
+3. **Start the frontend**
+
+- Open a new terminal tab or window
+- Navigate to the frontend folder:
+  `cd frontend`
+- Install dependencies:
+  `npm i`
+- Start the dev server:
+  `npm run dev`
+- View the frontend at: http://localhost:5173
+
+---
+
+### Future Plans
+
+- Add support for multiple frequency mapping algorithms
+
+- Add keyboard/sampler-style playback interface
+
+- Support additional spectral databases
