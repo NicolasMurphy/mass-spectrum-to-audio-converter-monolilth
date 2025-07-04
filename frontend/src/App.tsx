@@ -61,9 +61,9 @@ function App() {
   const downloadName = `${compoundName}-${accession}.wav`;
 
   return (
-    <div data-theme="corporate" className="hero min-h-screen bg-base-200">
-      <div className="hero-content flex-col w-full max-w-xl">
-        <div className="card bg-neutral-content w-full">
+    <div data-theme="corporate" className="min-h-screen bg-base-200">
+      <div className="justify-items-center pt-8 flex-col w-full px-4">
+        <div className="card bg-neutral-content w-full max-w-md">
           <div className="card-body">
             <h1 className="text-3xl font-bold text-center mb-2">
               Mass Spectrum to Audio Converter
@@ -96,12 +96,6 @@ function App() {
                 value={sampleRate}
                 onChange={(e) => setSampleRate(e.target.value)}
               />
-              <label className="label">
-                <span className="label-text-alt text-xs text-gray-500">
-                  Higher sample rates retain higher fidelity if you plan to
-                  pitch-shift or time-stretch the audio.
-                </span>
-              </label>
             </div>
 
             <button
