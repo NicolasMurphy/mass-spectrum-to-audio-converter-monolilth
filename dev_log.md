@@ -1,3 +1,23 @@
+### [2025-07-04] Implement Keyboard
+
+- **Goals:**
+
+  - Update `README.md`
+  - Add a basic playable keyboard to the frontend using `react-piano` and `Tone.js`
+
+- **Notes:**
+
+  - Kept the scope minimal: the goal is to give users a quick "feel" for the generated audio before downloading and using it in their own sampler setup
+  - Applied a short fade-in and fade-out to prevent audio clicks
+  - Reduced playback volume to avoid clipping/distortion from polyphony
+  - Scaled the keyboard to ensure responsive design on mobile
+
+- **Next Steps:**
+
+  - Add support for multiple frequency mapping algorithms (e.g., logarithmic, inverse)
+  - Integrate additional spectral databases beyond MassBank
+  - Develop a searchable database of recently generated samples
+
 ### [2025-07-03] Implement offset & duration
 
 - **Goals:**
@@ -20,6 +40,7 @@
   - Decided to skip threshold implementation for now
 
 - **Next Steps:**
+
   - consider displaying warning to user if frequencies below 0hz are detected?
 
 ### [2025-07-02] Sample Rate Support & Endpoint Refactor
@@ -37,6 +58,7 @@
   - Observed that deploying frontend and backend can cause temporary breakage
 
 - **Next Steps:**
+
   - Add support for `duration`, `threshold`, `frequency equation`
 
 ### [2025-07-01] Create and Deploy React Frontend
@@ -53,6 +75,7 @@
   - Separate deployments by folder (frontend/ to Vercel, backend/ to Render)
 
 - **Next Steps:**
+
   - Add sliders or controls for adjusting sample rate, duration, threshold, frequency equation.
   - Search by accession
   - Fallback support?
@@ -73,6 +96,7 @@
   - Ended up needing to manually grab the SSL cert from MassBank, put the cert in /certs
 
 - **Next Steps:**
+
   - Add sliders or controls for adjusting sample rate, duration, threshold, frequency equation.
   - Search by accession
   - Fallback support?
@@ -101,6 +125,7 @@
   - Removed unused dependency: `beautifulsoup4`
 
 - **Next Steps:**
+
   - Deploy on Render for live access and testing
   - Make accession in frontend a hyperlink to the corresponding MassBank record
   - Add sliders or controls for adjusting sample rate, duration, threshold, frequency equation.
@@ -126,6 +151,7 @@
   - Plan is to prioritize MassBank moving forward due to performance and consistency
 
 - **Next Steps:**
+
   - Integrate MassBank fetcher with `converter.py` for end-to-end audio generation
   - Begin Flask app: route for user input → `.wav` response
   - Optionally revisit MoNA or PubChem later for supplemental data
