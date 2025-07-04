@@ -3,18 +3,21 @@
 - **Goals:**
 
   - Add `offset` parameter to backend
+  - Implement offset input in frontend
   - Switch to path-based routing for algorithm: `/<database>/<algorithm>`
-  - Display before and after of all m/z and intensity values for offset in debugger
+  - Ensure responsive design for frontend
+  - Skip m/z values that result in frequencies ≤ 0
 
 - **Notes:**
 
-  - For the `offset` in def `mz_to_frequency` - need to change this to be offset by a single value for simplicity (+2000-3000 seems reasonable).
+  - For the `offset` in def `mz_to_frequency` - need to change this to be offset by a single value for simplicity (+2000-3000 seems reasonable). Ended up settling on +300 for default.
   - Need to consider negative offsets causing frequencies below 0hz - seems like this will cause the sine wave to flip in phase. Consider adding a `if freq <= 0: continue `in def `generate_sine_wave`
   - Create `/linear/` path for the API, rename `mz_to_frequency` to `mz_to_frequency_linear`
   - Considered a query param for algorithm, but used a path instead since the algorithm defines the resource
+  - Renamed html debugger to dev testing sandbox, not a full debugger, since it doesn't reflect internal state or allow inspection of transformed data
 
 - **Next Steps:**
-  -
+  - Add `duration` and `threshold` parameters to backend
 
 ### [2025-07-02] Sample Rate Support & Endpoint Refactor
 

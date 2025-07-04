@@ -25,14 +25,18 @@ def generate_combined_wav_bytes(spectrum_data, sample_rate=96000, offset=300):
     # traceback.print_stack()
     t = np.linspace(0, DURATION, int(sample_rate * DURATION), False)
     combined_wave = np.zeros_like(t)
-
+    # skipped = 0
     for mz, intensity in spectrum_data:
         freq = mz_to_frequency_linear(mz, offset=offset)
+        if freq <= 0:
+            # skipped += 1
+            continue
         sine_wave = generate_sine_wave(
             freq, intensity, duration=DURATION, sample_rate=sample_rate
         )
 
         combined_wave += sine_wave
+    # print(f"Skipped {skipped} frequencies below 0 Hz")
 
     combined_wave = combined_wave / np.max(np.abs(combined_wave))
     combined_wave = np.int16(combined_wave * np.iinfo(np.int16).max)

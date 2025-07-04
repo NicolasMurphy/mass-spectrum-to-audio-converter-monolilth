@@ -22,12 +22,8 @@ def serve_frontend():
 @app.route("/massbank/linear", methods=["GET"])
 def generate_audio():
     compound = request.args.get("compound")
-    sample_rate = (
-        request.args.get("sample_rate", type=int, default=96000)
-    )
-    offset = request.args.get(
-        "offset", type=float, default=300
-    )
+    sample_rate = request.args.get("sample_rate", type=int, default=96000)
+    offset = request.args.get("offset", type=float, default=300)
 
     if not 3500 <= sample_rate <= 192000:
         return {"error": "Sample rate must be between 3500 and 192000"}, 400
@@ -37,6 +33,17 @@ def generate_audio():
 
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
+
+        # see before and after values
+        # print("\n=== Original Spectrum ===")
+        # for mz, intensity in spectrum:
+        #     print(f"m/z: {mz:.2f}, intensity: {intensity:.2f}")
+
+        # print("\n=== Adjusted Spectrum ===")
+        # for mz, intensity in spectrum:
+        #     freq = mz + offset
+        #     print(f"freq: {freq:.2f}, intensity: {intensity:.2f}")
+
         wav_buffer = generate_combined_wav_bytes(
             spectrum, sample_rate=sample_rate, offset=offset
         )
