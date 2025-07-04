@@ -88,10 +88,11 @@ function App() {
             </h1>
 
             <div className="form-control mb-4">
-              <label className="label">
+              <label className="label" htmlFor="compoundInput">
                 <span className="label-text font-semibold">Compound Name</span>
               </label>
               <input
+                id="compoundInput"
                 type="text"
                 placeholder="e.g. biotin"
                 className="input input-bordered w-full"
@@ -102,10 +103,11 @@ function App() {
             </div>
 
             <div className="form-control mb-4">
-              <label className="label">
+              <label className="label" htmlFor="offsetInput">
                 <span className="label-text font-semibold">Offset (m/z)</span>
               </label>
               <input
+                id="offsetInput"
                 type="number"
                 placeholder="e.g. 300"
                 className="input input-bordered w-full"
@@ -118,10 +120,11 @@ function App() {
             </div>
 
             <div className="form-control mb-4">
-              <label className="label">
+              <label className="label" htmlFor="durationInput">
                 <span className="label-text font-semibold">Duration</span>
               </label>
               <input
+                id="durationInput"
                 type="number"
                 placeholder="e.g. 5"
                 className="input input-bordered w-full"
@@ -131,12 +134,13 @@ function App() {
             </div>
 
             <div className="form-control mb-4">
-              <label className="label">
+              <label className="label" htmlFor="sampleRateInput">
                 <span className="label-text font-semibold">
                   Sample Rate (Hz)
                 </span>
               </label>
               <input
+                id="sampleRateInput"
                 type="number"
                 placeholder="e.g. 96000"
                 className="input input-bordered w-full"

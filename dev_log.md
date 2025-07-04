@@ -20,7 +20,7 @@
   - Decided to skip threshold implementation for now
 
 - **Next Steps:**
-  - tbd
+  - consider displaying warning to user if frequencies below 0hz are detected?
 
 ### [2025-07-02] Sample Rate Support & Endpoint Refactor
 
