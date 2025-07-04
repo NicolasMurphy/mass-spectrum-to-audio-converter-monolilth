@@ -26,20 +26,28 @@
       placeholder="e.g. biotin"
     /><br /><br />
 
-    <label for="sampleRateInput">Sample Rate (Hz)</label><br />
-    <input
-      type="number"
-      id="sampleRateInput"
-      placeholder="e.g. 96000"
-      value="96000"
-    /><br /><br />
-
     <label for="offsetInput">Offset (m/z)</label><br />
     <input
       type="number"
       id="offsetInput"
       placeholder="e.g. 300"
       value="300"
+    /><br /><br />
+
+    <label for="durationInput">Duration</label><br />
+    <input
+      type="number"
+      id="durationInput"
+      placeholder="e.g. 5"
+      value="5"
+    /><br /><br />
+
+    <label for="sampleRateInput">Sample Rate (Hz)</label><br />
+    <input
+      type="number"
+      id="sampleRateInput"
+      placeholder="e.g. 96000"
+      value="96000"
     /><br /><br />
 
     <button onclick="fetchAudio()">Generate Audio</button>
@@ -54,10 +62,11 @@
     <script>
       async function fetchAudio() {
         const compound = document.getElementById("compoundInput").value.trim();
+        const offset = document.getElementById("offsetInput").value.trim();
+        const duration = document.getElementById("durationInput").value.trim();
         const sampleRate = document
           .getElementById("sampleRateInput")
           .value.trim();
-        const offset = document.getElementById("offsetInput").value.trim();
 
         const status = document.getElementById("status");
         const metaInfo = document.getElementById("metaInfo");
@@ -80,7 +89,7 @@
             .value.trim();
           const queryUrl = `/massbank/linear?compound=${encodeURIComponent(
             compound
-          )}&sample_rate=${sampleRate}&offset=${offset}`;
+          )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`;
           document.getElementById("rawUrl").textContent = queryUrl;
 
           const response = await fetch(queryUrl);

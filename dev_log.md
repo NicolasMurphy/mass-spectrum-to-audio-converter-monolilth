@@ -1,4 +1,4 @@
-### [2025-07-03] Implement offset
+### [2025-07-03] Implement offset & duration
 
 - **Goals:**
 
@@ -7,6 +7,8 @@
   - Switch to path-based routing for algorithm: `/<database>/<algorithm>`
   - Ensure responsive design for frontend
   - Skip m/z values that result in frequencies ≤ 0
+  - Add `duration` parameter to backend
+  - Implement duration input in frontend
 
 - **Notes:**
 
@@ -15,9 +17,10 @@
   - Create `/linear/` path for the API, rename `mz_to_frequency` to `mz_to_frequency_linear`
   - Considered a query param for algorithm, but used a path instead since the algorithm defines the resource
   - Renamed html debugger to dev testing sandbox, not a full debugger, since it doesn't reflect internal state or allow inspection of transformed data
+  - Decided to skip threshold implementation for now
 
 - **Next Steps:**
-  - Add `duration` and `threshold` parameters to backend
+  - tbd
 
 ### [2025-07-02] Sample Rate Support & Endpoint Refactor
 

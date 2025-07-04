@@ -22,14 +22,24 @@ def serve_frontend():
 @app.route("/massbank/linear", methods=["GET"])
 def generate_audio():
     compound = request.args.get("compound")
-    sample_rate = request.args.get("sample_rate", type=int, default=96000)
     offset = request.args.get("offset", type=float, default=300)
+    sample_rate = request.args.get("sample_rate", type=int, default=96000)
+    duration = request.args.get("duration", type=float, default=5.0)
+
+    if not compound:
+        return {"error": "No compound provided"}, 400
+
+    if not (0.01 <= duration <= 10):
+        return {"error": "Duration must be between 0.01 and 10 seconds."}, 400
 
     if not 3500 <= sample_rate <= 192000:
         return {"error": "Sample rate must be between 3500 and 192000"}, 400
 
-    if not compound:
-        return {"error": "No compound provided"}, 400
+    raw_sr = request.args.get("sample_rate")
+    try:
+        sample_rate = int(raw_sr)
+    except (ValueError, TypeError):
+        return {"error": "Invalid sample rate. Must be an integer."}, 400
 
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
@@ -45,7 +55,10 @@ def generate_audio():
         #     print(f"freq: {freq:.2f}, intensity: {intensity:.2f}")
 
         wav_buffer = generate_combined_wav_bytes(
-            spectrum, sample_rate=sample_rate, offset=offset
+            spectrum,
+            offset=offset,
+            duration=duration,
+            sample_rate=sample_rate,
         )
         response = send_file(
             wav_buffer,
