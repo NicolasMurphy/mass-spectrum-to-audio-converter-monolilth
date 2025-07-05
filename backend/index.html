@@ -26,10 +26,44 @@
       placeholder="e.g. biotin"
     /><br /><br />
 
-    <label for="offsetInput">Offset (m/z)</label><br />
+    <label for="algorithmInput">Select algorithm:</label><br />
+    <input
+      type="radio"
+      id="linearInput"
+      name="algorithm"
+      value="linear"
+      checked
+    />
+    <label for="linearInput">Linear</label><br />
+    <input
+      type="radio"
+      id="logarithmicInput"
+      name="algorithm"
+      value="logarithmic"
+    />
+    <label for="logarithmic">Logarithmic</label>
+    <br /><br />
+
+    <label for="offsetInput">Offset (m/z) (linear only)</label><br />
     <input
       type="number"
       id="offsetInput"
+      placeholder="e.g. 300"
+      value="300"
+    /><br /><br />
+
+    <label for="logShiftInput">Log Shift (logarithmic only)</label><br />
+    <input
+      type="number"
+      id="logShiftInput"
+      placeholder="e.g. 1"
+      value="1"
+    /><br /><br />
+
+    <label for="scaleInput">Scale (logarithmic only)</label><br />
+    <input
+      type="number"
+      id="scaleInput"
       placeholder="e.g. 300"
       value="300"
     /><br /><br />
@@ -50,24 +84,6 @@
       value="96000"
     /><br /><br />
 
-    <label for="algorithmInput">Select algorithm:</label><br />
-    <input
-      type="radio"
-      id="linearInput"
-      name="algorithm"
-      value="linear"
-      checked
-    />
-    <label for="linearInput">Linear</label><br />
-    <input
-      type="radio"
-      id="logarithmicInput"
-      name="algorithm"
-      value="logarithmic"
-    />
-    <label for="logarithmic">Logarithmic</label>
-    <br /><br />
-
     <button onclick="fetchAudio()">Generate Audio</button>
 
     <p id="status"></p>
@@ -80,15 +96,17 @@
     <script>
       async function fetchAudio() {
         const compound = document.getElementById("compoundInput").value.trim();
-        const offset = document.getElementById("offsetInput").value.trim();
-        const duration = document.getElementById("durationInput").value.trim();
-        const sampleRate = document
-          .getElementById("sampleRateInput")
-          .value.trim();
         const algorithmInput = document.querySelector(
           'input[name="algorithm"]:checked'
         );
         const algorithm = algorithmInput ? algorithmInput.value : "linear";
+        const offset = document.getElementById("offsetInput").value.trim();
+        const logShift = document.getElementById("logShiftInput").value.trim();
+        const scale = document.getElementById("scaleInput").value.trim();
+        const duration = document.getElementById("durationInput").value.trim();
+        const sampleRate = document
+          .getElementById("sampleRateInput")
+          .value.trim();
 
         const status = document.getElementById("status");
         const metaInfo = document.getElementById("metaInfo");
@@ -106,9 +124,19 @@
         metaInfo.style.display = "none";
 
         try {
-          const queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
-            compound
-          )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`;
+          // not the most DRY approach, but keeps ordering consistent
+          // database -> algorithm -> compound -> offset -> log shift -> scale -> duration -> sample rate
+          let queryUrl = ``;
+          if (algorithm === "linear") {
+            queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
+              compound
+            )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`;
+          } else if (algorithm === "logarithmic") {
+            queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
+              compound
+            )}&logShift=${logShift}&scale=${scale}&duration=${duration}&sample_rate=${sampleRate}`;
+          }
+
           document.getElementById("rawUrl").textContent = queryUrl;
 
           const response = await fetch(queryUrl);

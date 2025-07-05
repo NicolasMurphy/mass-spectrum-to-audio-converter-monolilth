@@ -13,6 +13,7 @@
   - Reduced playback volume to avoid clipping/distortion from polyphony
   - Scaled the keyboard to ensure responsive design on mobile
   - Consider bit depth selector `scipy.io.wavfile.write()` only supports 8, 16, or 32
+  - logarithmic algorithm hard to control, unsure how much more time I want to spend on it, difficult to get musical results out of
 
 - **Next Steps:**
 

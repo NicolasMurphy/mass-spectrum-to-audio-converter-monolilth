@@ -16,16 +16,22 @@ def generate_sine_wave(freq, intensity, duration=5.0, sample_rate=96000):
     return wave
 
 
-def mz_to_frequency_linear(mz_value, offset=300):
-    return mz_value + offset
+def mz_to_frequency_linear(mz, offset=300):
+    return mz + offset
 
 
-def mz_to_frequency_logarithmic(mz):
-    return math.log10(mz + 1) * 200  # Example mapping
+def mz_to_frequency_logarithmic(mz, logShift=1, scale=300, logOffset=-2000):
+    return (math.log2(mz + logShift) * scale) + logOffset
 
 
 def generate_combined_wav_bytes(
-    spectrum_data, offset=300, duration=5.0, sample_rate=96000, algorithm="linear"
+    spectrum_data,
+    offset=300,
+    logShift=1,
+    scale=300,
+    duration=5.0,
+    sample_rate=96000,
+    algorithm="linear",
 ):
     # print(f"Generating audio with sample_rate={sample_rate}")
     # traceback.print_stack()
@@ -37,7 +43,7 @@ def generate_combined_wav_bytes(
         if algorithm == "linear":
             freq = mz_to_frequency_linear(mz, offset=offset)
         elif algorithm == "logarithmic":
-            freq = mz_to_frequency_logarithmic(mz)
+            freq = mz_to_frequency_logarithmic(mz, logShift=logShift, scale=scale)
         else:
             raise ValueError(f"Unknown algorithm: {algorithm}")
 

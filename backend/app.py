@@ -25,6 +25,8 @@ def generate_audio(algorithm):
         return {"error": f"Unsupported algorithm '{algorithm}'"}, 400
     compound = request.args.get("compound")
     offset = request.args.get("offset", type=float, default=300)
+    logShift = request.args.get("logShift", type=float, default=1)
+    scale = request.args.get("scale", type=float, default=300)
     sample_rate = request.args.get("sample_rate", type=int, default=96000)
     duration = request.args.get("duration", type=float, default=5.0)
 
@@ -59,6 +61,8 @@ def generate_audio(algorithm):
         wav_buffer = generate_combined_wav_bytes(
             spectrum,
             offset=offset,
+            logShift=logShift,
+            scale=scale,
             duration=duration,
             sample_rate=sample_rate,
             algorithm=algorithm,
