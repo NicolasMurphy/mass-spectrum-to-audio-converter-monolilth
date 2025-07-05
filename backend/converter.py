@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.io.wavfile import write
 import io
+import math
 
 # import traceback
 
@@ -19,14 +20,27 @@ def mz_to_frequency_linear(mz_value, offset=300):
     return mz_value + offset
 
 
-def generate_combined_wav_bytes(spectrum_data, offset=300, duration=5.0, sample_rate=96000):
+def mz_to_frequency_logarithmic(mz):
+    return math.log10(mz + 1) * 200  # Example mapping
+
+
+def generate_combined_wav_bytes(
+    spectrum_data, offset=300, duration=5.0, sample_rate=96000, algorithm="linear"
+):
     # print(f"Generating audio with sample_rate={sample_rate}")
     # traceback.print_stack()
     t = np.linspace(0, duration, int(sample_rate * duration), False)
     combined_wave = np.zeros_like(t)
     # skipped = 0
     for mz, intensity in spectrum_data:
-        freq = mz_to_frequency_linear(mz, offset=offset)
+
+        if algorithm == "linear":
+            freq = mz_to_frequency_linear(mz, offset=offset)
+        elif algorithm == "logarithmic":
+            freq = mz_to_frequency_logarithmic(mz)
+        else:
+            raise ValueError(f"Unknown algorithm: {algorithm}")
+
         if freq <= 0:
             # skipped += 1
             continue
@@ -37,6 +51,7 @@ def generate_combined_wav_bytes(spectrum_data, offset=300, duration=5.0, sample_
         combined_wave += sine_wave
     # print(f"Skipped {skipped} frequencies below 0 Hz")
 
+    # Normalize and convert to 16-bit PCM
     combined_wave = combined_wave / np.max(np.abs(combined_wave))
     combined_wave = np.int16(combined_wave * np.iinfo(np.int16).max)
 

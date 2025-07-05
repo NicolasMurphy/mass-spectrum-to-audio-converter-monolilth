@@ -4,6 +4,7 @@
 
   - Update `README.md`
   - Add a basic playable keyboard to the frontend using `react-piano` and `Tone.js`
+  - Implement `mz_to_frequency_logarithmic` in backend
 
 - **Notes:**
 
@@ -11,6 +12,7 @@
   - Applied a short fade-in and fade-out to prevent audio clicks
   - Reduced playback volume to avoid clipping/distortion from polyphony
   - Scaled the keyboard to ensure responsive design on mobile
+  - Consider bit depth selector `scipy.io.wavfile.write()` only supports 8, 16, or 32
 
 - **Next Steps:**
 

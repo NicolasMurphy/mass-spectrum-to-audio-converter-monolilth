@@ -19,8 +19,10 @@ def serve_frontend():
     return send_from_directory(".", "index.html")
 
 
-@app.route("/massbank/linear", methods=["GET"])
-def generate_audio():
+@app.route("/massbank/<algorithm>", methods=["GET"])
+def generate_audio(algorithm):
+    if algorithm not in ["linear", "logarithmic"]:
+        return {"error": f"Unsupported algorithm '{algorithm}'"}, 400
     compound = request.args.get("compound")
     offset = request.args.get("offset", type=float, default=300)
     sample_rate = request.args.get("sample_rate", type=int, default=96000)
@@ -59,6 +61,7 @@ def generate_audio():
             offset=offset,
             duration=duration,
             sample_rate=sample_rate,
+            algorithm=algorithm,
         )
         response = send_file(
             wav_buffer,

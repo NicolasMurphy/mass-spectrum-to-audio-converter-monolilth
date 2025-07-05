@@ -50,6 +50,24 @@
       value="96000"
     /><br /><br />
 
+    <label for="algorithmInput">Select algorithm:</label><br />
+    <input
+      type="radio"
+      id="linearInput"
+      name="algorithm"
+      value="linear"
+      checked
+    />
+    <label for="linearInput">Linear</label><br />
+    <input
+      type="radio"
+      id="logarithmicInput"
+      name="algorithm"
+      value="logarithmic"
+    />
+    <label for="logarithmic">Logarithmic</label>
+    <br /><br />
+
     <button onclick="fetchAudio()">Generate Audio</button>
 
     <p id="status"></p>
@@ -67,6 +85,10 @@
         const sampleRate = document
           .getElementById("sampleRateInput")
           .value.trim();
+        const algorithmInput = document.querySelector(
+          'input[name="algorithm"]:checked'
+        );
+        const algorithm = algorithmInput ? algorithmInput.value : "linear";
 
         const status = document.getElementById("status");
         const metaInfo = document.getElementById("metaInfo");
@@ -84,10 +106,7 @@
         metaInfo.style.display = "none";
 
         try {
-          const sampleRate = document
-            .getElementById("sampleRateInput")
-            .value.trim();
-          const queryUrl = `/massbank/linear?compound=${encodeURIComponent(
+          const queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
             compound
           )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`;
           document.getElementById("rawUrl").textContent = queryUrl;
