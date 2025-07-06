@@ -31,3 +31,32 @@ def log_search_if_new(compound, accession):
 
     except Exception as e:
         print(f"Failed to log search: {e}")
+
+
+def get_search_history(limit=10):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute(
+            """
+            SELECT accession, compound, created_at
+            FROM search_history
+            ORDER BY created_at DESC
+            LIMIT %s
+            """,
+            (limit,),
+        )
+
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+
+        return [
+            {"accession": row[0], "compound": row[1], "created_at": row[2].isoformat()}
+            for row in rows
+        ]
+
+    except Exception as e:
+        print(f"Failed to fetch search history: {e}")
+        return []
