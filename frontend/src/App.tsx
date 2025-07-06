@@ -145,56 +145,62 @@ function App() {
               </div>
             </fieldset>
 
-            <div className="form-control mb-4">
-              <label className="label" htmlFor="offsetInput">
-                <span className="label-text font-semibold">
-                  Offset (m/z) (Linear only)
-                </span>
-              </label>
-              <input
-                id="offsetInput"
-                type="number"
-                placeholder="e.g. 300"
-                className="input input-bordered w-full"
-                value={offset}
-                onChange={(e) => setOffset(+e.target.value)} // + is shorthand for Number()
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Shifts all m/z values before pitch conversion.
-              </p>
-            </div>
+            {algorithm === "linear" && (
+              <div className="form-control mb-4">
+                <label className="label" htmlFor="offsetInput">
+                  <span className="label-text font-semibold">
+                    Offset (m/z) (Linear only)
+                  </span>
+                </label>
+                <input
+                  id="offsetInput"
+                  type="number"
+                  placeholder="e.g. 300"
+                  className="input input-bordered w-full"
+                  value={offset}
+                  onChange={(e) => setOffset(+e.target.value)} // + is shorthand for Number()
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Shifts all m/z values before pitch conversion.
+                </p>
+              </div>
+            )}
 
-            <div className="form-control mb-4">
-              <label className="label" htmlFor="scaleInput">
-                <span className="label-text font-semibold">
-                  Scale (Inverse only)
-                </span>
-              </label>
-              <input
-                id="scaleInput"
-                type="number"
-                placeholder="e.g. 100000"
-                className="input input-bordered w-full"
-                value={scale}
-                onChange={(e) => setScale(+e.target.value)}
-              />
-            </div>
+            {algorithm === "inverse" && (
+              <>
+                <div className="form-control mb-4">
+                  <label className="label" htmlFor="scaleInput">
+                    <span className="label-text font-semibold">
+                      Scale (Inverse only)
+                    </span>
+                  </label>
+                  <input
+                    id="scaleInput"
+                    type="number"
+                    placeholder="e.g. 100000"
+                    className="input input-bordered w-full"
+                    value={scale}
+                    onChange={(e) => setScale(+e.target.value)}
+                  />
+                </div>
 
-            <div className="form-control mb-4">
-              <label className="label" htmlFor="shiftInput">
-                <span className="label-text font-semibold">
-                  Shift (Inverse only)
-                </span>
-              </label>
-              <input
-                id="shiftInput"
-                type="number"
-                placeholder="e.g. 1"
-                className="input input-bordered w-full"
-                value={shift}
-                onChange={(e) => setShift(+e.target.value)}
-              />
-            </div>
+                <div className="form-control mb-4">
+                  <label className="label" htmlFor="shiftInput">
+                    <span className="label-text font-semibold">
+                      Shift (Inverse only)
+                    </span>
+                  </label>
+                  <input
+                    id="shiftInput"
+                    type="number"
+                    placeholder="e.g. 1"
+                    className="input input-bordered w-full"
+                    value={shift}
+                    onChange={(e) => setShift(+e.target.value)}
+                  />
+                </div>
+              </>
+            )}
 
             <div className="form-control mb-4">
               <label className="label" htmlFor="durationInput">
