@@ -134,11 +134,6 @@
         const audio = document.getElementById("audioPlayer");
         const link = document.getElementById("downloadLink");
 
-        if (!compound) {
-          status.textContent = "Please enter a compound name.";
-          return;
-        }
-
         status.textContent = "Fetching audio...";
         audio.style.display = "none";
         link.style.display = "none";
@@ -168,7 +163,7 @@
 
           if (!response.ok) {
             const error = await response.json();
-            status.textContent = `Error: ${error.error}`;
+            status.textContent = `Error ${response.status}: ${error.error}`;
             return;
           }
 
