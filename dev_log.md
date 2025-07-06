@@ -12,6 +12,8 @@
   - Keyboard plays when entering compound, not too concerning, but ideally should not be doing that. Not an immediate bug to address, but making note of it.
   - Consider help text for explaining what m/z is - end user may not understand what is happening
   - Consider using a different library for keyboard
+  - Switched numeric inputs from Number state to string state for smoother typing (e.g. -, empty)
+  - Used `ResizeObserver` to clamp and center piano width responsively
 
 - **Next Steps:**
 
