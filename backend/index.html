@@ -112,6 +112,9 @@
     <p>query URL:</p>
     <p id="rawUrl" style="font-family: monospace; color: #555"></p>
 
+    <h2>Recent Searches</h2>
+    <ul id="history-list"></ul>
+
     <script>
       async function fetchAudio() {
         const compound = document.getElementById("compoundInput").value.trim();
@@ -202,6 +205,27 @@
             fetchAudio();
           }
         });
+
+      async function loadHistory() {
+        try {
+          const res = await fetch("/history");
+          const data = await res.json();
+
+          const list = document.getElementById("history-list");
+          list.innerHTML = "";
+
+          data.history.forEach((entry) => {
+            const date = new Date(entry.created_at).toLocaleString();
+            const li = document.createElement("li");
+            li.textContent = `${entry.compound} - (${entry.accession}) - ${date}`;
+            list.appendChild(li);
+          });
+        } catch (err) {
+          console.error("Failed to load history:", err);
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", loadHistory);
     </script>
   </body>
 </html>

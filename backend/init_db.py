@@ -15,14 +15,17 @@ cur = conn.cursor()
 
 # Create the table if it doesn't exist
 cur.execute(
+    #     """
+    # DROP TABLE IF EXISTS search_history;
+    # """
     """
-CREATE TABLE IF NOT EXISTS search_history (
-    id SERIAL PRIMARY KEY,
-    accession TEXT NOT NULL,
-    compound TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-"""
+    CREATE TABLE IF NOT EXISTS search_history (
+        id SERIAL PRIMARY KEY,
+        accession TEXT NOT NULL,
+        compound TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    );
+    """
 )
 
 conn.commit()
