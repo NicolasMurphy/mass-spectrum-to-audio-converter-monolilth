@@ -4,7 +4,8 @@
 
   - Fix Keyboard responsive design
   - Fix UX issue with entering negative numbers
-  - Create `search_history` database
+  - Create Postgres database on Render
+  - Create `search_history` table in database
   - Log searches to database
   - Create query to get searches from database
   - Create /history API endpoint
@@ -24,6 +25,7 @@
 
 - **Next Steps:**
 
+  - Find more permanent solution for Massbank Cert
   - Displaying all m/z values, and hz values after transformation.
   - Experiment further with algorithm options
   - Integrate additional spectral databases beyond MassBank
