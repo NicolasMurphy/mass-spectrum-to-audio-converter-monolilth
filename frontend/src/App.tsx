@@ -108,7 +108,7 @@ function App() {
                 id="compoundInput"
                 type="text"
                 placeholder="e.g. biotin"
-                className="input input-bordered w-full"
+                className="input input-bordered w-full placeholder-gray-400"
                 value={compound}
                 onChange={(e) => setCompound(e.target.value)}
                 onKeyDown={handleKeyDown}
