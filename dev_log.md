@@ -4,16 +4,18 @@
 
   - Implement `inverse` algorithm in backend
   - Implement rate limiting by IP
+  - Implement `inverse` algorithm in frontend
+  - Display fields dynamically based on algorithm selected
 
 - **Notes:**
 
-  - Commented out all code related to the `logarithmic` algorithm - not as applicable as I thought it would be. May revisit later
-  - Keyboard still not centered on all mobile devices. Difficult to troubleshoot since the Toggle Device Toolbar is not giving an accurate depiction. Need to come up with a better plan to fix
+  - Commented out all code related to the `logarithmic` algorithm — not as applicable as initially expected; may revisit later
+  - Keyboard is still not centered on all mobile devices. Difficult to troubleshoot since Chrome's Toggle Device Toolbar is not rendering accurately; need a better strategy for debugging mobile layout
 
 - **Next Steps:**
 
   - Fix Keyboard responsive design
-  - Finish out algorithm options
+  - Experiment further with algorithm options
   - Integrate additional spectral databases beyond MassBank
   - Develop a searchable database of recently generated samples
 
