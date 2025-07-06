@@ -2,7 +2,8 @@
 
 - **Goals:**
 
-  - Implement `inverse` algorithm
+  - Implement `inverse` algorithm in backend
+  - Implement rate limiting by IP
 
 - **Notes:**
 

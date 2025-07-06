@@ -2,6 +2,23 @@ from flask import Flask, request, send_file, send_from_directory
 from converter import generate_combined_wav_bytes
 from massbank import get_massbank_peaks
 from flask_cors import CORS
+import time
+
+RATE_LIMIT = 10
+WINDOW = 60
+ip_buckets = {}
+
+
+def is_rate_limited(ip):
+    now = time.time()
+    if ip not in ip_buckets:
+        ip_buckets[ip] = []
+    ip_buckets[ip] = [t for t in ip_buckets[ip] if now - t < WINDOW]
+    if len(ip_buckets[ip]) >= RATE_LIMIT:
+        return True
+    ip_buckets[ip].append(now)
+    return False
+
 
 app = Flask(__name__)
 CORS(
@@ -21,6 +38,16 @@ def serve_frontend():
 
 @app.route("/massbank/<algorithm>", methods=["GET"])
 def generate_audio(algorithm):
+
+    ip = (
+        request.headers.get("X-Forwarded-For", request.remote_addr)
+        .split(",")[0]
+        .strip()
+    )
+    print(f"Client IP: {ip}")
+    if is_rate_limited(ip):
+        return {"error": "Rate limit exceeded. Try again later."}, 429
+
     if algorithm not in ["linear", "inverse"]:
         return {"error": f"Unsupported algorithm '{algorithm}'"}, 400
     compound = request.args.get("compound")
