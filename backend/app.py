@@ -3,8 +3,8 @@ from converter import generate_combined_wav_bytes
 from massbank import get_massbank_peaks
 from flask_cors import CORS
 import time
-from db import log_search_if_new
-from db import get_search_history
+from db.queries import log_search_if_new
+from db.queries import get_search_history
 
 
 RATE_LIMIT = 10
