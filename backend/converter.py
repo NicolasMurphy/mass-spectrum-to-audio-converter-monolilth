@@ -20,15 +20,21 @@ def mz_to_frequency_linear(mz, offset=300):
     return mz + offset
 
 
-def mz_to_frequency_logarithmic(mz, logShift=1, scale=300, logOffset=-2000):
-    return (math.log2(mz + logShift) * scale) + logOffset
+# def mz_to_frequency_logarithmic(mz, logShift=1, scale=300, logOffset=-2000):
+#     return (math.log2(mz + logShift) * scale) + logOffset
+
+
+def mz_to_frequency_inverse(mz, scale=100000, shift=1):
+    return scale / (mz + shift)
 
 
 def generate_combined_wav_bytes(
     spectrum_data,
     offset=300,
-    logShift=1,
-    scale=300,
+    # logShift=1,
+    # scale=300,
+    scale=100000,
+    shift=1,
     duration=5.0,
     sample_rate=96000,
     algorithm="linear",
@@ -42,8 +48,10 @@ def generate_combined_wav_bytes(
 
         if algorithm == "linear":
             freq = mz_to_frequency_linear(mz, offset=offset)
-        elif algorithm == "logarithmic":
-            freq = mz_to_frequency_logarithmic(mz, logShift=logShift, scale=scale)
+        # elif algorithm == "logarithmic":
+        #     freq = mz_to_frequency_logarithmic(mz, logShift=logShift, scale=scale)
+        elif algorithm == "inverse":
+            freq = mz_to_frequency_inverse(mz, scale=scale, shift=shift)
         else:
             raise ValueError(f"Unknown algorithm: {algorithm}")
 

@@ -1,3 +1,21 @@
+### [2025-07-05] Implement `inverse` algorithm
+
+- **Goals:**
+
+  - Implement `inverse` algorithm
+
+- **Notes:**
+
+  - Commented out all code related to the `logarithmic` algorithm - not as applicable as I thought it would be. May revisit later
+  - Keyboard still not centered on all mobile devices. Difficult to troubleshoot since the Toggle Device Toolbar is not giving an accurate depiction. Need to come up with a better plan to fix
+
+- **Next Steps:**
+
+  - Fix Keyboard responsive design
+  - Finish out algorithm options
+  - Integrate additional spectral databases beyond MassBank
+  - Develop a searchable database of recently generated samples
+
 ### [2025-07-04] Implement Keyboard
 
 - **Goals:**

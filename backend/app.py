@@ -21,12 +21,14 @@ def serve_frontend():
 
 @app.route("/massbank/<algorithm>", methods=["GET"])
 def generate_audio(algorithm):
-    if algorithm not in ["linear", "logarithmic"]:
+    if algorithm not in ["linear", "inverse"]:
         return {"error": f"Unsupported algorithm '{algorithm}'"}, 400
     compound = request.args.get("compound")
     offset = request.args.get("offset", type=float, default=300)
-    logShift = request.args.get("logShift", type=float, default=1)
-    scale = request.args.get("scale", type=float, default=300)
+    # logShift = request.args.get("logShift", type=float, default=1)
+    # scale = request.args.get("scale", type=float, default=300)
+    scale = request.args.get("scale", type=float, default=100000)
+    shift = request.args.get("shift", type=float, default=1)
     sample_rate = request.args.get("sample_rate", type=int, default=96000)
     duration = request.args.get("duration", type=float, default=5.0)
 
@@ -61,8 +63,10 @@ def generate_audio(algorithm):
         wav_buffer = generate_combined_wav_bytes(
             spectrum,
             offset=offset,
-            logShift=logShift,
+            # logShift=logShift,
+            # scale=scale,
             scale=scale,
+            shift=shift,
             duration=duration,
             sample_rate=sample_rate,
             algorithm=algorithm,
