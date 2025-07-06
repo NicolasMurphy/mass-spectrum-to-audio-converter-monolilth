@@ -5,6 +5,10 @@
   - Fix Keyboard responsive design
   - Fix UX issue with entering negative numbers
   - Create `search_history` database
+  - Log searches to database
+  - Create query to get searches from database
+  - Create /history API endpoint
+  - Display recent searches in dev testing sandbox
 
 - **Notes:**
 
@@ -15,13 +19,15 @@
   - Consider using a different library for keyboard
   - Switched numeric inputs from Number state to string state for smoother typing (e.g. -, empty)
   - Used `ResizeObserver` to clamp and center piano width responsively
+  - Settled on `id`, `accession`, `compound`, `timestamp` for `search_history` table
+  - Updated `TIMESTAMP` to `TIMESTAMPZ` to reflect accurate timezone
 
 - **Next Steps:**
 
   - Displaying all m/z values, and hz values after transformation.
   - Experiment further with algorithm options
   - Integrate additional spectral databases beyond MassBank
-  - Develop a searchable database of recently generated samples
+  - Implement recently searched in frontend
 
 ### [2025-07-05] Implement `inverse` algorithm
 
