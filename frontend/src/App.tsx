@@ -9,9 +9,12 @@ function App() {
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [compoundName, setCompoundName] = useState<string>("");
   const [accession, setAccession] = useState<string>("");
-  const [offset, setOffset] = useState<string>("300");
-  const [sampleRate, setSampleRate] = useState<string>("96000");
-  const [duration, setDuration] = useState<string>("5");
+  const [algorithm, setAlgorithm] = useState<"linear" | "inverse">("linear");
+  const [offset, setOffset] = useState<number>(300);
+  const [scale, setScale] = useState<number>(100000);
+  const [shift, setShift] = useState<number>(1);
+  const [duration, setDuration] = useState<number>(5);
+  const [sampleRate, setSampleRate] = useState<number>(96000);
 
   const handleFetch = async () => {
     if (!compound.trim()) {
@@ -19,7 +22,7 @@ function App() {
       return;
     }
 
-    const sampleRateNum = Number(sampleRate);
+    const sampleRateNum = sampleRate;
     if (
       isNaN(sampleRateNum) ||
       sampleRateNum < 3500 ||
@@ -29,7 +32,7 @@ function App() {
       return;
     }
 
-    const durationNum = Number(duration);
+    const durationNum = duration;
     if (isNaN(durationNum) || durationNum < 0.01 || durationNum > 30) {
       setStatus("Duration must be between 0.01 and 30.");
       return;
@@ -41,13 +44,22 @@ function App() {
     setAccession("");
 
     try {
+      const queryParams = new URLSearchParams({
+        compound,
+        duration: durationNum.toString(),
+        sample_rate: sampleRateNum.toString(),
+      });
+
+      if (algorithm === "linear") {
+        queryParams.append("offset", offset.toString());
+      } else if (algorithm === "inverse") {
+        queryParams.append("scale", scale.toString());
+        queryParams.append("shift", shift.toString());
+      }
+
       const response = await fetch(
-        // `http://localhost:5000/massbank/linear?compound=${encodeURIComponent(
-        //   compound
-        // )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`
-        `https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=${encodeURIComponent(
-          compound
-        )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`
+        // `http://localhost:5000/massbank/${algorithm}?${queryParams}`
+        `https://mass-spectrum-to-audio-converter.onrender.com/massbank/${algorithm}?${queryParams}`
       );
 
       if (!response.ok) {
@@ -103,9 +115,41 @@ function App() {
               />
             </div>
 
+            <fieldset className="form-control mb-4">
+              <legend className="label-text font-semibold mb-1">
+                Algorithm
+              </legend>
+              <div className="flex flex-col gap-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="algorithm"
+                    className="radio radio-primary"
+                    checked={algorithm === "linear"}
+                    onChange={() => setAlgorithm("linear")}
+                  />
+                  <span className="label-text">Linear (m/z + offset)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="algorithm"
+                    className="radio radio-primary"
+                    checked={algorithm === "inverse"}
+                    onChange={() => setAlgorithm("inverse")}
+                  />
+                  <span className="label-text">
+                    Inverse (scale / (m/z + shift))
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
             <div className="form-control mb-4">
               <label className="label" htmlFor="offsetInput">
-                <span className="label-text font-semibold">Offset (m/z)</span>
+                <span className="label-text font-semibold">
+                  Offset (m/z) (Linear only)
+                </span>
               </label>
               <input
                 id="offsetInput"
@@ -113,11 +157,43 @@ function App() {
                 placeholder="e.g. 300"
                 className="input input-bordered w-full"
                 value={offset}
-                onChange={(e) => setOffset(e.target.value)}
+                onChange={(e) => setOffset(+e.target.value)} // + is shorthand for Number()
               />
               <p className="text-xs text-gray-500 mt-1">
                 Shifts all m/z values before pitch conversion.
               </p>
+            </div>
+
+            <div className="form-control mb-4">
+              <label className="label" htmlFor="scaleInput">
+                <span className="label-text font-semibold">
+                  Scale (Inverse only)
+                </span>
+              </label>
+              <input
+                id="scaleInput"
+                type="number"
+                placeholder="e.g. 100000"
+                className="input input-bordered w-full"
+                value={scale}
+                onChange={(e) => setScale(+e.target.value)}
+              />
+            </div>
+
+            <div className="form-control mb-4">
+              <label className="label" htmlFor="shiftInput">
+                <span className="label-text font-semibold">
+                  Shift (Inverse only)
+                </span>
+              </label>
+              <input
+                id="shiftInput"
+                type="number"
+                placeholder="e.g. 1"
+                className="input input-bordered w-full"
+                value={shift}
+                onChange={(e) => setShift(+e.target.value)}
+              />
             </div>
 
             <div className="form-control mb-4">
@@ -130,7 +206,7 @@ function App() {
                 placeholder="e.g. 5"
                 className="input input-bordered w-full"
                 value={duration}
-                onChange={(e) => setDuration(e.target.value)}
+                onChange={(e) => setDuration(+e.target.value)}
               />
             </div>
 
@@ -146,7 +222,7 @@ function App() {
                 placeholder="e.g. 96000"
                 className="input input-bordered w-full"
                 value={sampleRate}
-                onChange={(e) => setSampleRate(e.target.value)}
+                onChange={(e) => setSampleRate(+e.target.value)}
                 min={3500}
                 max={192000}
               />
@@ -155,6 +231,7 @@ function App() {
             <button
               className="btn btn-primary w-full mb-4"
               onClick={handleFetch}
+              disabled={status === "Fetching audio..."}
             >
               Generate Audio
             </button>
