@@ -1,12 +1,16 @@
-### [2025-07-06] Fix Keyboard responsive design
+### [2025-07-06] Fix Keyboard responsive design & negative number UX issue
 
 - **Goals:**
 
   - Fix Keyboard responsive design
+  - Fix UX issue with entering negative numbers
 
 - **Notes:**
 
   - Have been stuck on the keyboard not centering on mobile devices. Plan is to experiment further with Responsive design mode in Firefox. Also observed some unexpected layout issues in Firefox, even at standard laptop screen sizes.
+  - Massbank cert expires Aug 15, will likely have to download a newer cert. Possible more sustainable solutions: Use Let’s Encrypt Root CA, or (back up plan) auto renew the cert (parse through a live TLS connection)
+  - Keyboard plays when entering compound, not too concerning, but ideally should not be doing that. Not an immediate bug to address, but making note of it.
+  - Consider help text for explaining what m/z is - end user may not understand what is happening
 
 - **Next Steps:**
 
