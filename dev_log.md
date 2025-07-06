@@ -1,3 +1,19 @@
+### [2025-07-06] Fix Keyboard responsive design
+
+- **Goals:**
+
+  - Fix Keyboard responsive design
+
+- **Notes:**
+
+  - Have been stuck on the keyboard not centering on mobile devices. Plan is to experiment further with Responsive design mode in Firefox. Also observed some unexpected layout issues in Firefox, even at standard laptop screen sizes.
+
+- **Next Steps:**
+
+  - Experiment further with algorithm options
+  - Integrate additional spectral databases beyond MassBank
+  - Develop a searchable database of recently generated samples
+
 ### [2025-07-05] Implement `inverse` algorithm
 
 - **Goals:**
