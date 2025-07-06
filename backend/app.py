@@ -4,6 +4,7 @@ from massbank import get_massbank_peaks
 from flask_cors import CORS
 import time
 from db import log_search_if_new
+from db import get_search_history
 
 
 RATE_LIMIT = 10
@@ -112,6 +113,16 @@ def generate_audio(algorithm):
         response.headers["X-Accession"] = accession
         return response
 
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+
+@app.route("/history", methods=["GET"])
+def history():
+    try:
+        limit = request.args.get("limit", default=10, type=int)
+        history_data = get_search_history(limit=limit)
+        return {"history": history_data}, 200
     except Exception as e:
         return {"error": str(e)}, 500
 
