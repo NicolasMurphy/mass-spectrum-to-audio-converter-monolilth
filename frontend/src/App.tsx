@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { KeyboardEvent } from "react";
 import "./App.css";
 import SamplePiano from "./SamplePiano";
-//
+
 function App() {
   const [compound, setCompound] = useState<string>("");
   const [status, setStatus] = useState<string>("");
@@ -10,11 +10,11 @@ function App() {
   const [compoundName, setCompoundName] = useState<string>("");
   const [accession, setAccession] = useState<string>("");
   const [algorithm, setAlgorithm] = useState<"linear" | "inverse">("linear");
-  const [offset, setOffset] = useState<number>(300);
-  const [scale, setScale] = useState<number>(100000);
-  const [shift, setShift] = useState<number>(1);
-  const [duration, setDuration] = useState<number>(5);
-  const [sampleRate, setSampleRate] = useState<number>(96000);
+  const [offset, setOffset] = useState<string>("300");
+  const [scale, setScale] = useState<string>("100000");
+  const [shift, setShift] = useState<string>("1");
+  const [duration, setDuration] = useState<string>("5");
+  const [sampleRate, setSampleRate] = useState<string>("96000");
 
   const handleFetch = async () => {
     if (!compound.trim()) {
@@ -22,7 +22,7 @@ function App() {
       return;
     }
 
-    const sampleRateNum = sampleRate;
+    const sampleRateNum = Number(sampleRate);
     if (
       isNaN(sampleRateNum) ||
       sampleRateNum < 3500 ||
@@ -32,7 +32,7 @@ function App() {
       return;
     }
 
-    const durationNum = duration;
+    const durationNum = Number(duration);
     if (isNaN(durationNum) || durationNum < 0.01 || durationNum > 30) {
       setStatus("Duration must be between 0.01 and 30.");
       return;
@@ -158,7 +158,7 @@ function App() {
                   placeholder="e.g. 300"
                   className="input input-bordered w-full"
                   value={offset}
-                  onChange={(e) => setOffset(+e.target.value)} // + is shorthand for Number()
+                  onChange={(e) => setOffset(e.target.value)}
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   Shifts all m/z values before pitch conversion.
@@ -180,7 +180,7 @@ function App() {
                     placeholder="e.g. 100000"
                     className="input input-bordered w-full"
                     value={scale}
-                    onChange={(e) => setScale(+e.target.value)}
+                    onChange={(e) => setScale(e.target.value)}
                   />
                 </div>
 
@@ -196,7 +196,7 @@ function App() {
                     placeholder="e.g. 1"
                     className="input input-bordered w-full"
                     value={shift}
-                    onChange={(e) => setShift(+e.target.value)}
+                    onChange={(e) => setShift(e.target.value)}
                   />
                 </div>
               </>
@@ -212,7 +212,7 @@ function App() {
                 placeholder="e.g. 5"
                 className="input input-bordered w-full"
                 value={duration}
-                onChange={(e) => setDuration(+e.target.value)}
+                onChange={(e) => setDuration(e.target.value)}
               />
             </div>
 
@@ -228,7 +228,7 @@ function App() {
                 placeholder="e.g. 96000"
                 className="input input-bordered w-full"
                 value={sampleRate}
-                onChange={(e) => setSampleRate(+e.target.value)}
+                onChange={(e) => setSampleRate(e.target.value)}
                 min={3500}
                 max={192000}
               />
