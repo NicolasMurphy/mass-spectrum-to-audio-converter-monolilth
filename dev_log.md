@@ -1,9 +1,10 @@
-### [2025-07-06] Fix Keyboard responsive design & negative number UX issue
+### [2025-07-06] Fix Keyboard responsive design, fix negative number UX issue, implement database
 
 - **Goals:**
 
   - Fix Keyboard responsive design
   - Fix UX issue with entering negative numbers
+  - Create `search_history` database
 
 - **Notes:**
 

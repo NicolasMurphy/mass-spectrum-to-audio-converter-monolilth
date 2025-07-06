@@ -21,7 +21,6 @@ def log_search_if_new(compound, accession):
             """
             INSERT INTO search_history (accession, compound)
             VALUES (%s, %s)
-            ON CONFLICT (accession) DO NOTHING
             """,
             (accession, compound),
         )

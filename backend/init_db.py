@@ -17,8 +17,10 @@ cur = conn.cursor()
 cur.execute(
     """
 CREATE TABLE IF NOT EXISTS search_history (
-    accession TEXT PRIMARY KEY,
-    compound TEXT NOT NULL
+    id SERIAL PRIMARY KEY,
+    accession TEXT NOT NULL,
+    compound TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 """
 )
