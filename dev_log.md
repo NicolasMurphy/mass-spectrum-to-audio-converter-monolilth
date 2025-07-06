@@ -11,9 +11,11 @@
   - Massbank cert expires Aug 15, will likely have to download a newer cert. Possible more sustainable solutions: Use Let’s Encrypt Root CA, or (back up plan) auto renew the cert (parse through a live TLS connection)
   - Keyboard plays when entering compound, not too concerning, but ideally should not be doing that. Not an immediate bug to address, but making note of it.
   - Consider help text for explaining what m/z is - end user may not understand what is happening
+  - Consider using a different library for keyboard
 
 - **Next Steps:**
 
+  - Displaying all m/z values, and hz values after transformation.
   - Experiment further with algorithm options
   - Integrate additional spectral databases beyond MassBank
   - Develop a searchable database of recently generated samples

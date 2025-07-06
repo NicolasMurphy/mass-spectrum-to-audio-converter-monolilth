@@ -94,7 +94,7 @@ function App() {
   return (
     <div data-theme="corporate" className="min-h-screen bg-base-200">
       <div className="justify-items-center p-8 flex-col w-full px-4">
-        <div className="card bg-neutral-content w-full max-w-md">
+        <div className="card bg-neutral-content w-full max-w-md mx-auto">
           <div className="card-body">
             <h1 className="text-3xl font-bold text-center mb-2">
               Mass Spectrum to Audio Converter
