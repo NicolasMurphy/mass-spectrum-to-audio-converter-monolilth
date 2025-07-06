@@ -11,6 +11,7 @@
 
   - Commented out all code related to the `logarithmic` algorithm — not as applicable as initially expected; may revisit later
   - Keyboard is still not centered on all mobile devices. Difficult to troubleshoot since Chrome's Toggle Device Toolbar is not rendering accurately; need a better strategy for debugging mobile layout
+  - Discovered that Vercel's `Ignored Build Step` logic only checks the latest commit in a push for changes. This becomes an issue with multi-commit pushes where the final commit doesn’t touch the watched folder - the build is skipped even if earlier commits did. Not ideal. Could explore workarounds, but for now, it's just important to be aware of the behavior. Avoid multi-commit pushes, or ensure the last commit touches the target folder.
 
 - **Next Steps:**
 
