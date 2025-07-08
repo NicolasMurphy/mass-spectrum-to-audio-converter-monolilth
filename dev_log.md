@@ -1,3 +1,20 @@
+### [2025-07-07] Implement `Recently Generated` in frontend
+
+- **Goals:**
+
+  - Implement `Recently Generated` in frontend
+
+- **Notes:**
+
+  - Ended up using a grid for structuring layout. Still not satisfied with the styling, but it is "good enough" for now.
+
+- **Next Steps:**
+
+  - Find more permanent solution for Massbank Cert
+  - Displaying all m/z values, and hz values after transformation.
+  - Experiment further with algorithm options
+  - Integrate additional spectral databases beyond MassBank
+
 ### [2025-07-06] Fix Keyboard responsive design, fix negative number UX issue, implement database
 
 - **Goals:**
