@@ -155,14 +155,14 @@ Retrieves the search history of compounds that have been processed.
 
 **Get Last 10 Searches**
 
-```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/history"
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/history
 ```
 
 **Get Last 50 Searches**
 
-```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50"
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50
 ```
 
 ---
