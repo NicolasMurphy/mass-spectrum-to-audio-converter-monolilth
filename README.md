@@ -12,15 +12,23 @@ This tool converts mass spectrometry data into audio by mapping spectral peaks t
 
 ### About the Project
 
-This project fetches spectral data from the [MassBank](https://massbank.eu/) database, extracts m/z (mass-to-charge) values and intensities, and converts them into sine waves. You can control parameters like offset, duration, and sample rate to shape the resulting audio. Also features a keyboard playback interface.
+This project fetches spectral data from the [MassBank](https://massbank.eu/) database, extracts m/z (mass-to-charge) values and intensities, and converts them into sine waves. You can control parameters like offset, scale, shift, duration, and sample rate to shape the resulting audio. Also features a keyboard playback interface.
+
+The API supports two algorithms:
+
+- **Linear**: Maps m/z values directly to frequencies with an offset
+- **Inverse**: Uses inverse frequency mapping where higher m/z values produce lower frequencies
 
 - **Backend**: Python, Flask, MassBank API, deployed via Render
 - **Frontend**: React, Tailwind (via DaisyUI), Vite, deployed via Vercel
-- **Local API Endpoint Example**:
+- **API Endpoint Examples**:
 
 ```
 GET /massbank/linear?compound=biotin&offset=300&duration=5.0&sample_rate=96000
+GET /massbank/inverse?compound=caffeine&scale=100000&shift=1&duration=3.0
 ```
+
+For complete API documentation, see [API_Documentation.md](API_Documentation.md)
 
 Learn more about the motivation and creative inspiration in [my blog post](https://www.nicolasmurphy.com/blog/mass-spectrometry-music)
 
