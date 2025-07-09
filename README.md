@@ -12,21 +12,13 @@ This tool converts mass spectrometry data into audio by mapping spectral peaks t
 
 ### About the Project
 
-This project fetches spectral data from the [MassBank](https://massbank.eu/) database, extracts m/z (mass-to-charge) values and intensities, and converts them into sine waves. You can control parameters like offset, scale, shift, duration, and sample rate to shape the resulting audio. Also features a keyboard playback interface.
+This project fetches spectral data from the [MassBank](https://massbank.eu/) database, extracts m/z (mass-to-charge) values and intensities, and converts them into sine waves. The project supports two frequency mapping algorithms: linear mapping (m/z values directly to frequencies with an offset) and inverse mapping (higher m/z values produce lower frequencies). Features include a keyboard playback interface for real-time interaction and displays recently generated compounds from all users for easy access.
 
-The API supports two algorithms:
-
-- **Linear**: Maps m/z values directly to frequencies with an offset
-- **Inverse**: Uses inverse frequency mapping where higher m/z values produce lower frequencies
+**Tech Stack:**
 
 - **Backend**: Python, Flask, MassBank API, deployed via Render
-- **Frontend**: React, Tailwind (via DaisyUI), Vite, deployed via Vercel
-- **API Endpoint Examples**:
-
-```
-GET /massbank/linear?compound=biotin&offset=300&duration=5.0&sample_rate=96000
-GET /massbank/inverse?compound=caffeine&scale=100000&shift=1&duration=3.0
-```
+- **Frontend**: React, Tailwind (via DaisyUI), deployed via Vercel
+- **Database**: PostgreSQL, hosted on Render
 
 For complete API documentation, see [API_Documentation.md](API_Documentation.md)
 
@@ -99,4 +91,3 @@ npm run dev
 
 - Expand further with more frequency mapping algorithms
 - Support additional spectral databases
-- Create own database for viewing recently searched
