@@ -85,22 +85,20 @@ Generates an audio file from a compound's mass spectrum data using the specified
 
 **Basic Request (Linear Algorithm)**
 
-```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=caffeine"
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=caffeine
 ```
 
 **Linear Algorithm with Custom Offset**
 
-```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=aspirin&offset=250&duration=10&sample_rate=48000" \
-  -o Aspirin-MSBNK-ACES_SU-AS000078.wav
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=aspirin&offset=250&duration=10&sample_rate=48000
 ```
 
 **Inverse Algorithm with Custom Scale and Shift**
 
-```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse?compound=folate&scale=50000&shift=2&duration=3" \
-  -o Folate-MSBNK-Antwerp_Univ-METOX_P100302_F638.wav
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse?compound=folate&scale=50000&shift=2&duration=3
 ```
 
 ---
