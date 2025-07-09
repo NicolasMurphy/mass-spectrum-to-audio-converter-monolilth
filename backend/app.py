@@ -71,11 +71,12 @@ def generate_audio(algorithm):
     if not 3500 <= sample_rate <= 192000:
         return {"error": "Sample rate must be between 3500 and 192000"}, 400
 
-    # raw_sr = request.args.get("sample_rate")
-    # try:
-    #     sample_rate = int(raw_sr)
-    # except (ValueError, TypeError):
-    #     return {"error": "Invalid sample rate. Must be an integer."}, 400
+    raw_sr = request.args.get("sample_rate")
+    if raw_sr is not None:  # Only validate if parameter was provided
+        try:
+            sample_rate = int(raw_sr)
+        except (ValueError, TypeError):
+            return {"error": "Invalid sample rate. Must be an integer."}, 400
 
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
