@@ -12,7 +12,7 @@ This tool converts mass spectrometry data into audio by mapping spectral peaks t
 
 ### About the Project
 
-This project fetches spectral data from the [MassBank](https://massbank.eu/) database, extracts m/z (mass-to-charge) values and intensities, and converts them into sine waves. The project supports two frequency mapping algorithms: linear mapping (m/z values directly to frequencies with an offset) and inverse mapping (higher m/z values produce lower frequencies). Features include a keyboard playback interface for real-time interaction and displays recently generated compounds from all users for easy access.
+This project fetches spectral data from the [MassBank](https://massbank.eu/) database, extracts m/z (mass-to-charge) values and intensities, and converts them into sine waves. The project supports two frequency mapping algorithms: linear mapping (m/z values directly to frequencies with an offset) and inverse mapping (higher m/z values produce lower frequencies). You can control parameters like offset, scale, shift, duration, and sample rate to shape the resulting audio. Features include a keyboard playback interface for real-time interaction and displays recently generated compounds from all users for easy access.
 
 **Tech Stack:**
 
