@@ -1,3 +1,23 @@
+### [2025-07-08] Fix API bug for `sample_rate`, create API Documentation
+
+- **Goals:**
+
+  - Fix API bug where `sample_rate` parameter was incorrectly required
+  - Create comprehensive API documentation
+  - Update README to include API documentation and algorithm information
+
+- **Notes:**
+
+  - Modified sample rate validation to allow optional parameter while preventing invalid values like "44100.1"
+  - Created detailed API docs with real MassBank examples and parameter clarifications
+  - Updated README with algorithm descriptions and completed features
+
+- **Next Steps:**
+  - Find more permanent solution for MassBank certificate handling
+  - Display all m/z values and Hz values after transformation in UI
+  - Experiment further with algorithm options
+  - Integrate additional spectral databases beyond MassBank
+
 ### [2025-07-07] Implement `Recently Generated` in frontend
 
 - **Goals:**
