@@ -17,7 +17,6 @@ No authentication required.
 ## Rate Limiting
 
 - **Rate Limit:** 10 requests per 60-second window per client IP address
-- **Tracking:** Based on client IP address (supports X-Forwarded-For header for proxied requests)
 - **Sliding Window:** The 60-second window slides with each request
 - **Exceeded Limit:** Returns HTTP 429 with `{"error": "Rate limit exceeded. Try again later."}`
 
@@ -94,14 +93,14 @@ curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/line
 
 ```bash
 curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=aspirin&offset=250&duration=10&sample_rate=48000" \
-  -o aspirin-audio.wav
+  -o Aspirin-MSBNK-ACES_SU-AS000078.wav
 ```
 
 **Inverse Algorithm with Custom Scale and Shift**
 
 ```bash
 curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse?compound=folate&scale=50000&shift=2&duration=3" \
-  -o folate-audio.wav
+  -o Folate-MSBNK-Antwerp_Univ-METOX_P100302_F638.wav
 ```
 
 ---
@@ -126,19 +125,19 @@ Retrieves the search history of compounds that have been processed.
 {
   "history": [
     {
-      "compound": "Caffeine",
-      "accession": "MSBNK-ACES_SU-AS000088",
-      "timestamp": "2024-01-15T10:30:00Z"
-    },
-    {
-      "compound": "Aspirin",
       "accession": "MSBNK-ACES_SU-AS000078",
-      "timestamp": "2024-01-15T09:15:00Z"
+      "compound": "Aspirin",
+      "created_at": "2025-07-09T02:18:01.355065+00:00"
     },
     {
-      "compound": "Folate",
+      "accession": "MSBNK-ACES_SU-AS000088",
+      "compound": "Caffeine",
+      "created_at": "2025-07-09T02:00:54.840228+00:00"
+    },
+    {
       "accession": "MSBNK-Antwerp_Univ-METOX_P100302_F638",
-      "timestamp": "2024-01-15T08:45:00Z"
+      "compound": "Folate",
+      "created_at": "2025-07-09T02:02:01.292682+00:00"
     }
   ]
 }
