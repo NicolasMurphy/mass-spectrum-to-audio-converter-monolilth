@@ -123,19 +123,19 @@ Retrieves the search history of compounds that have been processed.
 {
   "history": [
     {
-      "accession": "MSBNK-ACES_SU-AS000078",
-      "compound": "Aspirin",
-      "created_at": "2025-07-09T02:18:01.355065+00:00"
+      "accession": "MSBNK-Antwerp_Univ-METOX_P100302_F638",
+      "compound": "Folate",
+      "created_at": "2025-07-09T03:45:51.639366+00:00"
     },
     {
       "accession": "MSBNK-ACES_SU-AS000088",
       "compound": "Caffeine",
-      "created_at": "2025-07-09T02:00:54.840228+00:00"
+      "created_at": "2025-07-09T03:45:44.172214+00:00"
     },
     {
-      "accession": "MSBNK-Antwerp_Univ-METOX_P100302_F638",
-      "compound": "Folate",
-      "created_at": "2025-07-09T02:02:01.292682+00:00"
+      "accession": "MSBNK-ACES_SU-AS000078",
+      "compound": "Aspirin",
+      "created_at": "2025-07-09T03:45:33.844220+00:00"
     }
   ]
 }
