@@ -7,7 +7,7 @@ The Mass Spectrum to Audio Converter API converts mass spectrometry data into au
 ## Base URL
 
 ```
-/massbank
+https://mass-spectrum-to-audio-converter.onrender.com
 ```
 
 ## Authentication
@@ -26,6 +26,7 @@ No authentication required.
 ## Data Source
 
 This API integrates with the MassBank database through their REST API:
+
 - **MassBank API Documentation**: https://massbank.eu/MassBank-api/ui/
 - **Search Endpoint**: `/records/search` - Used to find compounds by name
 - **Record Endpoint**: `/records/{accession}` - Used to retrieve detailed spectrum data
@@ -43,20 +44,20 @@ Generates an audio file from a compound's mass spectrum data using the specified
 
 #### Path Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `algorithm` | string | Yes | Algorithm for audio generation. Must be either `linear` or `inverse` |
+| Parameter   | Type   | Required | Description                                                          |
+| ----------- | ------ | -------- | -------------------------------------------------------------------- |
+| `algorithm` | string | Yes      | Algorithm for audio generation. Must be either `linear` or `inverse` |
 
 #### Query Parameters
 
-| Parameter | Type | Required | Default | Validation | Description |
-|-----------|------|----------|---------|------------|-------------|
-| `compound` | string | Yes | - | - | Name or identifier of the compound to search for |
-| `offset` | float | No | 300 | - | Offset added to m/z values during conversion to Hz *(linear algorithm only - ignored by inverse)* |
-| `scale` | float | No | 100000 | - | Scaling factor for frequency calculation *(inverse algorithm only - ignored by linear)* |
-| `shift` | float | No | 1 | - | Shift value applied to m/z before inverse calculation *(inverse algorithm only - ignored by linear)* |
-| `sample_rate` | integer | No | 96000 | 3500-192000 | Audio sample rate in Hz |
-| `duration` | float | No | 5.0 | 0.01-30.0 | Duration of generated audio in seconds |
+| Parameter     | Type    | Required | Default | Validation  | Description                                                                                          |
+| ------------- | ------- | -------- | ------- | ----------- | ---------------------------------------------------------------------------------------------------- |
+| `compound`    | string  | Yes      | -       | -           | Name or identifier of the compound to search for                                                     |
+| `offset`      | float   | No       | 300     | -           | Offset added to m/z values during conversion to Hz _(linear algorithm only - ignored by inverse)_    |
+| `scale`       | float   | No       | 100000  | -           | Scaling factor for frequency calculation _(inverse algorithm only - ignored by linear)_              |
+| `shift`       | float   | No       | 1       | -           | Shift value applied to m/z before inverse calculation _(inverse algorithm only - ignored by linear)_ |
+| `sample_rate` | integer | No       | 96000   | 3500-192000 | Audio sample rate in Hz                                                                              |
+| `duration`    | float   | No       | 5.0     | 0.01-30.0   | Duration of generated audio in seconds                                                               |
 
 #### Response
 
@@ -71,32 +72,35 @@ Generates an audio file from a compound's mass spectrum data using the specified
 
 **Error Responses**
 
-| Status Code | Description | Example Response |
-|-------------|-------------|------------------|
-| 400 | Invalid algorithm | `{"error": "Unsupported algorithm 'fourier'"}` |
-| 400 | Missing compound | `{"error": "No compound provided"}` |
-| 400 | Invalid duration | `{"error": "Duration must be between 0.01 and 30 seconds."}` |
-| 400 | Invalid sample rate | `{"error": "Sample rate must be between 3500 and 192000"}` |
-| 400 | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}` |
-| 429 | Rate limit exceeded | `{"error": "Rate limit exceeded. Try again later."}` |
-| 500 | Internal server error | `{"error": "No records found"}` or `{"error": "MassBank API error"}` |
+| Status Code | Description                | Example Response                                                     |
+| ----------- | -------------------------- | -------------------------------------------------------------------- |
+| 400         | Invalid algorithm          | `{"error": "Unsupported algorithm 'fourier'"}`                       |
+| 400         | Missing compound           | `{"error": "No compound provided"}`                                  |
+| 400         | Invalid duration           | `{"error": "Duration must be between 0.01 and 30 seconds."}`         |
+| 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000"}`           |
+| 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`              |
+| 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`                 |
+| 500         | Internal server error      | `{"error": "No records found"}` or `{"error": "MassBank API error"}` |
 
 #### Example Requests
 
 **Basic Request (Linear Algorithm)**
+
 ```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.vercel.app/massbank/linear?compound=caffeine"
+curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=caffeine"
 ```
 
 **Linear Algorithm with Custom Offset**
+
 ```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.vercel.app/massbank/linear?compound=aspirin&offset=250&duration=10&sample_rate=48000" \
+curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=aspirin&offset=250&duration=10&sample_rate=48000" \
   -o aspirin-audio.wav
 ```
 
 **Inverse Algorithm with Custom Scale and Shift**
+
 ```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.vercel.app/massbank/inverse?compound=folate&scale=50000&shift=2&duration=3" \
+curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse?compound=folate&scale=50000&shift=2&duration=3" \
   -o folate-audio.wav
 ```
 
@@ -110,9 +114,9 @@ Retrieves the search history of compounds that have been processed.
 
 #### Query Parameters
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `limit` | integer | No | 10 | Maximum number of history entries to return |
+| Parameter | Type    | Required | Default | Description                                 |
+| --------- | ------- | -------- | ------- | ------------------------------------------- |
+| `limit`   | integer | No       | 10      | Maximum number of history entries to return |
 
 #### Response
 
@@ -128,7 +132,7 @@ Retrieves the search history of compounds that have been processed.
     },
     {
       "compound": "Aspirin",
-      "accession": "MSBNK-ACES_SU-AS000078", 
+      "accession": "MSBNK-ACES_SU-AS000078",
       "timestamp": "2024-01-15T09:15:00Z"
     },
     {
@@ -151,13 +155,15 @@ Retrieves the search history of compounds that have been processed.
 #### Example Requests
 
 **Get Last 10 Searches**
+
 ```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.vercel.app/history"
+curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/history"
 ```
 
 **Get Last 50 Searches**
+
 ```bash
-curl -X GET "https://mass-spectrum-to-audio-converter.vercel.app/history?limit=50"
+curl -X GET "https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50"
 ```
 
 ---
@@ -165,11 +171,13 @@ curl -X GET "https://mass-spectrum-to-audio-converter.vercel.app/history?limit=5
 ## Algorithm Types
 
 ### Linear Algorithm
+
 - **Frequency Calculation:** `frequency = m/z + offset`
 - Converts m/z values to Hz by adding a constant offset
 - **Parameters:** `offset` (default: 300)
 
-### Inverse Algorithm  
+### Inverse Algorithm
+
 - **Frequency Calculation:** `frequency = scale / (m/z + shift)`
 - Converts m/z values to Hz using inverse relationship where higher m/z values produce lower frequencies
 - **Parameters:** `scale` (default: 100000), `shift` (default: 1)
@@ -197,6 +205,7 @@ The API returns appropriate HTTP status codes and JSON error messages for variou
 - **500 Internal Server Error**: Server-side processing errors, database issues, or MassBank lookup failures
 
 All error responses follow the format:
+
 ```json
 {
   "error": "Descriptive error message"
@@ -211,9 +220,10 @@ All error responses follow the format:
 
 2. **Audio Quality**: Higher sample rates (96000, 192000) provide better audio quality but larger file sizes. Standard rates (44100, 48000) are also supported.
 
-3. **Duration**: Longer durations allow for more detailed spectral representation but increase processing time.
+3. **Duration**: Longer durations (up to 30 seconds) can be useful for audio sampling applications, especially when playing higher pitches that effectively shorten the sample length.
 
-4. **Parameter Tuning**: 
+4. **Parameter Tuning**:
+
    - **Linear Algorithm:** Adjust `offset` to shift the entire frequency range (m/z + offset)
    - **Inverse Algorithm:** Modify `scale` and `shift` to control the inverse relationship (scale / (m/z + shift))
    - Higher sample rates (96000, 192000) provide better audio quality but larger file sizes
