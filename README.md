@@ -97,6 +97,6 @@ npm run dev
 
 ### Future Plans
 
-- Add support for multiple frequency mapping algorithms
+- Expand further with more frequency mapping algorithms
 - Support additional spectral databases
 - Create own database for viewing recently searched
