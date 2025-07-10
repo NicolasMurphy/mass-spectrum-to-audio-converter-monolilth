@@ -47,6 +47,11 @@ function App() {
     setCompoundName("");
     setAccession("");
 
+    // Cleanup previous URL before setting new one
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+    }
+
     try {
       const queryParams = new URLSearchParams({
         compound,
@@ -133,6 +138,15 @@ function App() {
 
     loadHistory();
   }, []);
+
+  useEffect(() => {
+    // Cleanup function to revoke object URLs and prevent memory leaks
+    return () => {
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+      }
+    };
+  }, [audioUrl]);
 
   return (
     <div data-theme="corporate" className="min-h-screen bg-base-200">
