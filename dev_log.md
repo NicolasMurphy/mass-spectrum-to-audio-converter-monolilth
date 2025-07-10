@@ -1,3 +1,19 @@
+### [2025-07-09] object URL cleanup
+
+- **Goals:**
+
+  - Fix memory leak from blob URLs in React audio player
+
+- **Notes:**
+
+  - Added useEffect cleanup and pre-fetch URL revocation to prevent WAV files from accumulating in browser memory during extended usage
+
+- **Next Steps:**
+  - Find more permanent solution for MassBank certificate handling
+  - Display all m/z values and Hz values after transformation in UI
+  - Experiment further with algorithm options
+  - Integrate additional spectral databases beyond MassBank
+
 ### [2025-07-08] Fix API bug for `sample_rate`, create API Documentation
 
 - **Goals:**
