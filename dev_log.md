@@ -1,3 +1,20 @@
+### [2025-07-11] Implement global enter key functionality
+
+- **Goals:**
+
+  - Implement global enter key functionality
+
+- **Notes:**
+
+  - Moved handleFetch logic inside useEffect to avoid dependency issues and ESLint warnings
+  - Users can now press Enter globally
+
+- **Next Steps:**
+  - Find more permanent solution for MassBank certificate handling
+  - Display all m/z values and Hz values after transformation in UI
+  - Experiment further with algorithm options
+  - Integrate additional spectral databases beyond MassBank
+
 ### [2025-07-09] object URL cleanup
 
 - **Goals:**
