@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import type { KeyboardEvent } from "react";
 import "./App.css";
 import SamplePiano from "./SamplePiano";
 
@@ -20,81 +19,105 @@ function App() {
   >([]);
   const [historyError, setHistoryError] = useState<string | null>(null);
 
-  const handleFetch = async () => {
-    if (!compound.trim()) {
-      setStatus("Please enter a compound name.");
-      return;
-    }
-
-    const sampleRateNum = Number(sampleRate);
-    if (
-      isNaN(sampleRateNum) ||
-      sampleRateNum < 3500 ||
-      sampleRateNum > 192000
-    ) {
-      setStatus("Sample rate must be between 3500 and 192000.");
-      return;
-    }
-
-    const durationNum = Number(duration);
-    if (isNaN(durationNum) || durationNum < 0.01 || durationNum > 30) {
-      setStatus("Duration must be between 0.01 and 30.");
-      return;
-    }
-
-    setStatus("Fetching audio...");
-    setAudioUrl("");
-    setCompoundName("");
-    setAccession("");
-
-    // Cleanup previous URL before setting new one
-    if (audioUrl) {
-      URL.revokeObjectURL(audioUrl);
-    }
-
-    try {
-      const queryParams = new URLSearchParams({
-        compound,
-        duration: durationNum.toString(),
-        sample_rate: sampleRateNum.toString(),
-      });
-
-      if (algorithm === "linear") {
-        queryParams.append("offset", offset.toString());
-      } else if (algorithm === "inverse") {
-        queryParams.append("scale", scale.toString());
-        queryParams.append("shift", shift.toString());
-      }
-
-      const response = await fetch(
-        // `http://localhost:5000/massbank/${algorithm}?${queryParams}`
-        `https://mass-spectrum-to-audio-converter.onrender.com/massbank/${algorithm}?${queryParams}`
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        setStatus(`Error: ${error.error}`);
+  useEffect(() => {
+    const handleFetch = async () => {
+      if (!compound.trim()) {
+        setStatus("Please enter a compound name.");
         return;
       }
 
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-
-      setCompoundName(response.headers.get("X-Compound") || compound);
-      setAccession(response.headers.get("X-Accession") || "unknown");
-      setAudioUrl(url);
-      setStatus("Success!");
-    } catch (err) {
-      if (err instanceof Error) {
-        setStatus(`Error: ${err.message}`);
-      } else {
-        setStatus("An unknown error occurred.");
+      const sampleRateNum = Number(sampleRate);
+      if (
+        isNaN(sampleRateNum) ||
+        sampleRateNum < 3500 ||
+        sampleRateNum > 192000
+      ) {
+        setStatus("Sample rate must be between 3500 and 192000.");
+        return;
       }
-    }
-  };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") handleFetch();
+      const durationNum = Number(duration);
+      if (isNaN(durationNum) || durationNum < 0.01 || durationNum > 30) {
+        setStatus("Duration must be between 0.01 and 30.");
+        return;
+      }
+
+      setStatus("Fetching audio...");
+      setAudioUrl("");
+      setCompoundName("");
+      setAccession("");
+
+      // Cleanup previous URL before setting new one
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+      }
+
+      try {
+        const queryParams = new URLSearchParams({
+          compound,
+          duration: durationNum.toString(),
+          sample_rate: sampleRateNum.toString(),
+        });
+
+        if (algorithm === "linear") {
+          queryParams.append("offset", offset.toString());
+        } else if (algorithm === "inverse") {
+          queryParams.append("scale", scale.toString());
+          queryParams.append("shift", shift.toString());
+        }
+
+        const response = await fetch(
+          // `http://localhost:5000/massbank/${algorithm}?${queryParams}`
+          `https://mass-spectrum-to-audio-converter.onrender.com/massbank/${algorithm}?${queryParams}`
+        );
+
+        if (!response.ok) {
+          const error = await response.json();
+          setStatus(`Error: ${error.error}`);
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+
+        setCompoundName(response.headers.get("X-Compound") || compound);
+        setAccession(response.headers.get("X-Accession") || "unknown");
+        setAudioUrl(url);
+        setStatus("Success!");
+      } catch (err) {
+        if (err instanceof Error) {
+          setStatus(`Error: ${err.message}`);
+        } else {
+          setStatus("An unknown error occurred.");
+        }
+      }
+    };
+
+    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        handleFetch();
+      }
+    };
+
+    document.addEventListener("keydown", handleGlobalKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [
+    compound,
+    algorithm,
+    offset,
+    scale,
+    shift,
+    duration,
+    sampleRate,
+    audioUrl,
+  ]);
+
+  const triggerFetch = () => {
+    const event = new KeyboardEvent("keydown", { key: "Enter" });
+    document.dispatchEvent(event);
   };
 
   const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${accession}`;
@@ -175,7 +198,6 @@ function App() {
                     className="input input-bordered w-full placeholder-gray-400"
                     value={compound}
                     onChange={(e) => setCompound(e.target.value)}
-                    onKeyDown={handleKeyDown}
                   />
                 </div>
 
@@ -300,7 +322,7 @@ function App() {
 
                 <button
                   className="btn btn-primary w-full mb-4"
-                  onClick={handleFetch}
+                  onClick={triggerFetch}
                   disabled={status === "Fetching audio..."}
                 >
                   Generate Audio
