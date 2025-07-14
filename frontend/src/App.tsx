@@ -184,7 +184,6 @@ function App() {
                 <h1 className="text-3xl font-bold text-center mb-2">
                   Mass Spectrum to Audio Converter
                 </h1>
-
                 <div className="form-control mb-4">
                   <label className="label" htmlFor="compoundInput">
                     <span className="label-text font-semibold">
@@ -200,7 +199,6 @@ function App() {
                     onChange={(e) => setCompound(e.target.value)}
                   />
                 </div>
-
                 <fieldset className="form-control mb-4">
                   <legend className="label-text font-semibold mb-1">
                     Algorithm
@@ -230,7 +228,6 @@ function App() {
                     </label>
                   </div>
                 </fieldset>
-
                 {algorithm === "linear" && (
                   <div className="form-control mb-4">
                     <label className="label" htmlFor="offsetInput">
@@ -251,7 +248,6 @@ function App() {
                     </p>
                   </div>
                 )}
-
                 {algorithm === "inverse" && (
                   <>
                     <div className="form-control mb-4">
@@ -287,7 +283,6 @@ function App() {
                     </div>
                   </>
                 )}
-
                 <div className="form-control mb-4">
                   <label className="label" htmlFor="durationInput">
                     <span className="label-text font-semibold">Duration</span>
@@ -301,7 +296,6 @@ function App() {
                     onChange={(e) => setDuration(e.target.value)}
                   />
                 </div>
-
                 <div className="form-control mb-4">
                   <label className="label" htmlFor="sampleRateInput">
                     <span className="label-text font-semibold">
@@ -319,7 +313,6 @@ function App() {
                     max={192000}
                   />
                 </div>
-
                 <button
                   className="btn btn-primary w-full mb-4"
                   onClick={triggerFetch}
@@ -328,7 +321,17 @@ function App() {
                   Generate Audio
                 </button>
 
-                {status && <p className="text-sm text-center mb-2">{status}</p>}
+                {status && (
+                  <div className="text-sm text-center mb-2">
+                    {status === "Fetching audio..." ? (
+                      <>
+                        <span className="loading loading-spinner text-primary"></span>
+                      </>
+                    ) : (
+                      <span>{status}</span>
+                    )}
+                  </div>
+                )}
 
                 {compoundName && accession && (
                   <div className="text-center mb-4">
@@ -348,7 +351,6 @@ function App() {
                     </p>
                   </div>
                 )}
-
                 {audioUrl && (
                   <div className="flex flex-col items-center gap-6">
                     <audio controls src={audioUrl} className="w-full" />
