@@ -1,3 +1,27 @@
+### [2025-07-14] Backend Tests
+
+- **Goals:**
+
+  - Implement backend unit tests
+
+- **Notes:**
+
+  - Changing to `verify=cafile` to `verify=True` in `massbank.py` still results in error:
+
+```
+Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceeded with url: /MassBank-api/records/search?compound_name=test (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1028)')))
+```
+
+- **Next Steps:**
+  - Display all m/z values and Hz values after transformation in UI
+  - Implement autocomplete utilizing compound names in history table
+
+### [2025-07-13] Implement spinner
+
+- **Goals:**
+
+  - Spinner status when fetching/generating audio
+
 ### [2025-07-11] Implement global enter key functionality
 
 - **Goals:**

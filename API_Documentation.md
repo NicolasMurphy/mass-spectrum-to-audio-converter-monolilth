@@ -193,42 +193,6 @@ GET https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50
 
 ---
 
-## Error Handling
-
-The API returns appropriate HTTP status codes and JSON error messages for various failure scenarios:
-
-- **400 Bad Request**: Invalid parameters or missing required fields
-- **429 Too Many Requests**: Rate limit exceeded
-- **500 Internal Server Error**: Server-side processing errors, database issues, or MassBank lookup failures
-
-All error responses follow the format:
-
-```json
-{
-  "error": "Descriptive error message"
-}
-```
-
----
-
-## Usage Tips
-
-1. **Compound Names**: Use standard chemical names or common identifiers. The API searches MassBank's database and automatically selects the first matching record.
-
-2. **Audio Quality**: Higher sample rates (96000, 192000) provide better audio quality but larger file sizes. Standard rates (44100, 48000) are also supported.
-
-3. **Duration**: Longer durations (up to 30 seconds) can be useful for audio sampling applications, especially when playing higher pitches that effectively shorten the sample length.
-
-4. **Parameter Tuning**:
-
-   - **Linear Algorithm:** Adjust `offset` to shift the entire frequency range (m/z + offset)
-   - **Inverse Algorithm:** Modify `scale` and `shift` to control the inverse relationship (scale / (m/z + shift))
-   - Higher sample rates (96000, 192000) provide better audio quality but larger file sizes
-
-5. **Rate Limiting**: The API enforces a limit of 10 requests per 60-second window per IP address. Space out your requests accordingly to avoid 429 errors.
-
----
-
 ## Response Headers
 
 Successful audio generation responses include additional metadata:
