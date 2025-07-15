@@ -96,3 +96,5 @@ def test_generate_combined_wav_bytes_basic():
 
 
 # python -m pytest backend/tests/ -v
+
+# python -m pytest backend/tests/ --cov=backend --cov-report=html

@@ -79,7 +79,7 @@ Generates an audio file from a compound's mass spectrum data using the specified
 | 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000"}`           |
 | 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`              |
 | 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`                 |
-| 500         | Internal server error      | `{"error": "No records found"}` or `{"error": "MassBank API error"}` |
+| 500         | Internal server error      | `{"error": "No records found"}`                                      |
 
 #### Example Requests
 
