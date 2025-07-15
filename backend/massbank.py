@@ -8,7 +8,7 @@ def get_massbank_peaks(compound_name):
     r = requests.get(
         "https://massbank.eu/MassBank-api/records/search",
         params={"compound_name": compound_name},
-        verify=cafile,
+        verify=True,
     )
     r.raise_for_status()
 
@@ -22,7 +22,7 @@ def get_massbank_peaks(compound_name):
 
     record = requests.get(
         f"https://massbank.eu/MassBank-api/records/{accession}",
-        verify=cafile,
+        verify=True,
     )
     record.raise_for_status()
     record_data = record.json()
