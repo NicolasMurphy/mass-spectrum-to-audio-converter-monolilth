@@ -12,7 +12,7 @@ def get_db_connection():
     )
 
 
-def log_search_if_new(compound, accession):
+def log_search(compound, accession):
     try:
         conn = get_db_connection()
         cur = conn.cursor()

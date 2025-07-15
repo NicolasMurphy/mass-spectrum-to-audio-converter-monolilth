@@ -3,7 +3,7 @@ from converter import generate_combined_wav_bytes
 from massbank import get_massbank_peaks
 from flask_cors import CORS
 import time
-from db.queries import log_search_if_new
+from db.queries import log_search
 from db.queries import get_search_history
 
 
@@ -81,7 +81,7 @@ def generate_audio(algorithm):
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
 
-        log_search_if_new(compound_actual, accession)
+        log_search(compound_actual, accession)
 
         # see before and after values
         # print("\n=== Original Spectrum ===")
