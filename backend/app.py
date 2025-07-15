@@ -43,7 +43,7 @@ def serve_frontend():
 def generate_audio(algorithm):
 
     ip = (
-        request.headers.get("X-Forwarded-For", request.remote_addr)
+        request.headers.get("X-Forwarded-For", request.remote_addr or "")
         .split(",")[0]
         .strip()
     )
