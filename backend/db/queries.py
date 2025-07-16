@@ -60,3 +60,5 @@ def get_search_history(limit=10):
     except Exception as e:
         print(f"Failed to fetch search history: {e}")
         return []
+
+# TODO: implement connection pooling

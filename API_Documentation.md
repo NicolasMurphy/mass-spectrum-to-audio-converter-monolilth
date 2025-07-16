@@ -141,14 +141,6 @@ Retrieves the search history of compounds that have been processed.
 }
 ```
 
-**Error Response (500)**
-
-```json
-{
-  "error": "Database connection failed"
-}
-```
-
 #### Example Requests
 
 **Get Last 10 Searches**
