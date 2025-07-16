@@ -1,3 +1,18 @@
+### [2025-07-15] DB Tests
+
+- **Goals:**
+
+  - Implement unit tests for functions in `queries.py`
+
+- **Notes:**
+
+  - Added unit tests for log_search() and get_search_history() with mocked database connections; achieved 93% test coverage
+  - Need to research connection pooling
+
+- **Next Steps:**
+  - Display all m/z values and Hz values after transformation in UI
+  - Implement autocomplete utilizing compound names in history table (or better yet, get all compound names from massbank)
+
 ### [2025-07-14] Backend Tests
 
 - **Goals:**
