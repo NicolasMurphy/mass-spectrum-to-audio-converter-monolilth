@@ -1,3 +1,19 @@
+### [2025-07-16] Autocomplete strategy
+
+- **Goals:**
+
+  - Figure out the best strategy for implementing autocomplete
+
+- **Notes:**
+
+  - Found MassBank.sql file (520MB). Need to figure out how to import it so it is useable.
+  - Create separate Render database?
+  - Import to render using CLI with psql
+
+- **Next Steps:**
+  - Display all m/z values and Hz values after transformation in UI
+  - Implement autocomplete utilizing compound names in history table (or better yet, get all compound names from massbank)
+
 ### [2025-07-15] DB Tests
 
 - **Goals:**
