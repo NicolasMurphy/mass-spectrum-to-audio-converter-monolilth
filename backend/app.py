@@ -128,5 +128,92 @@ def history():
         return {"error": str(e)}, 500
 
 
+@app.route("/massbank/<algorithm>", methods=["POST"])
+def generate_audio_with_data(algorithm):
+    ip = (
+        request.headers.get("X-Forwarded-For", request.remote_addr or "")
+        .split(",")[0]
+        .strip()
+    )
+    print(f"Client IP: {ip}")
+    if is_rate_limited(ip):
+        return {"error": "Rate limit exceeded. Try again later."}, 429
+
+    if algorithm not in ["linear", "inverse"]:
+        return {"error": f"Unsupported algorithm '{algorithm}'"}, 400
+
+    # Get JSON data from request body
+    data = request.get_json()
+    if not data:
+        return {"error": "No JSON data provided"}, 400
+
+    compound = data.get("compound")
+    offset = data.get("offset", 300)
+    scale = data.get("scale", 100000)
+    shift = data.get("shift", 1)
+    sample_rate = data.get("sample_rate", 96000)
+    duration = data.get("duration", 5.0)
+
+    if not compound:
+        return {"error": "No compound provided"}, 400
+
+    if not (0.01 <= duration <= 30):
+        return {"error": "Duration must be between 0.01 and 30 seconds."}, 400
+
+    if not 3500 <= sample_rate <= 192000:
+        return {"error": "Sample rate must be between 3500 and 192000"}, 400
+
+    # Validate sample_rate is integer
+    if not isinstance(sample_rate, int):
+        return {"error": "Invalid sample rate. Must be an integer."}, 400
+
+    try:
+        spectrum, accession, compound_actual = get_massbank_peaks(compound)
+
+        log_search(compound_actual, accession)
+
+        wav_buffer = generate_combined_wav_bytes(
+            spectrum,
+            offset=offset,
+            scale=scale,
+            shift=shift,
+            duration=duration,
+            sample_rate=sample_rate,
+            algorithm=algorithm,
+        )
+
+        # Convert WAV to base64
+        import base64
+        audio_base64 = base64.b64encode(wav_buffer.getvalue()).decode()
+
+        # Prepare algorithm parameters based on algorithm type
+        if algorithm == "linear":
+            algorithm_params = {"offset": offset}
+        elif algorithm == "inverse":
+            algorithm_params = {"scale": scale, "shift": shift}
+
+        # Build response
+        response_data = {
+            "compound": compound_actual,
+            "accession": accession,
+            "audio_base64": audio_base64,
+            "spectrum": {
+                "original": [{"mz": mz, "intensity": intensity} for mz, intensity in spectrum],
+                "transformed": []  # TODO: Add transformed spectrum data
+            },
+            "algorithm": algorithm,
+            "parameters": algorithm_params,
+            "audio_settings": {
+                "duration": duration,
+                "sample_rate": sample_rate
+            }
+        }
+
+        return response_data, 200
+
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+
 if __name__ == "__main__":
     app.run(debug=True)

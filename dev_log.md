@@ -1,3 +1,21 @@
+### [2025-07-17] Pass audio as base64 string along with spectrum data
+
+- **Goals:**
+
+  - Make a new `generate_audio` function called `generate_audio_with_data` that passes the audio as a base64 string along with the spectrum data.
+
+- **Notes:**
+
+  - Passing the audio as a base64 string is more expensive (~33% larger), but seems like the best approach for simplicity. Considered two API calls, but would be messy, potential race conditions.
+  - Creating a new function called `generate_audio_with_data` as a POST request, seems like best option - better semantic fit and allows for more complex requests.
+  - Tested with Insomnia, and new endpoint works.
+  - Still need to implement transformed spectrum array.
+
+- **Next Steps:**
+  - Continue with implementation of passing spectrum data in API call
+  - Implement autocomplete
+
+
 ### [2025-07-16] Autocomplete strategy
 
 - **Goals:**
