@@ -79,20 +79,20 @@
       value="96000"
     /><br /><br />
 
-    <button onclick="fetchAudio()">Generate Audio (OLD GET)</button>
     <button onclick="testPostEndpoint()">Test New POST Endpoint</button>
 
     <!-- POST endpoint sections -->
     <h4>API Endpoint:</h4>
-    <p id="requestEndpoint" style="font-family: monospace; color: #555; display: none;"></p>
+    <p
+      id="requestEndpoint"
+      style="font-family: monospace; color: #555; display: none"
+    ></p>
 
     <h4>Request Body Sent:</h4>
     <pre
       id="requestBody"
       style="background: #e8f4fd; padding: 10px; font-size: 12px; display: none"
     ></pre>
-
-    <p id="postMetaInfo" style="display: none;"></p>
 
     <h3>POST Response:</h3>
     <pre
@@ -107,7 +107,7 @@
       "
     ></pre>
 
-    <div id="spectrumData" style="display: none">
+    <div id="spectrumData">
       <h4>Spectrum Data (m/z → frequency transformations):</h4>
       <table
         border="1"
@@ -127,102 +127,22 @@
       </table>
     </div>
 
-    <div id="postAudioSection" style="display: none">
+    <div id="postAudioSection">
       <h4>Audio from POST Response:</h4>
-      <audio id="postAudioPlayer" controls style="display: none"></audio><br /><br />
-      <a id="postDownloadLink" style="display: none">Download WAV from POST</a>
+      <audio id="postAudioPlayer" controls></audio>
+      <p id="postMetaInfo"></p>
+      <a id="postDownloadLink">Download WAV from POST</a>
     </div>
-
-    <!-- OLD GET endpoint sections -->
-    <hr style="margin: 30px 0;">
-    <h3>OLD GET Endpoint Results:</h3>
-    <p id="status"></p>
-    <p id="metaInfo" style="display: none"></p>
-    <audio id="audioPlayer" controls style="display: none"></audio>
-    <a id="downloadLink" style="display: none">Download WAV</a>
-    <p>Query URL:</p>
-    <p id="rawUrl" style="font-family: monospace; color: #555"></p>
 
     <h2>Recent Searches</h2>
     <ul id="history-list"></ul>
 
     <script>
-      async function fetchAudio() {
-        const compound = document.getElementById("compoundInput").value.trim();
-        const algorithmInput = document.querySelector(
-          'input[name="algorithm"]:checked'
-        );
-        const algorithm = algorithmInput ? algorithmInput.value : "linear";
-        const offset = document.getElementById("offsetInput").value.trim();
-        const scale = document.getElementById("scaleInput").value.trim();
-        const shift = document.getElementById("shiftInput").value.trim();
-        const duration = document.getElementById("durationInput").value.trim();
-        const sampleRate = document
-          .getElementById("sampleRateInput")
-          .value.trim();
-
-        const status = document.getElementById("status");
-        const metaInfo = document.getElementById("metaInfo");
-        const audio = document.getElementById("audioPlayer");
-        const link = document.getElementById("downloadLink");
-
-        status.textContent = "Fetching audio...";
-        audio.style.display = "none";
-        link.style.display = "none";
-        metaInfo.style.display = "none";
-
-        try {
-          let queryUrl = ``;
-          if (algorithm === "linear") {
-            queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
-              compound
-            )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`;
-          } else if (algorithm === "inverse") {
-            queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
-              compound
-            )}&scale=${scale}&shift=${shift}&duration=${duration}&sample_rate=${sampleRate}`;
-          }
-
-          document.getElementById("rawUrl").textContent = queryUrl;
-
-          const response = await fetch(queryUrl);
-
-          if (!response.ok) {
-            const error = await response.json();
-            status.textContent = `Error ${response.status}: ${error.error}`;
-            return;
-          }
-
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-
-          const compoundName = response.headers.get("X-Compound") || compound;
-          const accession = response.headers.get("X-Accession") || "unknown";
-
-          const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${accession}`;
-          metaInfo.innerHTML = `Compound: ${compoundName} | Accession: <a href="${accessionUrl}" target="_blank">${accession}</a>`;
-
-          metaInfo.style.display = "block";
-
-          audio.src = url;
-          audio.style.display = "block";
-
-          link.href = url;
-          link.download = `${compoundName}-${accession}.wav`;
-          link.textContent = "Download WAV";
-          link.style.display = "inline";
-
-          status.textContent = "Success!";
-        } catch (e) {
-          status.textContent = `Error: ${e.message}`;
-        }
-      }
-
       document
         .getElementById("compoundInput")
         .addEventListener("keydown", function (event) {
           if (event.key === "Enter") {
-            fetchAudio();
+            testPostEndpoint();
           }
         });
 
@@ -261,7 +181,9 @@
         spectrumData.style.display = "none";
 
         // Display API endpoint
-        document.getElementById("requestEndpoint").textContent = `POST /massbank/${algorithm}`;
+        document.getElementById(
+          "requestEndpoint"
+        ).textContent = `POST /massbank/${algorithm}`;
         document.getElementById("requestEndpoint").style.display = "block";
 
         document.getElementById("requestBody").textContent = JSON.stringify(
@@ -324,7 +246,8 @@
             postAudioPlayer.src = audioUrl;
             postAudioPlayer.style.display = "block";
 
-            const postDownloadLink = document.getElementById("postDownloadLink");
+            const postDownloadLink =
+              document.getElementById("postDownloadLink");
             const filename = `${data.compound}-${data.accession}.wav`;
             postDownloadLink.href = audioUrl;
             postDownloadLink.download = filename;

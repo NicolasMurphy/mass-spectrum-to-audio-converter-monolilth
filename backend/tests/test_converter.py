@@ -8,7 +8,6 @@ from converter import (
     mz_to_frequency_linear,
     mz_to_frequency_inverse,
     generate_sine_wave,
-    generate_combined_wav_bytes,
 )
 
 
@@ -71,28 +70,6 @@ def test_generate_sine_wave_basic():
     # Should have correct number of samples
     expected_samples = int(44100 * 1.0)  # sample_rate * duration
     assert len(wave) == expected_samples
-
-
-# generate combined wav bytes tests
-def test_generate_combined_wav_bytes_basic():
-    """Test that generate_combined_wav_bytes returns a valid WAV buffer"""
-    spectrum_data = [(100, 0.5), (200, 0.3)]  # Simple spectrum
-
-    wav_buffer = generate_combined_wav_bytes(
-        spectrum_data,
-        duration=0.1,  # Short duration for fast test
-        sample_rate=8000,  # Low sample rate for fast test
-        algorithm="linear",
-    )
-
-    # Should return a BytesIO buffer
-    assert hasattr(wav_buffer, "read")
-    assert hasattr(wav_buffer, "seek")
-
-    # Buffer should have content
-    wav_buffer.seek(0)
-    content = wav_buffer.read()
-    assert len(content) > 0
 
 
 # python -m pytest backend/tests/ -v
