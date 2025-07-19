@@ -195,9 +195,7 @@ def generate_audio_with_data(algorithm):
             "compound": compound_actual,
             "accession": accession,
             "audio_base64": audio_base64,
-            "spectrum": {
-                "transformed": transformed_data,
-            },
+            "spectrum": transformed_data,
             "algorithm": algorithm,
             "parameters": algorithm_params,
             "audio_settings": {"duration": duration, "sample_rate": sample_rate},
