@@ -1,5 +1,5 @@
 from flask import Flask, request, send_file, send_from_directory
-from converter import generate_combined_wav_bytes
+from converter import generate_combined_wav_bytes, generate_combined_wav_bytes_and_data
 from massbank import get_massbank_peaks
 from flask_cors import CORS
 import time
@@ -148,11 +148,11 @@ def generate_audio_with_data(algorithm):
         return {"error": "No JSON data provided"}, 400
 
     compound = data.get("compound")
-    offset = data.get("offset", 300)
-    scale = data.get("scale", 100000)
-    shift = data.get("shift", 1)
-    sample_rate = data.get("sample_rate", 96000)
-    duration = data.get("duration", 5.0)
+    offset = float(data.get("offset", 300))
+    scale = float(data.get("scale", 100000))
+    shift = float(data.get("shift", 1))
+    sample_rate = int(data.get("sample_rate", 96000))
+    duration = float(data.get("duration", 5.0))
 
     if not compound:
         return {"error": "No compound provided"}, 400
@@ -172,7 +172,7 @@ def generate_audio_with_data(algorithm):
 
         log_search(compound_actual, accession)
 
-        wav_buffer = generate_combined_wav_bytes(
+        wav_buffer, transformed_data = generate_combined_wav_bytes_and_data(
             spectrum,
             offset=offset,
             scale=scale,
@@ -184,6 +184,7 @@ def generate_audio_with_data(algorithm):
 
         # Convert WAV to base64
         import base64
+
         audio_base64 = base64.b64encode(wav_buffer.getvalue()).decode()
 
         # Prepare algorithm parameters based on algorithm type
@@ -198,15 +199,11 @@ def generate_audio_with_data(algorithm):
             "accession": accession,
             "audio_base64": audio_base64,
             "spectrum": {
-                "original": [{"mz": mz, "intensity": intensity} for mz, intensity in spectrum],
-                "transformed": []  # TODO: Add transformed spectrum data
+                "transformed": transformed_data,
             },
             "algorithm": algorithm,
             "parameters": algorithm_params,
-            "audio_settings": {
-                "duration": duration,
-                "sample_rate": sample_rate
-            }
+            "audio_settings": {"duration": duration, "sample_rate": sample_rate},
         }
 
         return response_data, 200

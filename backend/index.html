@@ -105,6 +105,46 @@
 
     <button onclick="fetchAudio()">Generate Audio</button>
 
+    <!-- testing POST -->
+    <button onclick="testPostEndpoint()">Test New POST Endpoint</button>
+
+    <h4>Request Body Sent:</h4>
+    <pre
+      id="requestBody"
+      style="background: #e8f4fd; padding: 10px; font-size: 12px; display: none"
+    ></pre>
+
+    <h3>POST Response:</h3>
+    <pre
+      id="postResponse"
+      style="
+        background: #f5f5f5;
+        padding: 10px;
+        font-size: 12px;
+        display: none;
+        max-height: 300px;
+        overflow-y: auto;
+      "
+    ></pre>
+
+    <div id="spectrumData" style="display: none">
+      <h4>Spectrum Data (m/z → frequency transformations):</h4>
+      <table
+        border="1"
+        id="spectrumTable"
+        style="font-size: 12px; border-collapse: collapse"
+      >
+        <thead>
+          <tr>
+            <th style="padding: 5px">m/z</th>
+            <th style="padding: 5px">Frequency (Hz)</th>
+            <th style="padding: 5px">Intensity</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
     <p id="status"></p>
     <p id="metaInfo" style="display: none"></p>
     <audio id="audioPlayer" controls style="display: none"></audio>
@@ -205,6 +245,91 @@
             fetchAudio();
           }
         });
+
+      // testing POST
+      async function testPostEndpoint() {
+        // Reuse all the existing form reading logic
+        const compound = document.getElementById("compoundInput").value.trim();
+        const algorithmInput = document.querySelector(
+          'input[name="algorithm"]:checked'
+        );
+        const algorithm = algorithmInput ? algorithmInput.value : "linear";
+        const offset = document.getElementById("offsetInput").value.trim();
+        const scale = document.getElementById("scaleInput").value.trim();
+        const shift = document.getElementById("shiftInput").value.trim();
+        const duration = document.getElementById("durationInput").value.trim();
+        const sampleRate = document
+          .getElementById("sampleRateInput")
+          .value.trim();
+
+        // Prepare request body based on algorithm
+        let requestBody = {
+          compound: compound,
+          duration: duration,
+          sample_rate: sampleRate,
+        };
+
+        if (algorithm === "linear") {
+          requestBody.offset = offset;
+        } else if (algorithm === "inverse") {
+          requestBody.scale = scale;
+          requestBody.shift = shift;
+        }
+
+        const postResponse = document.getElementById("postResponse");
+        const spectrumData = document.getElementById("spectrumData");
+
+        postResponse.textContent = "Loading...";
+        postResponse.style.display = "block";
+        spectrumData.style.display = "none";
+
+        document.getElementById("requestBody").textContent = JSON.stringify(
+          requestBody,
+          null,
+          2
+        );
+        document.getElementById("requestBody").style.display = "block";
+
+        try {
+          const response = await fetch(`/massbank/${algorithm}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            postResponse.textContent = `Error ${
+              response.status
+            }: ${JSON.stringify(error, null, 2)}`;
+            return;
+          }
+
+          const data = await response.json();
+
+          // Display raw JSON response
+          postResponse.textContent = JSON.stringify(data, null, 2);
+
+          // Display spectrum data in table
+          if (data.spectrum && data.spectrum.transformed) {
+            const tableBody = document.querySelector("#spectrumTable tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            data.spectrum.transformed.forEach((item) => {
+              const row = tableBody.insertRow();
+              row.insertCell(0).textContent = item.mz.toFixed(4);
+              row.insertCell(1).textContent = item.frequency.toFixed(2);
+              row.insertCell(2).textContent = item.intensity.toLocaleString();
+            });
+
+            spectrumData.style.display = "block";
+          }
+        } catch (e) {
+          postResponse.textContent = `Error: ${e.message}`;
+        }
+      }
 
       async function loadHistory() {
         try {
