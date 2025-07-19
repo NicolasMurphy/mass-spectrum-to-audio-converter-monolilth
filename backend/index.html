@@ -35,14 +35,6 @@
       checked
     />
     <label for="linearInput">Linear (m/z + offset)</label><br />
-    <!-- <input
-      type="radio"
-      id="logarithmicInput"
-      name="algorithm"
-      value="logarithmic"
-    />
-    <label for="logarithmic">Logarithmic</label>
-    <br /><br /> -->
     <input type="radio" id="inverseInput" name="algorithm" value="inverse" />
     <label for="inverseInput">Inverse (scale / (m/z + shift))</label>
     <br /><br />
@@ -54,22 +46,6 @@
       placeholder="e.g. 300"
       value="300"
     /><br /><br />
-
-    <!-- <label for="logShiftInput">Log Shift (logarithmic only)</label><br />
-    <input
-      type="number"
-      id="logShiftInput"
-      placeholder="e.g. 1"
-      value="1"
-    /><br /><br />
-
-    <label for="scaleInput">Scale (logarithmic only)</label><br />
-    <input
-      type="number"
-      id="scaleInput"
-      placeholder="e.g. 300"
-      value="300"
-    /><br /><br /> -->
 
     <label for="scaleInput">Scale (inverse only)</label><br />
     <input
@@ -103,16 +79,20 @@
       value="96000"
     /><br /><br />
 
-    <button onclick="fetchAudio()">Generate Audio</button>
-
-    <!-- testing POST -->
+    <button onclick="fetchAudio()">Generate Audio (OLD GET)</button>
     <button onclick="testPostEndpoint()">Test New POST Endpoint</button>
+
+    <!-- POST endpoint sections -->
+    <h4>API Endpoint:</h4>
+    <p id="requestEndpoint" style="font-family: monospace; color: #555; display: none;"></p>
 
     <h4>Request Body Sent:</h4>
     <pre
       id="requestBody"
       style="background: #e8f4fd; padding: 10px; font-size: 12px; display: none"
     ></pre>
+
+    <p id="postMetaInfo" style="display: none;"></p>
 
     <h3>POST Response:</h3>
     <pre
@@ -139,6 +119,8 @@
             <th style="padding: 5px">m/z</th>
             <th style="padding: 5px">Frequency (Hz)</th>
             <th style="padding: 5px">Intensity</th>
+            <th style="padding: 5px">Amplitude</th>
+            <th style="padding: 5px">Amplitude (dB)</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -147,16 +129,18 @@
 
     <div id="postAudioSection" style="display: none">
       <h4>Audio from POST Response:</h4>
-      <audio id="postAudioPlayer" controls style="display: none"></audio
-      ><br /><br />
+      <audio id="postAudioPlayer" controls style="display: none"></audio><br /><br />
       <a id="postDownloadLink" style="display: none">Download WAV from POST</a>
     </div>
 
+    <!-- OLD GET endpoint sections -->
+    <hr style="margin: 30px 0;">
+    <h3>OLD GET Endpoint Results:</h3>
     <p id="status"></p>
     <p id="metaInfo" style="display: none"></p>
     <audio id="audioPlayer" controls style="display: none"></audio>
     <a id="downloadLink" style="display: none">Download WAV</a>
-    <p>query URL:</p>
+    <p>Query URL:</p>
     <p id="rawUrl" style="font-family: monospace; color: #555"></p>
 
     <h2>Recent Searches</h2>
@@ -170,8 +154,6 @@
         );
         const algorithm = algorithmInput ? algorithmInput.value : "linear";
         const offset = document.getElementById("offsetInput").value.trim();
-        // const logShift = document.getElementById("logShiftInput").value.trim();
-        // const scale = document.getElementById("scaleInput").value.trim();
         const scale = document.getElementById("scaleInput").value.trim();
         const shift = document.getElementById("shiftInput").value.trim();
         const duration = document.getElementById("durationInput").value.trim();
@@ -190,17 +172,11 @@
         metaInfo.style.display = "none";
 
         try {
-          // not the most DRY approach, but keeps ordering consistent
-          // database -> algorithm -> compound -> offset -> scale -> shift -> duration -> sample rate
           let queryUrl = ``;
           if (algorithm === "linear") {
             queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
               compound
             )}&offset=${offset}&duration=${duration}&sample_rate=${sampleRate}`;
-            // } else if (algorithm === "logarithmic") {
-            //  queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
-            //    compound
-            //  )}&logShift=${logShift}&scale=${scale}&duration=${duration}&sample_rate=${sampleRate}`;
           } else if (algorithm === "inverse") {
             queryUrl = `/massbank/${algorithm}?compound=${encodeURIComponent(
               compound
@@ -220,21 +196,17 @@
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
 
-          // extract metadata from headers
           const compoundName = response.headers.get("X-Compound") || compound;
           const accession = response.headers.get("X-Accession") || "unknown";
 
-          // update metadata display
           const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${accession}`;
           metaInfo.innerHTML = `Compound: ${compoundName} | Accession: <a href="${accessionUrl}" target="_blank">${accession}</a>`;
 
           metaInfo.style.display = "block";
 
-          // Set audio player
           audio.src = url;
           audio.style.display = "block";
 
-          // Set download link using compound-accession format
           link.href = url;
           link.download = `${compoundName}-${accession}.wav`;
           link.textContent = "Download WAV";
@@ -245,7 +217,8 @@
           status.textContent = `Error: ${e.message}`;
         }
       }
-      document // user clicks enter to generate audio
+
+      document
         .getElementById("compoundInput")
         .addEventListener("keydown", function (event) {
           if (event.key === "Enter") {
@@ -253,9 +226,7 @@
           }
         });
 
-      // testing POST
       async function testPostEndpoint() {
-        // Reuse all the existing form reading logic
         const compound = document.getElementById("compoundInput").value.trim();
         const algorithmInput = document.querySelector(
           'input[name="algorithm"]:checked'
@@ -269,7 +240,6 @@
           .getElementById("sampleRateInput")
           .value.trim();
 
-        // Prepare request body based on algorithm
         let requestBody = {
           compound: compound,
           duration: duration,
@@ -289,6 +259,10 @@
         postResponse.textContent = "Loading...";
         postResponse.style.display = "block";
         spectrumData.style.display = "none";
+
+        // Display API endpoint
+        document.getElementById("requestEndpoint").textContent = `POST /massbank/${algorithm}`;
+        document.getElementById("requestEndpoint").style.display = "block";
 
         document.getElementById("requestBody").textContent = JSON.stringify(
           requestBody,
@@ -319,39 +293,44 @@
           // Display raw JSON response
           postResponse.textContent = JSON.stringify(data, null, 2);
 
-          // Display spectrum data in table
-          if (data.spectrum && data.spectrum.transformed) {
-            const tableBody = document.querySelector("#spectrumTable tbody");
-            tableBody.innerHTML = ""; // Clear existing rows
+          // Display compound and accession info
+          const postMetaInfo = document.getElementById("postMetaInfo");
+          const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${data.accession}`;
+          postMetaInfo.innerHTML = `Compound: ${data.compound} | Accession: <a href="${accessionUrl}" target="_blank">${data.accession}</a>`;
+          postMetaInfo.style.display = "block";
 
-            data.spectrum.transformed.forEach((item) => {
+          // Display spectrum data in table (updated for new structure)
+          if (data.spectrum) {
+            const tableBody = document.querySelector("#spectrumTable tbody");
+            tableBody.innerHTML = "";
+
+            data.spectrum.forEach((item) => {
               const row = tableBody.insertRow();
               row.insertCell(0).textContent = item.mz.toFixed(4);
               row.insertCell(1).textContent = item.frequency.toFixed(2);
               row.insertCell(2).textContent = item.intensity.toLocaleString();
+              row.insertCell(3).textContent = item.amplitude_linear.toFixed(4);
+              row.insertCell(4).textContent = item.amplitude_db.toFixed(2);
             });
 
             spectrumData.style.display = "block";
           }
+
           if (data.audio_base64) {
             const audioBlob = base64ToBlob(data.audio_base64);
             const audioUrl = URL.createObjectURL(audioBlob);
 
-            // Set up audio player
             const postAudioPlayer = document.getElementById("postAudioPlayer");
             postAudioPlayer.src = audioUrl;
             postAudioPlayer.style.display = "block";
 
-            // Set up download link
-            const postDownloadLink =
-              document.getElementById("postDownloadLink");
+            const postDownloadLink = document.getElementById("postDownloadLink");
             const filename = `${data.compound}-${data.accession}.wav`;
             postDownloadLink.href = audioUrl;
             postDownloadLink.download = filename;
             postDownloadLink.textContent = `Download ${filename}`;
             postDownloadLink.style.display = "inline";
 
-            // Show the audio section
             document.getElementById("postAudioSection").style.display = "block";
           }
         } catch (e) {
