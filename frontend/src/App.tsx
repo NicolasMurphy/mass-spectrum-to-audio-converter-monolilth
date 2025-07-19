@@ -2,6 +2,18 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import SamplePiano from "./SamplePiano";
 
+function base64ToBlob(base64String: string, contentType = "audio/wav"): Blob {
+  const byteCharacters = atob(base64String);
+  const byteNumbers = new Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: contentType });
+}
+
 function App() {
   const [compound, setCompound] = useState<string>("");
   const [status, setStatus] = useState<string>("");
@@ -53,35 +65,39 @@ function App() {
       }
 
       try {
-        const queryParams = new URLSearchParams({
+        const requestBody: Record<string, string> = {
           compound,
           duration: durationNum.toString(),
           sample_rate: sampleRateNum.toString(),
-        });
+        };
 
         if (algorithm === "linear") {
-          queryParams.append("offset", offset.toString());
+          requestBody.offset = offset;
         } else if (algorithm === "inverse") {
-          queryParams.append("scale", scale.toString());
-          queryParams.append("shift", shift.toString());
+          requestBody.scale = scale;
+          requestBody.shift = shift;
         }
 
         const response = await fetch(
-          // `http://localhost:5000/massbank/${algorithm}?${queryParams}`
-          `https://mass-spectrum-to-audio-converter.onrender.com/massbank/${algorithm}?${queryParams}`
+          // `http://localhost:5000/massbank/${algorithm}`
+          `https://mass-spectrum-to-audio-converter.onrender.com/massbank/${algorithm}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
         );
 
-        if (!response.ok) {
-          const error = await response.json();
-          setStatus(`Error: ${error.error}`);
-          return;
-        }
+        const data = await response.json();
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
+        // Convert base64 audio to blob
+        const audioBlob = base64ToBlob(data.audio_base64);
+        const url = URL.createObjectURL(audioBlob);
 
-        setCompoundName(response.headers.get("X-Compound") || compound);
-        setAccession(response.headers.get("X-Accession") || "unknown");
+        setCompoundName(data.compound);
+        setAccession(data.accession);
         setAudioUrl(url);
         setStatus("Success!");
       } catch (err) {
