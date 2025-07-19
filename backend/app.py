@@ -1,8 +1,8 @@
+import time, base64
 from flask import Flask, request, send_file, send_from_directory
 from converter import generate_combined_wav_bytes, generate_combined_wav_bytes_and_data
 from massbank import get_massbank_peaks
 from flask_cors import CORS
-import time
 from db.queries import log_search
 from db.queries import get_search_history
 
@@ -181,9 +181,6 @@ def generate_audio_with_data(algorithm):
             sample_rate=sample_rate,
             algorithm=algorithm,
         )
-
-        # Convert WAV to base64
-        import base64
 
         audio_base64 = base64.b64encode(wav_buffer.getvalue()).decode()
 
