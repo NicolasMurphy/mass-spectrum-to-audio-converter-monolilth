@@ -1,3 +1,29 @@
+### [2025-07-18] Continue implementation of new `/massbank/<algorithm>` POST endpoint
+
+- **Goals:**
+
+  - Continue implementation of new `/massbank/<algorithm>` POST endpoint
+
+- **Notes:**
+
+  - Created new `generate_combined_wav_bytes_and_data` function that mimics `generate_combined_wav_bytes` but also returns transformed data.
+  - Updated POST request to utilize the new `generate_combined_wav_bytes_and_data` function and include the spectrum data in the response.
+  - Fixed JSON parameter parsing (string to float conversion) (Flask's request.args.get(type=float) vs manual JSON parsing)
+  - Implemented the following in dev testing sandbox:
+    - Request and response body
+    - Transformed values in table
+    - Conversion of base64 string to playable and downloadable audio
+  - Considerations:
+    - Include request URL in dev testing sandbox
+    - Include converted decibel values in transformed/spectrum JSON
+    - Update history table to include additional fields from new POST endpoint
+
+- **Next Steps:**
+  - Simplify `"spectrum": {"transformed": [...]}` to be `"spectrum": [...]` for JSON Response
+  - Replace existing GET endpoint in frontend with POST endpoint
+  - Display transformed values in frontend (for now just a table, but a visual graph later)
+  - Implement autocomplete
+
 ### [2025-07-17] Pass audio as base64 string along with spectrum data
 
 - **Goals:**
@@ -14,7 +40,6 @@
 - **Next Steps:**
   - Continue with implementation of passing spectrum data in API call
   - Implement autocomplete
-
 
 ### [2025-07-16] Autocomplete strategy
 
