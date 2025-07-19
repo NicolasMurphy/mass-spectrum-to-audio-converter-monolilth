@@ -2,25 +2,13 @@
 
 ## Overview
 
-The Mass Spectrum to Audio Converter API converts mass spectrometry data into audio files using configurable algorithms and parameters. The API currently retrieves compound spectra from the MassBank database and generates WAV audio files based on the spectral data.
+The Mass Spectrum to Audio Converter API converts mass spectrometry data into audio files using configurable algorithms and parameters. The API retrieves compound spectra from the MassBank database and generates audio data along with detailed spectrum transformation information.
 
 ## Base URL
 
 ```
 https://mass-spectrum-to-audio-converter.onrender.com
 ```
-
-## Authentication
-
-No authentication required.
-
-## Rate Limiting
-
-- **Rate Limit:** 10 requests per 60-second window per client IP address
-- **Sliding Window:** The 60-second window slides with each request
-- **Exceeded Limit:** Returns HTTP 429 with `{"error": "Rate limit exceeded. Try again later."}`
-
----
 
 ## Data Source
 
@@ -35,11 +23,11 @@ This API integrates with the MassBank database through their REST API:
 
 ## Endpoints
 
-### 1. Generate Audio from Compound Spectrum
+### 1. Generate Audio and Spectrum Data from Compound
 
-**Endpoint:** `GET /massbank/<algorithm>`
+**Endpoint:** `POST /massbank/<algorithm>`
 
-Generates an audio file from a compound's mass spectrum data using the specified algorithm.
+Generates audio data from a compound's mass spectrum data using the specified algorithm and returns both the audio file as base64 and detailed spectrum transformation data.
 
 #### Path Parameters
 
@@ -47,7 +35,9 @@ Generates an audio file from a compound's mass spectrum data using the specified
 | ----------- | ------ | -------- | -------------------------------------------------------------------- |
 | `algorithm` | string | Yes      | Algorithm for audio generation. Must be either `linear` or `inverse` |
 
-#### Query Parameters
+#### Request Body
+
+**Content-Type:** `application/json`
 
 | Parameter     | Type    | Required | Default | Validation  | Description                                                                                          |
 | ------------- | ------- | -------- | ------- | ----------- | ---------------------------------------------------------------------------------------------------- |
@@ -62,43 +52,118 @@ Generates an audio file from a compound's mass spectrum data using the specified
 
 **Success Response (200 OK)**
 
-- **Content-Type:** `audio/wav`
-- **Body:** WAV audio file as binary data
-- **Headers:**
-  - `X-Compound`: Actual compound name found in MassBank
-  - `X-Accession`: MassBank accession number
-- **Filename:** `{compound_name}-{accession}.wav` (e.g., `Caffeine-MSBNK-ACES_SU-AS000088.wav`)
+**Content-Type:** `application/json`
+
+```json
+{
+  "accession": "MSBNK-ACES_SU-AS000088",
+  "algorithm": "linear",
+  "audio_base64": "UklGRiSmDgBXQVZFZm10IBAAAAABAAEA...",
+  "audio_settings": {
+    "duration": 5.0,
+    "sample_rate": 96000
+  },
+  "compound": "Caffeine",
+  "parameters": {
+    "offset": 300.0
+  },
+  "spectrum": [
+    {
+      "amplitude_db": -39.67184178472352,
+      "amplitude_linear": 0.010385033713897209,
+      "frequency": 356.0498390197754,
+      "intensity": 5501836,
+      "mz": 56.04983901977539
+    },
+    {
+      "amplitude_db": -27.48478053530794,
+      "amplitude_linear": 0.042243605014416714,
+      "frequency": 369.04469299316406,
+      "intensity": 22380032,
+      "mz": 69.04469299316406
+    },
+    {
+      "amplitude_db": -25.765718624084222,
+      "amplitude_linear": 0.051488953951078366,
+      "frequency": 383.06038665771484,
+      "intensity": 27278080,
+      "mz": 83.06038665771484
+    }
+  ]
+}
+```
+
+**Response Fields:**
+
+| Field                         | Type    | Description                                  |
+| ----------------------------- | ------- | -------------------------------------------- |
+| `compound`                    | string  | Actual compound name found in MassBank       |
+| `accession`                   | string  | MassBank accession number                    |
+| `audio_base64`                | string  | Base64-encoded WAV audio file                |
+| `spectrum`                    | array   | Array of spectrum transformation data points |
+| `spectrum[].mz`               | float   | Original m/z value from mass spectrum        |
+| `spectrum[].frequency`        | float   | Converted frequency in Hz                    |
+| `spectrum[].intensity`        | integer | Original intensity value from MassBank       |
+| `spectrum[].amplitude_linear` | float   | Normalized amplitude (0-1 range)             |
+| `spectrum[].amplitude_db`     | float   | Amplitude in decibels                        |
+| `algorithm`                   | string  | Algorithm used for conversion                |
+| `parameters`                  | object  | Algorithm-specific parameters used           |
+| `parameters.offset`           | float   | Offset value (linear algorithm only)         |
+| `parameters.scale`            | float   | Scale value (inverse algorithm only)         |
+| `parameters.shift`            | float   | Shift value (inverse algorithm only)         |
+| `audio_settings`              | object  | Audio generation settings                    |
+| `audio_settings.duration`     | float   | Duration of generated audio in seconds       |
+| `audio_settings.sample_rate`  | integer | Audio sample rate in Hz                      |
 
 **Error Responses**
 
-| Status Code | Description                | Example Response                                                     |
-| ----------- | -------------------------- | -------------------------------------------------------------------- |
-| 400         | Invalid algorithm          | `{"error": "Unsupported algorithm 'fourier'"}`                       |
-| 400         | Missing compound           | `{"error": "No compound provided"}`                                  |
-| 400         | Invalid duration           | `{"error": "Duration must be between 0.01 and 30 seconds."}`         |
-| 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000"}`           |
-| 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`              |
-| 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`                 |
-| 500         | Internal server error      | `{"error": "No records found"}`                                      |
+| Status Code | Description                | Example Response                                             |
+| ----------- | -------------------------- | ------------------------------------------------------------ |
+| 400         | Invalid algorithm          | `{"error": "Unsupported algorithm 'fourier'"}`               |
+| 400         | Missing compound           | `{"error": "No compound provided"}`                          |
+| 400         | Invalid duration           | `{"error": "Duration must be between 0.01 and 30 seconds."}` |
+| 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000"}`   |
+| 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`      |
+| 400         | Invalid JSON               | `{"error": "No JSON data provided"}`                         |
+| 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`         |
+| 500         | Internal server error      | `{"error": "No records found"}`                              |
 
 #### Example Requests
 
 **Basic Request (Linear Algorithm)**
 
-```
-GET https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=caffeine
-```
-
-**Linear Algorithm with Custom Offset**
-
-```
-GET https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear?compound=aspirin&offset=250&duration=10&sample_rate=48000
+```bash
+curl -X POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear \
+  -H "Content-Type: application/json" \
+  -d '{
+    "compound": "caffeine"
+  }'
 ```
 
-**Inverse Algorithm with Custom Scale and Shift**
+**Linear Algorithm with Custom Parameters**
 
+```bash
+curl -X POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear \
+  -H "Content-Type: application/json" \
+  -d '{
+    "compound": "aspirin",
+    "offset": 250,
+    "duration": 10,
+    "sample_rate": 48000
+  }'
 ```
-GET https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse?compound=folate&scale=50000&shift=2&duration=3
+
+**Inverse Algorithm with Custom Parameters**
+
+```bash
+curl -X POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse \
+  -H "Content-Type: application/json" \
+  -d '{
+    "compound": "folate",
+    "scale": 50000,
+    "shift": 2,
+    "duration": 3
+  }'
 ```
 
 ---
@@ -145,51 +210,12 @@ Retrieves the search history of compounds that have been processed.
 
 **Get Last 10 Searches**
 
-```
-GET https://mass-spectrum-to-audio-converter.onrender.com/history
+```bash
+curl https://mass-spectrum-to-audio-converter.onrender.com/history
 ```
 
 **Get Last 50 Searches**
 
+```bash
+curl https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50
 ```
-GET https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50
-```
-
----
-
-## Algorithm Types
-
-### Linear Algorithm
-
-- **Frequency Calculation:** `frequency = m/z + offset`
-- Converts m/z values to Hz by adding a constant offset
-- **Parameters:** `offset` (default: 300)
-
-### Inverse Algorithm
-
-- **Frequency Calculation:** `frequency = scale / (m/z + shift)`
-- Converts m/z values to Hz using inverse relationship where higher m/z values produce lower frequencies
-- **Parameters:** `scale` (default: 100000), `shift` (default: 1)
-
----
-
-## Audio Generation Process
-
-1. **Compound Lookup**: The API searches MassBank for the specified compound using the `/records/search` endpoint
-2. **Record Selection**: Automatically selects the first matching record from the search results
-3. **Spectrum Retrieval**: Mass spectrum data (m/z and intensity values) is retrieved using the `/records/{accession}` endpoint, where m/z represents mass-to-charge ratio
-4. **Frequency Conversion**: m/z values are converted to audio frequencies (Hz) using the selected algorithm
-5. **Intensity Processing**: Intensity values are used as amplitudes for sine wave generation, then normalized to prevent clipping
-6. **Audio Synthesis**: Individual sine waves are generated for each m/z peak and then summed together to create the final audio waveform
-7. **WAV Export**: The summed waveform is encoded as 16-bit PCM WAV format with specified sample rate and duration
-
----
-
-## Response Headers
-
-Successful audio generation responses include additional metadata:
-
-- `X-Compound`: The actual compound name found in MassBank (may differ from search query)
-- `X-Accession`: MassBank accession number for the spectrum used
-- `Content-Type`: `audio/wav`
-- `Content-Disposition`: `attachment; filename="{compound}-{accession}.wav"`
