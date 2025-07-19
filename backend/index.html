@@ -145,6 +145,13 @@
       </table>
     </div>
 
+    <div id="postAudioSection" style="display: none">
+      <h4>Audio from POST Response:</h4>
+      <audio id="postAudioPlayer" controls style="display: none"></audio
+      ><br /><br />
+      <a id="postDownloadLink" style="display: none">Download WAV from POST</a>
+    </div>
+
     <p id="status"></p>
     <p id="metaInfo" style="display: none"></p>
     <audio id="audioPlayer" controls style="display: none"></audio>
@@ -326,9 +333,42 @@
 
             spectrumData.style.display = "block";
           }
+          if (data.audio_base64) {
+            const audioBlob = base64ToBlob(data.audio_base64);
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            // Set up audio player
+            const postAudioPlayer = document.getElementById("postAudioPlayer");
+            postAudioPlayer.src = audioUrl;
+            postAudioPlayer.style.display = "block";
+
+            // Set up download link
+            const postDownloadLink =
+              document.getElementById("postDownloadLink");
+            const filename = `${data.compound}-${data.accession}.wav`;
+            postDownloadLink.href = audioUrl;
+            postDownloadLink.download = filename;
+            postDownloadLink.textContent = `Download ${filename}`;
+            postDownloadLink.style.display = "inline";
+
+            // Show the audio section
+            document.getElementById("postAudioSection").style.display = "block";
+          }
         } catch (e) {
           postResponse.textContent = `Error: ${e.message}`;
         }
+      }
+
+      function base64ToBlob(base64String, contentType = "audio/wav") {
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], { type: contentType });
       }
 
       async function loadHistory() {
