@@ -87,7 +87,10 @@ def generate_combined_wav_bytes_and_data(
 ):
     t = np.linspace(0, duration, int(sample_rate * duration), False)
     combined_wave = np.zeros_like(t)
-    transformed_data = []  # Track transformation data
+    transformed_data = []
+
+    # Pre-normalize intensities to prevent huge numbers
+    max_intensity = max(intensity for mz, intensity in spectrum_data)
 
     for mz, intensity in spectrum_data:
         if algorithm == "linear":
@@ -97,19 +100,37 @@ def generate_combined_wav_bytes_and_data(
         else:
             raise ValueError(f"Unknown algorithm: {algorithm}")
 
-        # Always track the transformation, even if freq <= 0
-        transformed_data.append({"mz": mz, "frequency": freq, "intensity": intensity})
+        # Normalize intensity to 0-1 range BEFORE generating sine wave
+        normalized_intensity = intensity / max_intensity
+
+        # Store transformation data with the normalized amplitude
+        transformed_data.append(
+            {
+                "mz": mz,
+                "frequency": freq,
+                "intensity": intensity,  # Keep original intensity
+                "amplitude_linear": normalized_intensity,  # 0-1 range
+                "amplitude_db": (
+                    20 * np.log10(normalized_intensity)
+                    if normalized_intensity > 0
+                    else -np.inf
+                ),
+            }
+        )
 
         if freq <= 0:
             continue
+
+        # Generate sine wave with pre-normalized intensity
         sine_wave = generate_sine_wave(
-            freq, intensity, duration=duration, sample_rate=sample_rate
+            freq, normalized_intensity, duration=duration, sample_rate=sample_rate
         )
 
         combined_wave += sine_wave
 
-    # Normalize and convert to 16-bit PCM
-    combined_wave = combined_wave / np.max(np.abs(combined_wave))
+    # Final normalization (should be minimal now since intensities are pre-normalized)
+    if np.max(np.abs(combined_wave)) > 0:
+        combined_wave = combined_wave / np.max(np.abs(combined_wave))
     combined_wave = np.int16(combined_wave * np.iinfo(np.int16).max)
 
     wav_buffer = io.BytesIO()
