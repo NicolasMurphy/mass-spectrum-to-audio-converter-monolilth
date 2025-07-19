@@ -30,6 +30,13 @@ function App() {
     { compound: string; accession: string; created_at: string }[]
   >([]);
   const [historyError, setHistoryError] = useState<string | null>(null);
+  const [spectrumData, setSpectrumData] = useState<Array<{
+    mz: number;
+    frequency: number;
+    intensity: number;
+    amplitude_linear: number;
+    amplitude_db: number;
+  }> | null>(null);
 
   useEffect(() => {
     const handleFetch = async () => {
@@ -99,6 +106,7 @@ function App() {
         setCompoundName(data.compound);
         setAccession(data.accession);
         setAudioUrl(url);
+        setSpectrumData(data.spectrum);
         setStatus("Success!");
       } catch (err) {
         if (err instanceof Error) {
@@ -191,10 +199,60 @@ function App() {
     <div data-theme="corporate" className="min-h-screen bg-base-200">
       <div className="justify-items-center p-8 flex-col w-full px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3">
-          {/* column 1 - intentionally blank for now */}
-          <div></div>
+          {/* column 1 - spectrum data tables */}
+          <div className="mx-auto m-4 order-2 lg:order-1">
+            {spectrumData && (
+              <>
+                {/* Original Mass Spectrum Data */}
+                <h2 className="font-bold text-lg mb-2">Mass Spectrum Data</h2>
+                <div className="overflow-x-auto mb-6">
+                  <table className="table table-compact table-zebra text-xs">
+                    <thead>
+                      <tr>
+                        <th>m/z</th>
+                        <th>Intensity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {spectrumData.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.mz.toFixed(4)}</td>
+                          <td>{item.intensity.toLocaleString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Transformed Audio Data */}
+                <h2 className="font-bold text-lg mb-2">
+                  Audio Transformation Data
+                </h2>
+                <div className="overflow-x-auto">
+                  <table className="table table-compact table-zebra text-xs">
+                    <thead>
+                      <tr>
+                        <th>Frequency (Hz)</th>
+                        <th>Amplitude</th>
+                        <th>Amplitude (dB)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {spectrumData.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.frequency.toFixed(2)}</td>
+                          <td>{item.amplitude_linear.toFixed(4)}</td>
+                          <td>{item.amplitude_db.toFixed(2)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
           {/* column 2 - form, audio player, keyboard - "app core" */}
-          <div>
+          <div className="order-1 lg:order-2">
             <div className="card bg-neutral-content w-full max-w-md mx-auto">
               <div className="card-body">
                 <h1 className="text-3xl font-bold text-center mb-2">
@@ -389,7 +447,7 @@ function App() {
             {audioUrl && <SamplePiano audioUrl={audioUrl} />}
           </div>
           {/* column 3 - Search history */}
-          <div className="mx-auto m-4">
+          <div className="mx-auto m-4 order-3 lg:order-3">
             <h2 className="font-bold text-lg mb-2">Recently Generated</h2>
             {historyError ? (
               <p className="text-sm text-red-500">{historyError}</p>
