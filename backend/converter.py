@@ -2,13 +2,6 @@ import numpy as np
 from scipy.io.wavfile import write
 import io
 
-# import math
-
-# import traceback
-
-# SAMPLING_RATE = 96000
-# DURATION = 5.0
-
 
 def generate_sine_wave(freq, intensity, duration=5.0, sample_rate=96000):
     t = np.linspace(0, duration, int(sample_rate * duration), False)
@@ -19,10 +12,6 @@ def generate_sine_wave(freq, intensity, duration=5.0, sample_rate=96000):
 
 def mz_to_frequency_linear(mz, offset: float = 300):
     return mz + offset
-
-
-# def mz_to_frequency_logarithmic(mz, logShift=1, scale=300, logOffset=-2000):
-#     return (math.log2(mz + logShift) * scale) + logOffset
 
 
 def mz_to_frequency_inverse(mz, scale: float = 100000, shift: float = 1):

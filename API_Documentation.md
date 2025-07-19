@@ -89,6 +89,7 @@ Generates audio data from a compound's mass spectrum data using the specified al
       "intensity": 27278080,
       "mz": 83.06038665771484
     }
+    /* Additional spectrum data... */
   ]
 }
 ```
