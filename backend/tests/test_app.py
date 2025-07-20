@@ -45,3 +45,35 @@ def test_post_endpoint_rejects_missing_compound(client):
     assert response.status_code == 400
     response_data = json.loads(response.data)
     assert response_data["error"] == "No compound provided"
+
+
+def test_post_endpoint_rejects_invalid_algorithm(client):
+    """Test that POST /massbank/<algorithm> rejects unsupported algorithms"""
+
+    request_data = {"compound": "caffeine"}
+
+    response = client.post(
+        "/massbank/fourier",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    assert response.status_code == 400
+    response_data = json.loads(response.data)
+    assert response_data["error"] == "Unsupported algorithm 'fourier'"
+
+
+def test_post_endpoint_rejects_invalid_duration(client):
+    """Test that POST /massbank/linear rejects duration outside valid range"""
+
+    request_data = {"compound": "caffeine", "duration": 50.0}
+
+    response = client.post(
+        "/massbank/linear",
+        data=json.dumps(request_data),
+        content_type="application/json",
+    )
+
+    assert response.status_code == 400
+    response_data = json.loads(response.data)
+    assert response_data["error"] == "Duration must be between 0.01 and 30 seconds."
