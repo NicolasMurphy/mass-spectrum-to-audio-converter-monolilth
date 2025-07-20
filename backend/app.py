@@ -81,12 +81,16 @@ def generate_audio_with_data(algorithm):
     if not (0.01 <= duration <= 30):
         return {"error": "Duration must be between 0.01 and 30 seconds."}, 400
 
+    try:
+        sample_rate_raw = data.get("sample_rate", 96000)
+        if isinstance(sample_rate_raw, float) and not sample_rate_raw.is_integer():
+            return {"error": "Invalid sample rate. Must be an integer."}, 400
+        sample_rate = int(sample_rate_raw)
+    except (ValueError, TypeError):
+        return {"error": "Invalid sample rate. Must be an integer."}, 400
+
     if not 3500 <= sample_rate <= 192000:
         return {"error": "Sample rate must be between 3500 and 192000"}, 400
-
-    # Validate sample_rate is integer
-    if not isinstance(sample_rate, int):
-        return {"error": "Invalid sample rate. Must be an integer."}, 400
 
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
