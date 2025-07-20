@@ -162,8 +162,8 @@
 
         let requestBody = {
           compound: compound,
-          duration: duration,
-          sample_rate: sampleRate,
+          duration: parseFloat(duration),
+          sample_rate: parseInt(sampleRate),
         };
 
         if (algorithm === "linear") {

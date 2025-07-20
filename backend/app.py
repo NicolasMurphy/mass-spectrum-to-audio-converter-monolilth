@@ -68,12 +68,18 @@ def generate_audio_with_data(algorithm):
     if not data:
         return {"error": "No JSON data provided"}, 400
 
+    # Validate sample_rate BEFORE conversion
+    raw_sr = data.get("sample_rate")
+    if raw_sr is not None:
+        if isinstance(raw_sr, float) or (isinstance(raw_sr, str) and "." in raw_sr):
+            return {"error": "Invalid sample rate. Must be an integer."}, 400
+
     compound = data.get("compound")
     offset = float(data.get("offset", 300))
     scale = float(data.get("scale", 100000))
     shift = float(data.get("shift", 1))
-    sample_rate = int(data.get("sample_rate", 96000))
     duration = float(data.get("duration", 5.0))
+    sample_rate = int(data.get("sample_rate", 96000))
 
     if not compound:
         return {"error": "No compound provided"}, 400
@@ -83,11 +89,6 @@ def generate_audio_with_data(algorithm):
 
     if not 3500 <= sample_rate <= 192000:
         return {"error": "Sample rate must be between 3500 and 192000"}, 400
-
-    # Validate sample_rate format only if provided
-    raw_sr = data.get("sample_rate")
-    if raw_sr is not None and isinstance(raw_sr, float):
-        return {"error": "Invalid sample rate. Must be an integer."}, 400
 
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
