@@ -97,6 +97,12 @@ function App() {
           }
         );
 
+        if (!response.ok) {
+          const errorData = await response.json();
+          setStatus(`Error: ${errorData.error}`);
+          return;
+        }
+
         const data = await response.json();
 
         // Convert base64 audio to blob
