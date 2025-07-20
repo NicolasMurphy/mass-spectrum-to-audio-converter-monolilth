@@ -72,10 +72,10 @@ function App() {
       }
 
       try {
-        const requestBody: Record<string, string> = {
+        const requestBody: Record<string, string | number> = {
           compound,
-          duration: durationNum.toString(),
-          sample_rate: sampleRateNum.toString(),
+          duration: durationNum,
+          sample_rate: sampleRateNum,
         };
 
         if (algorithm === "linear") {
