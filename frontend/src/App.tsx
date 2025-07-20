@@ -246,9 +246,9 @@ function App() {
                     <tbody>
                       {spectrumData.map((item, index) => (
                         <tr key={index}>
-                          <td>{item.frequency.toFixed(2)}</td>
+                          <td>{item.frequency.toFixed(4)}</td>
                           <td>{item.amplitude_linear.toFixed(4)}</td>
-                          <td>{item.amplitude_db.toFixed(2)}</td>
+                          <td>{item.amplitude_db.toFixed(4)}</td>
                         </tr>
                       ))}
                     </tbody>
