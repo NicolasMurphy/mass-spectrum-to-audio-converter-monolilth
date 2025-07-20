@@ -1,3 +1,26 @@
+### [2025-07-19] Finished new POST endpoint, implemented spectrum table in frontend, rewrote API Documentation, removed unused code, began writing unit tests for new functionality
+
+- **Goals:**
+
+  - Finish new POST endpoint
+  - Implement spectrum table in frontend
+  - Rewrite API Documentation
+  - Remove unused code
+  - Begin writing unit tests for new functionality
+
+- **Notes:**
+
+  - Simplified `"spectrum": {"transformed": [...]}` to be `"spectrum": [...]` for JSON Response
+  - Implemented spectrum table in dev testing sandbox and frontend
+  - Rewrote API documentation for new POST endpoint
+  - Removed `generate_combined_wav_bytes`, GET endpoint code, and tests relating to both of those functions
+  - Began writing unit tests for new POST endpoint
+  - Need to finish out unit tests for new POST endpoint and write unit tests for `generate_combined_wav_bytes_and_data` function
+
+- **Next Steps:**
+  - Finish out unit tests
+  - Implement autocomplete
+
 ### [2025-07-18] Continue implementation of new `/massbank/<algorithm>` POST endpoint
 
 - **Goals:**
