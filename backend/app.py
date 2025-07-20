@@ -68,26 +68,28 @@ def generate_audio_with_data(algorithm):
     if not data:
         return {"error": "No JSON data provided"}, 400
 
-    compound = data.get("compound")
-    offset = float(data.get("offset", 300))
-    scale = float(data.get("scale", 100000))
-    shift = float(data.get("shift", 1))
-    sample_rate = int(data.get("sample_rate", 96000))
-    duration = float(data.get("duration", 5.0))
+    try:
+        compound = data.get("compound")
+        offset = float(data.get("offset", 300))
+        scale = float(data.get("scale", 100000))
+        shift = float(data.get("shift", 1))
+        duration = float(data.get("duration", 5.0))
+
+        sample_rate_raw = data.get("sample_rate", 96000)
+        if isinstance(sample_rate_raw, float) and not sample_rate_raw.is_integer():
+            return {"error": "Invalid sample rate. Must be an integer."}, 400
+        sample_rate = int(sample_rate_raw)
+
+    except (ValueError, TypeError) as e:
+        return {
+            "error": "Invalid parameter format. Check that numeric values are properly formatted."
+        }, 400
 
     if not compound:
         return {"error": "No compound provided"}, 400
 
     if not (0.01 <= duration <= 30):
         return {"error": "Duration must be between 0.01 and 30 seconds."}, 400
-
-    try:
-        sample_rate_raw = data.get("sample_rate", 96000)
-        if isinstance(sample_rate_raw, float) and not sample_rate_raw.is_integer():
-            return {"error": "Invalid sample rate. Must be an integer."}, 400
-        sample_rate = int(sample_rate_raw)
-    except (ValueError, TypeError):
-        return {"error": "Invalid sample rate. Must be an integer."}, 400
 
     if not 3500 <= sample_rate <= 192000:
         return {"error": "Sample rate must be between 3500 and 192000"}, 400
