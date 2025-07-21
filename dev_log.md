@@ -1,3 +1,28 @@
+### [2025-07-20] Implement autocomplete
+
+- **Goals:**
+
+  - Implement autocomplete for compound name input
+
+- **Notes:**
+
+  - Extracted compound names from MassBank.sql file (226,829 compound names from lines 4027157-4253994), converted from MariaDB to PostgreSQL format
+  - Fixed SQL escaping issues (`\'` → `''`)
+  - Imported compound names into Render database (226,822 compounds after handling syntax/encoding errors)
+  - Database returned 37,627 unique compound names (significant duplicates in original data)
+  - Decided frontend caching approach was best for performance
+  - Created static `compounds.json` (1,509 KB) file in `/public` (automatic browser caching)
+  - Implemented React autocomplete with useEffect to load all compounds on initial load, useState for suggestions, dropdown display, and click/blur handling
+  - Added `autoComplete="off"` to disable browser's built-in autocomplete
+  - Search is now instant after initial load, with prefix matching starting at 1 character
+
+- **Next Steps:**
+  - Database Connection Pooling
+  - Auto run tests on Push (GitHub Actions)
+  - Integration Tests
+  - E2E Tests
+  - Consider removing commented `/compounds/all` endpoint
+
 ### [2025-07-19] Finished new POST endpoint, implemented spectrum table in frontend, rewrote API Documentation, removed unused code, began writing unit tests for new functionality
 
 - **Goals:**
