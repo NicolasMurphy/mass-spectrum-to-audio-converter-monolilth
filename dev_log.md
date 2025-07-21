@@ -17,6 +17,7 @@
   - Search is now instant after initial load, with prefix matching starting at 1 character
 
 - **Next Steps:**
+  - Recently Generated should update on successful generation
   - Database Connection Pooling
   - Auto run tests on Push (GitHub Actions)
   - Integration Tests
