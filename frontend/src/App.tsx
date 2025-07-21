@@ -186,7 +186,7 @@ function App() {
             seen.add(entry.accession);
             uniqueHistory.push(entry);
           }
-          if (uniqueHistory.length >= 10) break; // limit display to 10
+          if (uniqueHistory.length >= 20) break; // limit display to 20
         }
 
         setSearchHistory(uniqueHistory);
