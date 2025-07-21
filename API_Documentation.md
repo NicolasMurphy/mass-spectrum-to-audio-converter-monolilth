@@ -178,7 +178,7 @@ Retrieves the search history of compounds that have been processed.
 
 | Parameter | Type    | Required | Default | Description                                 |
 | --------- | ------- | -------- | ------- | ------------------------------------------- |
-| `limit`   | integer | No       | 10      | Maximum number of history entries to return |
+| `limit`   | integer | No       | 20      | Maximum number of history entries to return |
 
 #### Response
 
@@ -208,7 +208,7 @@ Retrieves the search history of compounds that have been processed.
 
 #### Example Requests
 
-**Get Last 10 Searches**
+**Get Last 20 Searches**
 
 ```bash
 curl https://mass-spectrum-to-audio-converter.onrender.com/history

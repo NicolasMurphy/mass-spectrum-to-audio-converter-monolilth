@@ -6,19 +6,6 @@ from flask_cors import CORS
 from db.queries import log_search
 from db.queries import get_search_history
 
-import psycopg2
-import os
-
-
-def get_db_connection():
-    return psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT", 5432),
-    )
-
 
 RATE_LIMIT = 10
 WINDOW = 60
@@ -55,7 +42,7 @@ def serve_frontend():
 @app.route("/history", methods=["GET"])
 def history():
     try:
-        limit = request.args.get("limit", default=10, type=int)
+        limit = request.args.get("limit", default=20, type=int)
         history_data = get_search_history(limit=limit)
         return {"history": history_data}, 200
     except Exception as e:
@@ -141,29 +128,6 @@ def generate_audio_with_data(algorithm):
 
     except Exception as e:
         return {"error": str(e)}, 500
-
-
-# @app.route("/compounds/all", methods=["GET"])
-# def get_all_compounds():
-#     """Get all compound names for frontend caching"""
-#     try:
-#         conn = get_db_connection()
-#         cur = conn.cursor()
-
-#         # Get all unique compound names, sorted alphabetically
-#         cur.execute("SELECT DISTINCT name FROM compounds ORDER BY name")
-#         results = [row[0] for row in cur.fetchall()]
-
-#         cur.close()
-#         conn.close()
-
-#         print(f"Returning {len(results)} compounds for frontend caching")
-
-#         return {"compounds": results}, 200
-
-#     except Exception as e:
-#         print(f"Error fetching all compounds: {e}")
-#         return {"error": "Failed to fetch compounds"}, 500
 
 
 if __name__ == "__main__":

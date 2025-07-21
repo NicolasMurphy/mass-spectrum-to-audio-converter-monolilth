@@ -15,6 +15,8 @@
   - Implemented React autocomplete with useEffect to load all compounds on initial load, useState for suggestions, dropdown display, and click/blur handling
   - Added `autoComplete="off"` to disable browser's built-in autocomplete
   - Search is now instant after initial load, with prefix matching starting at 1 character
+  - Removed commented `/compounds/all` endpoint
+  - Updated `/history` endpoint limit default to 20
 
 - **Next Steps:**
   - Recently Generated should update on successful generation
@@ -22,7 +24,6 @@
   - Auto run tests on Push (GitHub Actions)
   - Integration Tests
   - E2E Tests
-  - Consider removing commented `/compounds/all` endpoint
 
 ### [2025-07-19] Finished new POST endpoint, implemented spectrum table in frontend, rewrote API Documentation, removed unused code, began writing unit tests for new functionality
 
