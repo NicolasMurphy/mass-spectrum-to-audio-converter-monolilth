@@ -1,3 +1,24 @@
+### [2025-07-22] Refactor `App.tsx`
+
+- **Goals:**
+
+  - Refactor `App.tsx` into smaller components
+
+- **Notes:**
+
+  - Decided not to use `Zustand` as there isn't too much state to manage, and prop drilling isn't really a concern
+  - Refactor `RecentlyGenerated` to own file
+  - Refactor `CompoundSearch` to own file
+  - Add keyboard navigation to `CompoundSearch`
+
+- **Next Steps:**
+  - Continue `App.tsx` refactoring
+  - Autocomplete improvements: fuzzy matching, substring matching, stemming...
+  - Database Connection Pooling
+  - Auto run tests on Push (GitHub Actions)
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-21] Implement auto-refetch for Recently Generated list
 
 - **Goals:**
