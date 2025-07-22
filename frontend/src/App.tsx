@@ -3,6 +3,7 @@ import "./App.css";
 import SamplePiano from "./SamplePiano";
 import { useSearchHistory } from "./hooks/useSearchHistory";
 import RecentlyGenerated from "./components/RecentlyGenerated";
+import CompoundSearch from "./components/CompoundSearch";
 
 function base64ToBlob(base64String: string, contentType = "audio/wav"): Blob {
   const byteCharacters = atob(base64String);
@@ -40,16 +41,6 @@ function App() {
     amplitude_linear: number;
     amplitude_db: number;
   }> | null>(null);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [compounds, setCompounds] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetch("/compounds.json")
-      .then((res) => res.json())
-      .then((data) => setCompounds(data))
-      .catch((err) => console.error("Failed to load compounds:", err));
-  }, []);
 
   useEffect(() => {
     const handleFetch = async () => {
@@ -239,65 +230,10 @@ function App() {
                 <h1 className="text-3xl font-bold text-center mb-2">
                   Mass Spectrum to Audio Converter
                 </h1>
-                <div className="form-control mb-4 relative">
-                  <label className="label" htmlFor="compoundInput">
-                    <span className="label-text font-semibold">
-                      Compound Name
-                    </span>
-                  </label>
-                  <input
-                    id="compoundInput"
-                    type="text"
-                    placeholder="e.g. biotin"
-                    className="input input-bordered w-full placeholder-gray-400"
-                    autoComplete="off"
-                    value={compound}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setCompound(value);
-
-                      // Update suggestions
-                      if (value.length >= 1) {
-                        const filtered = compounds
-                          .filter((name) =>
-                            name.toLowerCase().startsWith(value.toLowerCase())
-                          )
-                          .slice(0, 10);
-                        setSuggestions(filtered);
-                        setShowSuggestions(true);
-                      } else {
-                        setShowSuggestions(false);
-                      }
-                    }}
-                    onBlur={() => {
-                      // Hide suggestions after a delay to allow clicking
-                      setTimeout(() => setShowSuggestions(false), 200);
-                    }}
-                    onFocus={() => {
-                      if (compound.length >= 1) {
-                        setShowSuggestions(true);
-                      }
-                    }}
-                  />
-
-                  {/* Suggestions dropdown */}
-                  {showSuggestions && suggestions.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
-                      {suggestions.map((suggestion, index) => (
-                        <div
-                          key={index}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                          onClick={() => {
-                            setCompound(suggestion);
-                            setShowSuggestions(false);
-                          }}
-                        >
-                          {suggestion}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <CompoundSearch
+                  compound={compound}
+                  onCompoundChange={setCompound}
+                />
                 <fieldset className="form-control mb-4">
                   <legend className="label-text font-semibold mb-1">
                     Algorithm
