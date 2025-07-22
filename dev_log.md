@@ -9,6 +9,8 @@
   - Created `useSearchHistory` custom hook.
   - Created `/hooks` folder.
   - Need to further refactor the react side of things, need `/utils` folder or file, perhaps use Zustand for state management, env variables for API link, .tsx can be separated into different files.
+  - Use environment variables for API link in frontend
+  - Use environment variable for CORS origins
 
 - **Next Steps:**
   - General refactoring - App.tsx is getting unwieldy
