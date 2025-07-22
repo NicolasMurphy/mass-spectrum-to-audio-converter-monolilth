@@ -1,4 +1,4 @@
-import time, base64
+import time, base64, os
 from flask import Flask, request, send_from_directory
 from converter import generate_combined_wav_bytes_and_data
 from massbank import get_massbank_peaks
@@ -26,10 +26,10 @@ def is_rate_limited(ip):
 app = Flask(__name__)
 CORS(
     app,
-    origins=[
-        "http://localhost:5173",
-        "https://mass-spectrum-to-audio-converter.vercel.app",
-    ],
+    origins=os.getenv(
+        "CORS_ORIGINS",
+        "https://mass-spectrum-to-audio-converter.vercel.app",  # fallback
+    ).split(","),
     expose_headers=["X-Compound", "X-Accession"],
 )
 
