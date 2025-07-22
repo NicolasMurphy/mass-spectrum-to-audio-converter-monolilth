@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import SamplePiano from "./SamplePiano";
 import { useSearchHistory } from "./hooks/useSearchHistory";
+import RecentlyGenerated from "./components/RecentlyGenerated";
 
 function base64ToBlob(base64String: string, contentType = "audio/wav"): Blob {
   const byteCharacters = atob(base64String);
@@ -472,27 +473,10 @@ function App() {
           </div>
           {/* column 3 - Search history */}
           <div className="mx-auto m-4 order-3 lg:order-3">
-            <h2 className="font-bold text-lg mb-2">Recently Generated</h2>
-            {historyError ? (
-              <p className="text-sm text-red-500">{historyError}</p>
-            ) : (
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                {searchHistory.map((entry, i) => (
-                  <li key={i}>
-                    <span className="font-medium">{entry.compound}</span>
-                  </li>
-                  // possible future implementation
-                  // <details key={i}>
-                  //   <summary className="font-medium">{entry.compound}</summary>
-                  //   <div className="pl-4 text-xs text-gray-500">
-                  //     Accession: {entry.accession}
-                  //     <br />
-                  //     {new Date(entry.created_at).toLocaleString()}
-                  //   </div>
-                  // </details>
-                ))}
-              </ul>
-            )}
+            <RecentlyGenerated
+              searchHistory={searchHistory}
+              historyError={historyError}
+            />
           </div>
           {/* end column 3 */}
         </div>
