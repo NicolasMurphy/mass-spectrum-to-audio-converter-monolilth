@@ -98,8 +98,7 @@ function App() {
         }
 
         const response = await fetch(
-          // `http://localhost:5000/massbank/${algorithm}`
-          `https://mass-spectrum-to-audio-converter.onrender.com/massbank/${algorithm}`,
+          `${import.meta.env.VITE_API_URL}/massbank/${algorithm}`,
           {
             method: "POST",
             headers: {

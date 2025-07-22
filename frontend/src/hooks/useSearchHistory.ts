@@ -21,7 +21,7 @@ export function useSearchHistory(limit: number = 50): UseSearchHistoryReturn {
   const fetchHistory = async () => {
     try {
       const res = await fetch(
-        `https://mass-spectrum-to-audio-converter.onrender.com/history?limit=${limit}`
+        `${import.meta.env.VITE_API_URL}/history?limit=${limit}`
       );
 
       if (!res.ok) {
