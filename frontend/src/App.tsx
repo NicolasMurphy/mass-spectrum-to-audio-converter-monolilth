@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import SamplePiano from "./SamplePiano";
+import { useSearchHistory } from "./hooks/useSearchHistory";
 
 function base64ToBlob(base64String: string, contentType = "audio/wav"): Blob {
   const byteCharacters = atob(base64String);
@@ -26,10 +27,11 @@ function App() {
   const [shift, setShift] = useState<string>("1");
   const [duration, setDuration] = useState<string>("5");
   const [sampleRate, setSampleRate] = useState<string>("96000");
-  const [searchHistory, setSearchHistory] = useState<
-    { compound: string; accession: string; created_at: string }[]
-  >([]);
-  const [historyError, setHistoryError] = useState<string | null>(null);
+  const {
+    history: searchHistory,
+    error: historyError,
+    refetchHistory,
+  } = useSearchHistory();
   const [spectrumData, setSpectrumData] = useState<Array<{
     mz: number;
     frequency: number;
@@ -124,6 +126,7 @@ function App() {
         setAudioUrl(url);
         setSpectrumData(data.spectrum);
         setStatus("Success!");
+        refetchHistory();
       } catch (err) {
         if (err instanceof Error) {
           setStatus(`Error: ${err.message}`);
@@ -153,6 +156,7 @@ function App() {
     duration,
     sampleRate,
     audioUrl,
+    refetchHistory,
   ]);
 
   const triggerFetch = () => {
@@ -162,45 +166,6 @@ function App() {
 
   const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${accession}`;
   const downloadName = `${compoundName}-${accession}.wav`;
-
-  useEffect(() => {
-    const loadHistory = async () => {
-      try {
-        const res = await fetch(
-          "https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50"
-        );
-
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.error || "Unknown error from server.");
-        }
-
-        const data = await res.json();
-
-        // Deduplicate using accession as the unique identifier
-        const seen = new Set<string>();
-        const uniqueHistory = [];
-
-        for (const entry of data.history) {
-          if (!seen.has(entry.accession)) {
-            seen.add(entry.accession);
-            uniqueHistory.push(entry);
-          }
-          if (uniqueHistory.length >= 20) break; // limit display to 20
-        }
-
-        setSearchHistory(uniqueHistory);
-      } catch (err) {
-        if (err instanceof Error) {
-          setHistoryError(err.message);
-        } else {
-          setHistoryError("An unknown error occurred.");
-        }
-      }
-    };
-
-    loadHistory();
-  }, []);
 
   useEffect(() => {
     // Cleanup function to revoke object URLs and prevent memory leaks

@@ -1,3 +1,23 @@
+### [2025-07-21] Implement auto-refetch for Recently Generated list
+
+- **Goals:**
+
+  - Implement auto-refetch for Recently Generated list
+
+- **Notes:**
+
+  - Created `useSearchHistory` custom hook.
+  - Created `/hooks` folder.
+  - Need to further refactor the react side of things, need `/utils` folder or file, perhaps use Zustand for state management, env variables for API link, .tsx can be separated into different files.
+
+- **Next Steps:**
+  - General refactoring - App.tsx is getting unwieldy
+  - Autocomplete improvements: fuzzy matching, substring matching, stemming...
+  - Database Connection Pooling
+  - Auto run tests on Push (GitHub Actions)
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-20] Implement autocomplete
 
 - **Goals:**
