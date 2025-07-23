@@ -6,6 +6,7 @@ import RecentlyGenerated from "./components/RecentlyGenerated";
 import CompoundSearch from "./components/CompoundSearch";
 import AudioPlayer from "./components/AudioPlayer";
 import NameAndAccession from "./components/NameAndAccession";
+import StatusMessage from "./components/StatusMessage";
 
 function base64ToBlob(base64String: string, contentType = "audio/wav"): Blob {
   const byteCharacters = atob(base64String);
@@ -356,18 +357,7 @@ function App() {
                 >
                   Generate Audio
                 </button>
-
-                {status && (
-                  <div className="text-sm text-center mb-2">
-                    {status === "Fetching audio..." ? (
-                      <>
-                        <span className="loading loading-spinner text-primary"></span>
-                      </>
-                    ) : (
-                      <span>{status}</span>
-                    )}
-                  </div>
-                )}
+                {status && <StatusMessage status={status} />}
                 {compoundName && accession && (
                   <NameAndAccession
                     compoundName={compoundName}
