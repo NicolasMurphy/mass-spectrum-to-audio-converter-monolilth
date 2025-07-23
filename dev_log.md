@@ -3,15 +3,18 @@
 - **Goals:**
 
   - Refactor `App.tsx` into smaller components
+  - Clean up large `useEffect`
 
 - **Notes:**
 
   - Decided not to use `Zustand` as there isn't too much state to manage, and prop drilling isn't really a concern
   - Refactor `RecentlyGenerated`, `CompoundSearch`, `AudioPlayer`, `NameAndAccession`, `base64ToBlob`, `SpectrumTables` to own files
   - Add keyboard navigation to `CompoundSearch`
+  - Extract handleFetch function from `useEffect` with `useCallback`
+  - Remove dependency from global enter key `useEffect`, use `useRef` for `handleFetch`
 
 - **Next Steps:**
-  - Continue `App.tsx` refactoring
+  - Continue `App.tsx` refactoring - Extract form sections into components (`AlgorithmSelector`, `LinearParameters`, etc.)
   - Autocomplete improvements: fuzzy matching, substring matching, stemming...
   - Database Connection Pooling
   - Auto run tests on Push (GitHub Actions)
