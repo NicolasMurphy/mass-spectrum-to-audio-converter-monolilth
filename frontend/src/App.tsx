@@ -5,6 +5,7 @@ import { useSearchHistory } from "./hooks/useSearchHistory";
 import RecentlyGenerated from "./components/RecentlyGenerated";
 import CompoundSearch from "./components/CompoundSearch";
 import AudioPlayer from "./components/AudioPlayer";
+import NameAndAccession from "./components/NameAndAccession";
 
 function base64ToBlob(base64String: string, contentType = "audio/wav"): Blob {
   const byteCharacters = atob(base64String);
@@ -156,7 +157,6 @@ function App() {
     document.dispatchEvent(event);
   };
 
-  const accessionUrl = `https://massbank.eu/MassBank/RecordDisplay?id=${accession}`;
   const downloadName = `${compoundName}-${accession}.wav`;
 
   useEffect(() => {
@@ -368,24 +368,11 @@ function App() {
                     )}
                   </div>
                 )}
-
                 {compoundName && accession && (
-                  <div className="text-center mb-4">
-                    <p>
-                      <span className="font-semibold">Compound:</span>{" "}
-                      {compoundName}
-                      <br />
-                      <span className="font-semibold">Accession:</span>{" "}
-                      <a
-                        href={accessionUrl}
-                        className="link text-info"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {accession}
-                      </a>
-                    </p>
-                  </div>
+                  <NameAndAccession
+                    compoundName={compoundName}
+                    accession={accession}
+                  />
                 )}
                 {audioUrl && (
                   <AudioPlayer
