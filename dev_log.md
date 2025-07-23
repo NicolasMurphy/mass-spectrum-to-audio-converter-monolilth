@@ -7,8 +7,7 @@
 - **Notes:**
 
   - Decided not to use `Zustand` as there isn't too much state to manage, and prop drilling isn't really a concern
-  - Refactor `RecentlyGenerated` to own file
-  - Refactor `CompoundSearch` to own file
+  - Refactor `RecentlyGenerated`, `CompoundSearch`, `AudioPlayer`, `NameAndAccession`, `base64ToBlob`, `SpectrumTables` to own files
   - Add keyboard navigation to `CompoundSearch`
 
 - **Next Steps:**
