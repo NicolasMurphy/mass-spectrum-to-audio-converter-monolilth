@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import "./App.css";
 import SamplePiano from "./SamplePiano";
 import { useSearchHistory } from "./hooks/useSearchHistory";
@@ -56,6 +56,8 @@ function App() {
       setStatus("Duration must be between 0.01 and 30.");
       return;
     }
+
+    // TODO: add check for sample rate being an int, possibly stop in the field itself
 
     setStatus("Fetching audio...");
     setAudioUrl("");
@@ -129,10 +131,13 @@ function App() {
     refetchHistory,
   ]);
 
+  const handleFetchRef = useRef(handleFetch);
+  handleFetchRef.current = handleFetch;
+
   useEffect(() => {
     const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === "Enter") {
-        handleFetch();
+        handleFetchRef.current();
       }
     };
 
@@ -141,7 +146,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", handleGlobalKeyDown);
     };
-  }, [handleFetch]);
+  }, []);
 
   const triggerFetch = () => {
     handleFetch();
