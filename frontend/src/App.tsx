@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./App.css";
 import SamplePiano from "./SamplePiano";
 import { useSearchHistory } from "./hooks/useSearchHistory";
@@ -35,102 +35,88 @@ function App() {
     amplitude_db: number;
   }> | null>(null);
 
-  useEffect(() => {
-    const handleFetch = async () => {
-      if (!compound.trim()) {
-        setStatus("Please enter a compound name.");
+  const handleFetch = useCallback(async () => {
+    if (!compound.trim()) {
+      setStatus("Please enter a compound name.");
+      return;
+    }
+
+    const sampleRateNum = Number(sampleRate);
+    if (
+      isNaN(sampleRateNum) ||
+      sampleRateNum < 3500 ||
+      sampleRateNum > 192000
+    ) {
+      setStatus("Sample rate must be between 3500 and 192000.");
+      return;
+    }
+
+    const durationNum = Number(duration);
+    if (isNaN(durationNum) || durationNum < 0.01 || durationNum > 30) {
+      setStatus("Duration must be between 0.01 and 30.");
+      return;
+    }
+
+    setStatus("Fetching audio...");
+    setAudioUrl("");
+    setCompoundName("");
+    setAccession("");
+
+    // Cleanup previous URL before setting new one
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+    }
+
+    try {
+      const requestBody: Record<string, string | number> = {
+        compound,
+        duration: durationNum,
+        sample_rate: sampleRateNum,
+      };
+
+      if (algorithm === "linear") {
+        requestBody.offset = offset;
+      } else if (algorithm === "inverse") {
+        requestBody.scale = scale;
+        requestBody.shift = shift;
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/massbank/${algorithm}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setStatus(`Error: ${errorData.error}`);
         return;
       }
 
-      const sampleRateNum = Number(sampleRate);
-      if (
-        isNaN(sampleRateNum) ||
-        sampleRateNum < 3500 ||
-        sampleRateNum > 192000
-      ) {
-        setStatus("Sample rate must be between 3500 and 192000.");
-        return;
+      const data = await response.json();
+
+      // Convert base64 audio to blob
+      const audioBlob = base64ToBlob(data.audio_base64);
+      const url = URL.createObjectURL(audioBlob);
+
+      setCompoundName(data.compound);
+      setAccession(data.accession);
+      setAudioUrl(url);
+      setSpectrumData(data.spectrum);
+      setStatus("Success!");
+      refetchHistory();
+    } catch (err) {
+      if (err instanceof Error) {
+        setStatus(`Error: ${err.message}`);
+      } else {
+        setStatus("An unknown error occurred.");
       }
-
-      const durationNum = Number(duration);
-      if (isNaN(durationNum) || durationNum < 0.01 || durationNum > 30) {
-        setStatus("Duration must be between 0.01 and 30.");
-        return;
-      }
-
-      setStatus("Fetching audio...");
-      setAudioUrl("");
-      setCompoundName("");
-      setAccession("");
-
-      // Cleanup previous URL before setting new one
-      if (audioUrl) {
-        URL.revokeObjectURL(audioUrl);
-      }
-
-      try {
-        const requestBody: Record<string, string | number> = {
-          compound,
-          duration: durationNum,
-          sample_rate: sampleRateNum,
-        };
-
-        if (algorithm === "linear") {
-          requestBody.offset = offset;
-        } else if (algorithm === "inverse") {
-          requestBody.scale = scale;
-          requestBody.shift = shift;
-        }
-
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/massbank/${algorithm}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          setStatus(`Error: ${errorData.error}`);
-          return;
-        }
-
-        const data = await response.json();
-
-        // Convert base64 audio to blob
-        const audioBlob = base64ToBlob(data.audio_base64);
-        const url = URL.createObjectURL(audioBlob);
-
-        setCompoundName(data.compound);
-        setAccession(data.accession);
-        setAudioUrl(url);
-        setSpectrumData(data.spectrum);
-        setStatus("Success!");
-        refetchHistory();
-      } catch (err) {
-        if (err instanceof Error) {
-          setStatus(`Error: ${err.message}`);
-        } else {
-          setStatus("An unknown error occurred.");
-        }
-      }
-    };
-
-    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Enter") {
-        handleFetch();
-      }
-    };
-
-    document.addEventListener("keydown", handleGlobalKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleGlobalKeyDown);
-    };
+    }
   }, [
     compound,
     algorithm,
@@ -143,9 +129,22 @@ function App() {
     refetchHistory,
   ]);
 
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        handleFetch();
+      }
+    };
+
+    document.addEventListener("keydown", handleGlobalKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [handleFetch]);
+
   const triggerFetch = () => {
-    const event = new KeyboardEvent("keydown", { key: "Enter" });
-    document.dispatchEvent(event);
+    handleFetch();
   };
 
   const downloadName = `${compoundName}-${accession}.wav`;
