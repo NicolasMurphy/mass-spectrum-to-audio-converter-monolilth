@@ -57,8 +57,6 @@ function App() {
       return;
     }
 
-    // TODO: add check for sample rate being an int, possibly stop in the field itself
-
     setStatus("Fetching audio...");
     setAudioUrl("");
     setCompoundName("");
@@ -291,7 +289,12 @@ function App() {
                     placeholder="e.g. 96000"
                     className="input input-bordered w-full"
                     value={sampleRate}
-                    onChange={(e) => setSampleRate(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || /^\d+$/.test(value)) {
+                        setSampleRate(value);
+                      }
+                    }}
                     min={3500}
                     max={192000}
                   />

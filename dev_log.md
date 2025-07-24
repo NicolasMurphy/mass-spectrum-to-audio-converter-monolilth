@@ -1,3 +1,21 @@
+### [2025-07-23] Prevent decimal input in sample rate field
+
+- **Goals:**
+
+  - Prevent decimal input in sample rate field
+
+- **Notes:**
+
+  - Used regex on the form input onChange for sample rate, to prevent float values, matching backend validation
+
+- **Next Steps:**
+  - Continue `App.tsx` refactoring - Extract form sections into components (`AlgorithmSelector`, `LinearParameters`, etc.)
+  - Autocomplete improvements: fuzzy matching, substring matching, stemming...
+  - Database Connection Pooling
+  - Auto run tests on Push (GitHub Actions)
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-22] Refactor `App.tsx`
 
 - **Goals:**
