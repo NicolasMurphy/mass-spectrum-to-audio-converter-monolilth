@@ -10,6 +10,7 @@ import StatusMessage from "./components/StatusMessage";
 import base64ToBlob from "./utils";
 import SpectrumTables from "./components/SpectrumTables";
 import AlgorithmSelector from "./components/AlgorithmSelector";
+import LinearParameters from "./components/LinearParameters";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -186,24 +187,7 @@ function App() {
                   onChange={setAlgorithm}
                 />
                 {algorithm === "linear" && (
-                  <div className="form-control mb-4">
-                    <label className="label" htmlFor="offsetInput">
-                      <span className="label-text font-semibold">
-                        Offset (m/z) (Linear only)
-                      </span>
-                    </label>
-                    <input
-                      id="offsetInput"
-                      type="number"
-                      placeholder="e.g. 300"
-                      className="input input-bordered w-full"
-                      value={offset}
-                      onChange={(e) => setOffset(e.target.value)}
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Shifts all m/z values before pitch conversion.
-                    </p>
-                  </div>
+                  <LinearParameters offset={offset} onChange={setOffset} />
                 )}
                 {algorithm === "inverse" && (
                   <>
