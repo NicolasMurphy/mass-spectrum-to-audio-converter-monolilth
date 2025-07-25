@@ -12,6 +12,7 @@ import SpectrumTables from "./components/SpectrumTables";
 import AlgorithmSelector from "./components/AlgorithmSelector";
 import LinearParameters from "./components/LinearParameters";
 import InverseParameters from "./components/InverseParameters";
+import AudioSettings from "./components/AudioSettings";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -198,41 +199,12 @@ function App() {
                     onShiftChange={setShift}
                   />
                 )}
-                <div className="form-control mb-4">
-                  <label className="label" htmlFor="durationInput">
-                    <span className="label-text font-semibold">Duration</span>
-                  </label>
-                  <input
-                    id="durationInput"
-                    type="number"
-                    placeholder="e.g. 5"
-                    className="input input-bordered w-full"
-                    value={duration}
-                    onChange={(e) => setDuration(e.target.value)}
-                  />
-                </div>
-                <div className="form-control mb-4">
-                  <label className="label" htmlFor="sampleRateInput">
-                    <span className="label-text font-semibold">
-                      Sample Rate (Hz)
-                    </span>
-                  </label>
-                  <input
-                    id="sampleRateInput"
-                    type="number"
-                    placeholder="e.g. 96000"
-                    className="input input-bordered w-full"
-                    value={sampleRate}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === "" || /^\d+$/.test(value)) {
-                        setSampleRate(value);
-                      }
-                    }}
-                    min={3500}
-                    max={192000}
-                  />
-                </div>
+                <AudioSettings
+                  duration={duration}
+                  sampleRate={sampleRate}
+                  onDurationChange={setDuration}
+                  onSampleRateChange={setSampleRate}
+                />
                 <button
                   className="btn btn-primary w-full mb-4"
                   onClick={triggerFetch}
