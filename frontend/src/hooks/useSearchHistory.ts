@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface HistoryEntry {
   compound: string;
@@ -18,7 +18,7 @@ export function useSearchHistory(limit: number = 50): UseSearchHistoryReturn {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/history?limit=${limit}`
@@ -57,7 +57,7 @@ export function useSearchHistory(limit: number = 50): UseSearchHistoryReturn {
     } finally {
       setLoading(false);
     }
-  };
+  }, [limit, loading]);
 
   const refetchHistory = () => {
     // Don't show loading state for refetch, just silently update
@@ -66,7 +66,7 @@ export function useSearchHistory(limit: number = 50): UseSearchHistoryReturn {
 
   useEffect(() => {
     fetchHistory();
-  }, [limit]);
+  }, [fetchHistory]);
 
   return {
     history,
