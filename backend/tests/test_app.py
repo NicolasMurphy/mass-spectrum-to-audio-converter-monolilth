@@ -7,7 +7,9 @@ import json
 backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, backend_dir)
 
-from app import app
+# Mock psycopg2.pool BEFORE importing app
+with patch("psycopg2.pool.SimpleConnectionPool"):
+    from app import app
 
 
 @pytest.fixture

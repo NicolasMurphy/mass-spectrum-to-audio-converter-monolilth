@@ -10,6 +10,7 @@
   - Extract `AlgorithmSelector`, `LinearParameters`, `InverseParameters`, and `AudioSettings` components from `App.tsx`
   - Created `connection_pool.py` with `psycopg2.pool` (minconn=1, maxconn=5)
   - Updated `queries.py` to use `get_connection` instead of `get_db_connection`
+  - Updated `test_queries.py` and `test_app.py` to work with new connection pooling (mocking before import)
 
 - **Next Steps:**
   - Autocomplete improvements: fuzzy matching, substring matching, stemming...
