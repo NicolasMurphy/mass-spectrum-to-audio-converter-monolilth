@@ -15,7 +15,8 @@
   - Add GitHub Actions CI workflow for backend tests
 
 - **Next Steps:**
-  - Auto run tests on Push (GitHub Actions)
+  - Improve styling (cards for spectrum table and recently generated)
+  - Add about/info help text (modal?)
   - Integration Tests
   - E2E Tests
 

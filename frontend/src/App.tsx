@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import "./App.css";
-import SamplePiano from "./SamplePiano";
+import SamplePiano from "./components/SamplePiano";
 import { useSearchHistory } from "./hooks/useSearchHistory";
 import RecentlyGenerated from "./components/RecentlyGenerated";
 import CompoundSearch from "./components/CompoundSearch";
