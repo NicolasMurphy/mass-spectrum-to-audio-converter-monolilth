@@ -1,9 +1,10 @@
-### [2025-07-25] Finish `App.tsx` refactoring & implement db connection pool
+### [2025-07-25] Finish `App.tsx` refactoring, implement db connection pool & Auto run tests on push
 
 - **Goals:**
 
   - Finish `App.tsx` refactoring
   - Implement connection pooling for db
+  - Auto run tests on push (GitHub Actions)
 
 - **Notes:**
 
@@ -11,9 +12,9 @@
   - Created `connection_pool.py` with `psycopg2.pool` (minconn=1, maxconn=5)
   - Updated `queries.py` to use `get_connection` instead of `get_db_connection`
   - Updated `test_queries.py` and `test_app.py` to work with new connection pooling (mocking before import)
+  - Add GitHub Actions CI workflow for backend tests
 
 - **Next Steps:**
-  - Autocomplete improvements: fuzzy matching, substring matching, stemming...
   - Auto run tests on Push (GitHub Actions)
   - Integration Tests
   - E2E Tests
