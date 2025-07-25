@@ -1,20 +1,10 @@
-import psycopg2
-import os
-
-
-def get_db_connection():
-    return psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT", 5432),
-    )
+from .connection_pool import get_connection, return_connection
 
 
 def log_search(compound, accession):
+    conn = None
     try:
-        conn = get_db_connection()
+        conn = get_connection()
         cur = conn.cursor()
 
         cur.execute(
@@ -27,15 +17,20 @@ def log_search(compound, accession):
 
         conn.commit()
         cur.close()
-        conn.close()
 
     except Exception as e:
         print(f"Failed to log search: {e}")
+        if conn:
+            conn.rollback()
+    finally:
+        if conn:
+            return_connection(conn)
 
 
-def get_search_history(limit=10):
+def get_search_history(limit):
+    conn = None
     try:
-        conn = get_db_connection()
+        conn = get_connection()
         cur = conn.cursor()
 
         cur.execute(
@@ -50,7 +45,6 @@ def get_search_history(limit=10):
 
         rows = cur.fetchall()
         cur.close()
-        conn.close()
 
         return [
             {"accession": row[0], "compound": row[1], "created_at": row[2].isoformat()}
@@ -60,5 +54,6 @@ def get_search_history(limit=10):
     except Exception as e:
         print(f"Failed to fetch search history: {e}")
         return []
-
-# TODO: implement connection pooling
+    finally:
+        if conn:
+            return_connection(conn)

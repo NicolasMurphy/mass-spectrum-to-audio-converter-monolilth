@@ -1,16 +1,18 @@
-### [2025-07-25] Finish `App.tsx` refactoring
+### [2025-07-25] Finish `App.tsx` refactoring & implement db connection pool
 
 - **Goals:**
 
   - Finish `App.tsx` refactoring
+  - Implement connection pooling for db
 
 - **Notes:**
 
   - Extract `AlgorithmSelector`, `LinearParameters`, `InverseParameters`, and `AudioSettings` components from `App.tsx`
+  - Created `connection_pool.py` with `psycopg2.pool` (minconn=1, maxconn=5)
+  - Updated `queries.py` to use `get_connection` instead of `get_db_connection`
 
 - **Next Steps:**
   - Autocomplete improvements: fuzzy matching, substring matching, stemming...
-  - Database Connection Pooling
   - Auto run tests on Push (GitHub Actions)
   - Integration Tests
   - E2E Tests
