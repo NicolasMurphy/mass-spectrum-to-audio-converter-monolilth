@@ -11,6 +11,7 @@ import base64ToBlob from "./utils";
 import SpectrumTables from "./components/SpectrumTables";
 import AlgorithmSelector from "./components/AlgorithmSelector";
 import LinearParameters from "./components/LinearParameters";
+import InverseParameters from "./components/InverseParameters";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -190,39 +191,12 @@ function App() {
                   <LinearParameters offset={offset} onChange={setOffset} />
                 )}
                 {algorithm === "inverse" && (
-                  <>
-                    <div className="form-control mb-4">
-                      <label className="label" htmlFor="scaleInput">
-                        <span className="label-text font-semibold">
-                          Scale (Inverse only)
-                        </span>
-                      </label>
-                      <input
-                        id="scaleInput"
-                        type="number"
-                        placeholder="e.g. 100000"
-                        className="input input-bordered w-full"
-                        value={scale}
-                        onChange={(e) => setScale(e.target.value)}
-                      />
-                    </div>
-
-                    <div className="form-control mb-4">
-                      <label className="label" htmlFor="shiftInput">
-                        <span className="label-text font-semibold">
-                          Shift (Inverse only)
-                        </span>
-                      </label>
-                      <input
-                        id="shiftInput"
-                        type="number"
-                        placeholder="e.g. 1"
-                        className="input input-bordered w-full"
-                        value={shift}
-                        onChange={(e) => setShift(e.target.value)}
-                      />
-                    </div>
-                  </>
+                  <InverseParameters
+                    scale={scale}
+                    shift={shift}
+                    onScaleChange={setScale}
+                    onShiftChange={setShift}
+                  />
                 )}
                 <div className="form-control mb-4">
                   <label className="label" htmlFor="durationInput">
