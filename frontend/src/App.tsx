@@ -9,6 +9,7 @@ import NameAndAccession from "./components/NameAndAccession";
 import StatusMessage from "./components/StatusMessage";
 import base64ToBlob from "./utils";
 import SpectrumTables from "./components/SpectrumTables";
+import AlgorithmSelector from "./components/AlgorithmSelector";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -180,35 +181,10 @@ function App() {
                   compound={compound}
                   onCompoundChange={setCompound}
                 />
-                <fieldset className="form-control mb-4">
-                  <legend className="label-text font-semibold mb-1">
-                    Algorithm
-                  </legend>
-                  <div className="flex flex-col gap-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="algorithm"
-                        className="radio radio-primary"
-                        checked={algorithm === "linear"}
-                        onChange={() => setAlgorithm("linear")}
-                      />
-                      <span className="label-text">Linear (m/z + offset)</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="algorithm"
-                        className="radio radio-primary"
-                        checked={algorithm === "inverse"}
-                        onChange={() => setAlgorithm("inverse")}
-                      />
-                      <span className="label-text">
-                        Inverse (scale / (m/z + shift))
-                      </span>
-                    </label>
-                  </div>
-                </fieldset>
+                <AlgorithmSelector
+                  algorithm={algorithm}
+                  onChange={setAlgorithm}
+                />
                 {algorithm === "linear" && (
                   <div className="form-control mb-4">
                     <label className="label" htmlFor="offsetInput">
