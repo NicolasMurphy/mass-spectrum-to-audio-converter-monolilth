@@ -1,3 +1,20 @@
+### [2025-07-25] Finish `App.tsx` refactoring
+
+- **Goals:**
+
+  - Finish `App.tsx` refactoring
+
+- **Notes:**
+
+  - Extract `AlgorithmSelector`, `LinearParameters`, `InverseParameters`, and `AudioSettings` components from `App.tsx`
+
+- **Next Steps:**
+  - Autocomplete improvements: fuzzy matching, substring matching, stemming...
+  - Database Connection Pooling
+  - Auto run tests on Push (GitHub Actions)
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-24] Fix dependency warning in `useSearchHistory`
 
 - **Goals:**
