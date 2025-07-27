@@ -2,13 +2,14 @@
 
 - **Goals:**
 
-  - Explore Flask-Compress for performance improvements
+  - Explore Performance Improvements
 
 - **Notes:**
 
-  - Explore Flask-Compress for performance improvements
+  - Discovered Render automatically provides Brotli compression (Content-Encoding: br) at the platform level
 
 - **Next Steps:**
+  - Continue exploring performance improvements (rate-limiting cleanup, MassBank API caching)
   - Improve styling (cards for spectrum table and recently generated)
   - Add about/info help text (modal?)
   - Integration Tests
