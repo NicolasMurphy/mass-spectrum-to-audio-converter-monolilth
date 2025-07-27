@@ -168,10 +168,72 @@ function App() {
   return (
     <div data-theme="corporate" className="min-h-screen bg-base-200">
       <div className="justify-items-center p-8 flex-col w-full px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* column 1 - spectrum data tables */}
-          <div className="mx-auto m-4 order-2 lg:order-1">
-            {spectrumData && <SpectrumTables spectrumData={spectrumData} />}
+          <div className="order-2 lg:order-1">
+            <div className="card bg-neutral-content w-full max-w-md mx-auto">
+              <div className="card-body">
+                {spectrumData ? (
+                  <SpectrumTables spectrumData={spectrumData} />
+                ) : (
+                  <>
+                    {/* Original Mass Spectrum Data */}
+                    <h2 className="font-bold text-lg mb-2">
+                      Mass Spectrum Data
+                    </h2>
+                    <div className="overflow-x-auto mb-6">
+                      <table className="table table-compact table-zebra text-xs">
+                        <thead>
+                          <tr>
+                            <th>m/z</th>
+                            <th>Intensity</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div className="skeleton h-8 w-full"></div>
+                            </td>
+                            <td>
+                              <div className="skeleton h-8 w-full"></div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Transformed Audio Data */}
+                    <h2 className="font-bold text-lg mb-2">
+                      Audio Transformation Data
+                    </h2>
+                    <div className="overflow-x-auto">
+                      <table className="table table-compact table-zebra text-xs">
+                        <thead>
+                          <tr>
+                            <th>Frequency (Hz)</th>
+                            <th>Amplitude</th>
+                            <th>Amplitude (dB)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div className="skeleton h-8 w-full"></div>
+                            </td>
+                            <td>
+                              <div className="skeleton h-8 w-full"></div>
+                            </td>
+                            <td>
+                              <div className="skeleton h-8 w-full"></div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
           {/* column 2 - form, audio player, keyboard - "app core" */}
           <div className="order-1 lg:order-2">
@@ -230,11 +292,15 @@ function App() {
             {audioUrl && <SamplePiano audioUrl={audioUrl} />}
           </div>
           {/* column 3 - Search history */}
-          <div className="mx-auto m-4 order-3 lg:order-3">
-            <RecentlyGenerated
-              searchHistory={searchHistory}
-              historyError={historyError}
-            />
+          <div className="order-3 lg:order-3">
+            <div className="card bg-neutral-content w-full max-w-md mx-auto">
+              <div className="card-body">
+                <RecentlyGenerated
+                  searchHistory={searchHistory}
+                  historyError={historyError}
+                />
+              </div>
+            </div>
           </div>
           {/* end column 3 */}
         </div>

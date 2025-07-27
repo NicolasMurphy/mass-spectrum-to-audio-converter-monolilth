@@ -70,7 +70,7 @@ export default function SamplePiano({ audioUrl }: Props) {
   const clampedWidth = Math.max(300, Math.min(containerWidth, 700));
 
   return (
-    <div ref={containerRef} className="w-full flex justify-center mt-6 px-4">
+    <div ref={containerRef} className="w-full flex justify-center mt-6">
       <div className="mx-auto" style={{ width: clampedWidth }}>
         <Piano
           width={clampedWidth}
