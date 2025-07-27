@@ -1,5 +1,8 @@
 import psycopg2.pool
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 connection_pool = psycopg2.pool.SimpleConnectionPool(
