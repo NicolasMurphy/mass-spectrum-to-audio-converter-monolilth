@@ -23,6 +23,9 @@
     - Spectrum tables can be quite large, perhaps a conditional scroll bar?
     - Empty space on right side of screen, perhaps room for "most popular compounds"
   - Add about/info help text (modal?)
+  - Simplify SamplePiano width/responsive logic
+  - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
+  - Organize Typescript types
   - Migrate all spectrum data over to Render database as to not rely on MassBank API
   - Integration Tests
   - E2E Tests
