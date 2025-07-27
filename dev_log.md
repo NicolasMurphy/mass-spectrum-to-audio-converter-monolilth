@@ -1,3 +1,19 @@
+### [2025-07-26] Explore Performance Improvements
+
+- **Goals:**
+
+  - Explore Flask-Compress for performance improvements
+
+- **Notes:**
+
+  - Explore Flask-Compress for performance improvements
+
+- **Next Steps:**
+  - Improve styling (cards for spectrum table and recently generated)
+  - Add about/info help text (modal?)
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-25] Finish `App.tsx` refactoring, implement db connection pool & Auto run tests on push
 
 - **Goals:**
