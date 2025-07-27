@@ -6,4 +6,3 @@ gunicorn
 flask-cors==6.0.1
 psycopg2-binary==2.9.10
 python-dotenv==1.1.1
-Flask-Compress==1.18

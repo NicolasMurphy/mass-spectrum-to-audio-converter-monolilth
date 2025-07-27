@@ -72,8 +72,6 @@ function App() {
     }
 
     try {
-      // start time
-      const startTime = performance.now();
       const requestBody: Record<string, string | number> = {
         compound,
         duration: durationNum,
@@ -105,11 +103,6 @@ function App() {
       }
 
       const data = await response.json();
-      // end time
-      const endTime = performance.now();
-      const totalTime = endTime - startTime;
-      // log total request time
-      console.log(`Total request time: ${totalTime.toFixed(1)}ms`);
 
       // Convert base64 audio to blob
       const audioBlob = base64ToBlob(data.audio_base64);
