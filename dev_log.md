@@ -18,11 +18,12 @@
   - Fixed Git case sensitivity issue with Components folder for successful Vercel deployments
 
 - **Next Steps:**
+
   - Styling improvements:
     - Spectrum tables can be quite large, perhaps a conditional scroll bar?
     - Empty space on right side of screen, perhaps room for "most popular compounds"
   - Add about/info help text (modal?)
-  - Continue exploring performance improvements (MassBank API caching)
+  - Migrate all spectrum data over to Render database as to not rely on MassBank API
   - Integration Tests
   - E2E Tests
 
@@ -37,6 +38,7 @@
   - Discovered Render automatically provides Brotli compression (Content-Encoding: br) at the platform level
 
 - **Next Steps:**
+
   - Continue exploring performance improvements (rate-limiting cleanup, MassBank API caching)
   - Improve styling (cards for spectrum table and recently generated)
   - Add about/info help text (modal?)
@@ -60,6 +62,7 @@
   - Add GitHub Actions CI workflow for backend tests
 
 - **Next Steps:**
+
   - Improve styling (cards for spectrum table and recently generated)
   - Add about/info help text (modal?)
   - Integration Tests
@@ -76,6 +79,7 @@
   - Wrapped fetchHistory in useCallback, added correct dependencies as `[limit, loading]`
 
 - **Next Steps:**
+
   - Continue `App.tsx` refactoring - Extract form sections into components (`AlgorithmSelector`, `LinearParameters`, etc.)
   - Autocomplete improvements: fuzzy matching, substring matching, stemming...
   - Database Connection Pooling
@@ -94,6 +98,7 @@
   - Used regex on the form input onChange for sample rate, to prevent float values, matching backend validation
 
 - **Next Steps:**
+
   - Continue `App.tsx` refactoring - Extract form sections into components (`AlgorithmSelector`, `LinearParameters`, etc.)
   - Autocomplete improvements: fuzzy matching, substring matching, stemming...
   - Database Connection Pooling
@@ -117,6 +122,7 @@
   - Remove dependency from global enter key `useEffect`, use `useRef` for `handleFetch`
 
 - **Next Steps:**
+
   - Continue `App.tsx` refactoring - Extract form sections into components (`AlgorithmSelector`, `LinearParameters`, etc.)
   - Autocomplete improvements: fuzzy matching, substring matching, stemming...
   - Database Connection Pooling
@@ -139,6 +145,7 @@
   - Use environment variable for CORS origins
 
 - **Next Steps:**
+
   - General refactoring - App.tsx is getting unwieldy
   - Autocomplete improvements: fuzzy matching, substring matching, stemming...
   - Database Connection Pooling
@@ -167,6 +174,7 @@
   - Updated `/history` endpoint limit default to 20
 
 - **Next Steps:**
+
   - Recently Generated should update on successful generation
   - Database Connection Pooling
   - Auto run tests on Push (GitHub Actions)
@@ -193,6 +201,7 @@
   - Need to finish out unit tests for new POST endpoint and write unit tests for `generate_combined_wav_bytes_and_data` function
 
 - **Next Steps:**
+
   - Finish out unit tests
   - Implement autocomplete
 
@@ -217,6 +226,7 @@
     - Update history table to include additional fields from new POST endpoint
 
 - **Next Steps:**
+
   - Simplify `"spectrum": {"transformed": [...]}` to be `"spectrum": [...]` for JSON Response
   - Replace existing GET endpoint in frontend with POST endpoint
   - Display transformed values in frontend (for now just a table, but a visual graph later)
@@ -236,6 +246,7 @@
   - Still need to implement transformed spectrum array.
 
 - **Next Steps:**
+
   - Continue with implementation of passing spectrum data in API call
   - Implement autocomplete
 
@@ -252,6 +263,7 @@
   - Import to render using CLI with psql
 
 - **Next Steps:**
+
   - Display all m/z values and Hz values after transformation in UI
   - Implement autocomplete utilizing compound names in history table (or better yet, get all compound names from massbank)
 
@@ -267,6 +279,7 @@
   - Need to research connection pooling
 
 - **Next Steps:**
+
   - Display all m/z values and Hz values after transformation in UI
   - Implement autocomplete utilizing compound names in history table (or better yet, get all compound names from massbank)
 
@@ -285,6 +298,7 @@ Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceed
 ```
 
 - **Next Steps:**
+
   - Display all m/z values and Hz values after transformation in UI
   - Implement autocomplete utilizing compound names in history table
 
@@ -306,6 +320,7 @@ Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceed
   - Users can now press Enter globally
 
 - **Next Steps:**
+
   - Find more permanent solution for MassBank certificate handling
   - Display all m/z values and Hz values after transformation in UI
   - Experiment further with algorithm options
@@ -322,6 +337,7 @@ Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceed
   - Added useEffect cleanup and pre-fetch URL revocation to prevent WAV files from accumulating in browser memory during extended usage
 
 - **Next Steps:**
+
   - Find more permanent solution for MassBank certificate handling
   - Display all m/z values and Hz values after transformation in UI
   - Experiment further with algorithm options
@@ -342,6 +358,7 @@ Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceed
   - Updated README with algorithm descriptions and completed features
 
 - **Next Steps:**
+
   - Find more permanent solution for MassBank certificate handling
   - Display all m/z values and Hz values after transformation in UI
   - Experiment further with algorithm options
