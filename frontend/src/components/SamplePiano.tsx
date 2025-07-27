@@ -10,7 +10,7 @@ type Props = {
 export default function SamplePiano({ audioUrl }: Props) {
   const [buffer, setBuffer] = useState<Tone.ToneAudioBuffer | null>(null);
 
-  const [containerWidth, setContainerWidth] = useState<number>(600);
+  const [containerWidth, setContainerWidth] = useState<number>(440);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const firstNote = MidiNumbers.fromNote("C4");
@@ -67,7 +67,7 @@ export default function SamplePiano({ audioUrl }: Props) {
     player.start();
   };
 
-  const clampedWidth = Math.max(300, Math.min(containerWidth, 700));
+  const clampedWidth = Math.max(300, Math.min(containerWidth, 440));
 
   return (
     <div ref={containerRef} className="w-full flex justify-center mt-6">

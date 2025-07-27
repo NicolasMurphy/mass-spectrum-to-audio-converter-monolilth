@@ -9,7 +9,7 @@ export default function AudioPlayer({
 }: AudioPlayerProps) {
   return (
     <>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-6">
         <audio controls src={audioUrl} className="w-full" />
         <a
           href={audioUrl}

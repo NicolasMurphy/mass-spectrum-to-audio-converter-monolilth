@@ -1,19 +1,19 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import "./App.css";
-import SamplePiano from "./components/SamplePiano";
+import SamplePiano from "./Components/SamplePiano";
 import { useSearchHistory } from "./hooks/useSearchHistory";
-import RecentlyGenerated from "./components/RecentlyGenerated";
-import CompoundSearch from "./components/CompoundSearch";
-import AudioPlayer from "./components/AudioPlayer";
-import NameAndAccession from "./components/NameAndAccession";
-import StatusMessage from "./components/StatusMessage";
+import RecentlyGenerated from "./Components/RecentlyGeneratedComponents/RecentlyGenerated";
+import CompoundSearch from "./Components/FormComponents/CompoundSearch";
+import AudioPlayer from "./Components/AudioPlayer";
+import NameAndAccession from "./Components/NameAndAccession";
+import StatusMessage from "./Components/StatusMessage";
 import base64ToBlob from "./utils";
-import SpectrumTables from "./components/SpectrumTables";
-import AlgorithmSelector from "./components/AlgorithmSelector";
-import LinearParameters from "./components/LinearParameters";
-import InverseParameters from "./components/InverseParameters";
-import AudioSettings from "./components/AudioSettings";
-import SkeletonSpectrumTables from "./components/SkeletonSpectrumTables";
+import SpectrumTables from "./Components/SpectrumComponents/SpectrumTables";
+import AlgorithmSelector from "./Components/FormComponents/AlgorithmSelector";
+import LinearParameters from "./Components/FormComponents/LinearParameters";
+import InverseParameters from "./Components/FormComponents/InverseParameters";
+import AudioSettings from "./Components/FormComponents/AudioSettings";
+import SkeletonSpectrumTables from "./Components/SpectrumComponents/SkeletonSpectrumTables";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
