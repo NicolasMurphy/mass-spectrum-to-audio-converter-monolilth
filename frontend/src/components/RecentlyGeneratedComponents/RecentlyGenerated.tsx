@@ -1,34 +1,35 @@
 interface RecentlyGeneratedProps {
   searchHistory: Array<{ compound: string }>;
   historyError: string | null;
+  onCompoundClick: (compound: string) => void;
 }
 
 export default function RecentlyGenerated({
   searchHistory,
   historyError,
+  onCompoundClick,
 }: RecentlyGeneratedProps) {
   return (
     <>
-      <h2 className="font-bold text-lg mb-2">Recently Generated</h2>
+      <h2 className="font-bold text-lg mb-4">Recently Generated</h2>
       {historyError ? (
-        <p className="text-sm text-red-500">{historyError}</p>
+        <div className="alert alert-error">
+          <p className="text-sm">{historyError}</p>
+        </div>
       ) : (
-        <ul className="list-disc list-inside space-y-1 text-sm">
+        <div className="flex flex-wrap gap-2">
           {searchHistory.map((entry, i) => (
-            <li key={i}>
-              <span className="font-medium">{entry.compound}</span>
-            </li>
-            // possible future implementation
-            // <details key={i}>
-            //   <summary className="font-medium">{entry.compound}</summary>
-            //   <div className="pl-4 text-xs text-gray-500">
-            //     Accession: {entry.accession}
-            //     <br />
-            //     {new Date(entry.created_at).toLocaleString()}
-            //   </div>
-            // </details>
+            <div
+              key={i}
+              onClick={() => onCompoundClick(entry.compound)}
+              className="badge badge-outline badge-sm p-3 cursor-pointer hover:badge-primary transition-colors"
+            >
+              <span className="truncate max-w-[120px]" title={entry.compound}>
+                {entry.compound}
+              </span>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </>
   );

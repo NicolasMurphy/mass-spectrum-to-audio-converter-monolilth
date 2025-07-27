@@ -166,6 +166,10 @@ function App() {
     };
   }, [audioUrl]);
 
+  const handleCompoundClick = (compound: string) => {
+    setCompound(compound);
+  };
+
   return (
     <div data-theme="corporate" className="min-h-screen bg-base-200">
       <div className="justify-items-center p-8 flex-col w-full px-4">
@@ -245,6 +249,7 @@ function App() {
                 <RecentlyGenerated
                   searchHistory={searchHistory}
                   historyError={historyError}
+                  onCompoundClick={handleCompoundClick}
                 />
               </div>
             </div>
