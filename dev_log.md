@@ -1,3 +1,31 @@
+### [2025-07-27] UI Improvements and Component Organization
+
+- **Goals:**
+
+  - Improve frontend styling with card-based layout
+  - Implement skeleton loading states for better UX
+  - Reorganize component folder structure for maintainability
+  - Enhance Recently Generated functionality
+  - Fix rate limiting memory leak and adjust limits
+
+- **Notes:**
+
+  - Added card layout for all three columns with proper spacing
+  - Implemented skeleton animation for spectrum data tables using DaisyUI skeleton components
+  - Reorganized Components folder structure
+  - Styled Recently Generated section with clickable badges that auto-populate compound search
+  - Fixed rate limiting memory leak and updated to 20 requests per 5 minutes
+  - Fixed Git case sensitivity issue with Components folder for successful Vercel deployments
+
+- **Next Steps:**
+  - Styling improvements:
+    - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+    - Empty space on right side of screen, perhaps room for "most popular compounds"
+  - Add about/info help text (modal?)
+  - Continue exploring performance improvements (MassBank API caching)
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-26] Explore Performance Improvements
 
 - **Goals:**
