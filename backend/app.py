@@ -5,7 +5,8 @@ from massbank import get_massbank_peaks
 from flask_cors import CORS
 from db.queries import log_search
 from db.queries import get_search_history
-from flask_compress import Compress
+
+# from flask_compress import Compress
 
 
 RATE_LIMIT = 10
@@ -34,10 +35,10 @@ CORS(
     expose_headers=["X-Compound", "X-Accession"],
 )
 
-Compress(app)
+# Compress(app)
 
-app.config["COMPRESS_MIN_SIZE"] = 1000
-app.config["COMPRESS_MIMETYPES"] = ["application/json"]
+# app.config["COMPRESS_MIN_SIZE"] = 1000
+# app.config["COMPRESS_MIMETYPES"] = ["application/json"]
 
 
 @app.route("/")
