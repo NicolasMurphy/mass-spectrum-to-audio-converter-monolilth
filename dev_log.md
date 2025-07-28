@@ -1,3 +1,24 @@
+### [2025-07-28] Info Modal
+
+- **Goals:**
+
+  - Add Info Modal explaining the app
+
+- **Notes:**
+
+  - Implemented DaisyUI modal explaining the app and technical info
+
+- **Next Steps:**
+
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Simplify SamplePiano width/responsive logic
+  - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
+  - Organize Typescript types
+  - Migrate all spectrum data over to Render database as to not rely on MassBank API
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-27] UI Improvements, Component Organization and "Most Generated" list
 
 - **Goals:**
