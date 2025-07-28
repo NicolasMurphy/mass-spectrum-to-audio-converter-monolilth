@@ -1,4 +1,4 @@
-### [2025-07-27] UI Improvements and Component Organization
+### [2025-07-27] UI Improvements, Component Organization and "Most Generated" list
 
 - **Goals:**
 
@@ -7,6 +7,7 @@
   - Reorganize component folder structure for maintainability
   - Enhance Recently Generated functionality
   - Fix rate limiting memory leak and adjust limits
+  - Add Most Generated list more retrieving most searched compounds
 
 - **Notes:**
 
@@ -16,17 +17,17 @@
   - Styled Recently Generated section with clickable badges that auto-populate compound search
   - Fixed rate limiting memory leak and updated to 20 requests per 5 minutes
   - Fixed Git case sensitivity issue with Components folder for successful Vercel deployments
+  - Added Most Generated list, following Recently Generated look and functionality
 
 - **Next Steps:**
 
-  - Styling improvements:
-    - Spectrum tables can be quite large, perhaps a conditional scroll bar?
-    - Empty space on right side of screen, perhaps room for "most popular compounds"
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
   - Add about/info help text (modal?)
   - Simplify SamplePiano width/responsive logic
   - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
   - Organize Typescript types
   - Migrate all spectrum data over to Render database as to not rely on MassBank API
+  - Unit Tests
   - Integration Tests
   - E2E Tests
 
