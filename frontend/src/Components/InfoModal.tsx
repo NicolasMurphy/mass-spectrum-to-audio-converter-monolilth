@@ -48,7 +48,7 @@ const InfoModal: React.FC = () => {
                 <div className="font-medium">
                   Linear:{" "}
                   <code className="text-xs bg-base-200 px-1 rounded">
-                    frequency = m/z + offset
+                    frequency = mz + offset
                   </code>
                 </div>
                 <div className="ml-4 text-xs opacity-80">
@@ -59,7 +59,7 @@ const InfoModal: React.FC = () => {
                 <div className="font-medium">
                   Inverse:{" "}
                   <code className="text-xs bg-base-200 px-1 rounded">
-                    frequency = scale / (m/z + shift)
+                    frequency = scale / (mz + shift)
                   </code>
                 </div>
                 <div className="ml-4 text-xs opacity-80">

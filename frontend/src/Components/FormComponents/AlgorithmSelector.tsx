@@ -1,6 +1,6 @@
 interface AlgorithmSelectorProps {
-  algorithm: "linear" | "inverse";
-  onChange: (algorithm: "linear" | "inverse") => void;
+  algorithm: "linear" | "inverse" | "modulo";
+  onChange: (algorithm: "linear" | "inverse" | "modulo") => void;
 }
 
 export default function AlgorithmSelector({
@@ -19,7 +19,7 @@ export default function AlgorithmSelector({
             checked={algorithm === "linear"}
             onChange={() => onChange("linear")}
           />
-          <span className="label-text">Linear (m/z + offset)</span>
+          <span className="label-text">Linear: mz + offset</span>
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -29,7 +29,19 @@ export default function AlgorithmSelector({
             checked={algorithm === "inverse"}
             onChange={() => onChange("inverse")}
           />
-          <span className="label-text">Inverse (scale / (m/z + shift))</span>
+          <span className="label-text">Inverse: scale / (mz + shift)</span>
+        </label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="algorithm"
+            className="radio radio-primary"
+            checked={algorithm === "modulo"}
+            onChange={() => onChange("modulo")}
+          />
+          <span className="label-text">
+            Modulo: ((mz * factor) % modulus) + constant
+          </span>
         </label>
       </div>
     </fieldset>

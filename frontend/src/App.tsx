@@ -17,6 +17,7 @@ import SkeletonSpectrumTables from "./Components/SpectrumComponents/SkeletonSpec
 import { usePopularCompounds } from "./hooks/usePopularCompounds";
 import MostGenerated from "./Components/MostGeneratedComponents/MostGenerated";
 import InfoModal from "./Components/InfoModal";
+import ModuloParameters from "./Components/FormComponents/ModuloParameters";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -24,10 +25,15 @@ function App() {
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [compoundName, setCompoundName] = useState<string>("");
   const [accession, setAccession] = useState<string>("");
-  const [algorithm, setAlgorithm] = useState<"linear" | "inverse">("linear");
+  const [algorithm, setAlgorithm] = useState<"linear" | "inverse" | "modulo">(
+    "linear"
+  );
   const [offset, setOffset] = useState<string>("300");
   const [scale, setScale] = useState<string>("100000");
   const [shift, setShift] = useState<string>("1");
+  const [factor, setFactor] = useState<string>("10");
+  const [modulus, setModulus] = useState<string>("500");
+  const [constant, setConstant] = useState<string>("100");
   const [duration, setDuration] = useState<string>("5");
   const [sampleRate, setSampleRate] = useState<string>("96000");
   const {
@@ -91,6 +97,10 @@ function App() {
       } else if (algorithm === "inverse") {
         requestBody.scale = scale;
         requestBody.shift = shift;
+      } else if (algorithm === "modulo") {
+        requestBody.factor = factor;
+        requestBody.modulus = modulus;
+        requestBody.constant = constant;
       }
 
       const response = await fetch(
@@ -135,6 +145,9 @@ function App() {
     offset,
     scale,
     shift,
+    factor,
+    modulus,
+    constant,
     duration,
     sampleRate,
     audioUrl,
@@ -239,6 +252,16 @@ function App() {
                     shift={shift}
                     onScaleChange={setScale}
                     onShiftChange={setShift}
+                  />
+                )}
+                {algorithm === "modulo" && (
+                  <ModuloParameters
+                    factor={factor}
+                    modulus={modulus}
+                    constant={constant}
+                    onFactorChange={setFactor}
+                    onModulusChange={setModulus}
+                    onConstantChange={setConstant}
                   />
                 )}
                 <AudioSettings

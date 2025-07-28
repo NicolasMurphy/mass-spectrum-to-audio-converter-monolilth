@@ -13,6 +13,7 @@
 
 - **Next Steps:**
 
+  - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
   - Simplify SamplePiano width/responsive logic
   - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
