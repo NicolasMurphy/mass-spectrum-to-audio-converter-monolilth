@@ -16,6 +16,7 @@ import AudioSettings from "./Components/FormComponents/AudioSettings";
 import SkeletonSpectrumTables from "./Components/SpectrumComponents/SkeletonSpectrumTables";
 import { usePopularCompounds } from "./hooks/usePopularCompounds";
 import MostGenerated from "./Components/MostGeneratedComponents/MostGenerated";
+import InfoModal from "./Components/InfoModal";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -196,7 +197,29 @@ function App() {
           <div className="order-1 lg:order-2">
             <div className="card bg-neutral-content w-full max-w-md mx-auto">
               <div className="card-body">
-                <h1 className="text-2xl font-bold text-center mb-2">
+                <button
+                  className="btn btn-circle btn-ghost btn-xs text-info absolute top-2 right-2"
+                  onClick={() =>
+                    (
+                      document.getElementById("info_modal") as HTMLDialogElement
+                    )?.showModal()
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 stroke-current"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                </button>
+                <h1 className="text-xl font-bold text-center mb-4">
                   Mass Spectrum to Audio Converter
                 </h1>
                 <CompoundSearch
@@ -271,6 +294,7 @@ function App() {
           </div>
           {/* end column 3 */}
         </div>
+        <InfoModal />
       </div>
     </div>
   );
