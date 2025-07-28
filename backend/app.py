@@ -3,8 +3,7 @@ from flask import Flask, request, send_from_directory
 from converter import generate_combined_wav_bytes_and_data
 from massbank import get_massbank_peaks
 from flask_cors import CORS
-from db.queries import log_search
-from db.queries import get_search_history
+from db.queries import log_search, get_search_history, get_popular_compounds
 
 
 RATE_LIMIT = 20
@@ -143,6 +142,16 @@ def generate_audio_with_data(algorithm):
 
         return response_data, 200
 
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+
+@app.route("/popular", methods=["GET"])
+def popular():
+    try:
+        limit = request.args.get("limit", default=20, type=int)
+        popular_data = get_popular_compounds(limit=limit)
+        return {"popular": popular_data}, 200
     except Exception as e:
         return {"error": str(e)}, 500
 

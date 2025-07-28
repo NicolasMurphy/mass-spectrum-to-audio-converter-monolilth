@@ -57,3 +57,34 @@ def get_search_history(limit):
     finally:
         if conn:
             return_connection(conn)
+
+
+def get_popular_compounds(limit):
+    conn = None
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+
+        cur.execute(
+            """
+            SELECT compound, COUNT(*) as search_count
+            FROM search_history
+            WHERE compound IS NOT NULL
+            GROUP BY compound
+            ORDER BY search_count DESC
+            LIMIT %s
+            """,
+            (limit,),
+        )
+
+        rows = cur.fetchall()
+        cur.close()
+
+        return [{"compound": row[0], "search_count": row[1]} for row in rows]
+
+    except Exception as e:
+        print(f"Failed to fetch popular compounds: {e}")
+        return []
+    finally:
+        if conn:
+            return_connection(conn)
