@@ -14,6 +14,7 @@
 
 - **Next Steps:**
 
+  - Update API Documentation
   - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
   - Simplify SamplePiano width/responsive logic

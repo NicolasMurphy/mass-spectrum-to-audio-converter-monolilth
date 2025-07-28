@@ -69,6 +69,24 @@ const InfoModal: React.FC = () => {
                   Shift: Modifies the m/z input values before division
                 </div>
               </div>
+              <div>
+                <div className="font-medium">
+                  Modulo:{" "}
+                  <code className="text-xs bg-base-200 px-1 rounded">
+                    frequency = ((mz * factor) % modulus) + base
+                  </code>
+                </div>
+                <div className="ml-4 text-xs opacity-80">
+                  Factor: Multiplies m/z values before wrapping
+                </div>
+                <div className="ml-4 text-xs opacity-80">
+                  Modulus: Frequency range where values wrap back to the base
+                  frequency
+                </div>
+                <div className="ml-4 text-xs opacity-80">
+                  Base: Sets the minimum frequency
+                </div>
+              </div>
               <div className="pt-2 border-t border-base-300">
                 <div className="font-medium">Audio Settings</div>
                 <div className="ml-4 text-xs opacity-80">
