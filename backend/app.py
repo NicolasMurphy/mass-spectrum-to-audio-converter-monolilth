@@ -98,7 +98,7 @@ def generate_audio_with_data(algorithm):
     sample_rate = int(data.get("sample_rate", 96000))
     factor = float(data.get("factor", 10))
     modulus = float(data.get("modulus", 500))
-    constant = float(data.get("constant", 100))
+    base = float(data.get("base", 100))
 
     if not compound:
         return {"error": "No compound provided"}, 400
@@ -124,7 +124,7 @@ def generate_audio_with_data(algorithm):
             algorithm=algorithm,
             factor=factor,
             modulus=modulus,
-            constant=constant,
+            base=base,
         )
 
         audio_base64 = base64.b64encode(wav_buffer.getvalue()).decode()
@@ -138,7 +138,7 @@ def generate_audio_with_data(algorithm):
             algorithm_params = {
                 "factor": factor,
                 "modulus": modulus,
-                "constant": constant,
+                "base": base,
             }
 
         # Build response

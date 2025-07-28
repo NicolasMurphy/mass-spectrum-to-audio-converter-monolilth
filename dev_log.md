@@ -4,12 +4,13 @@
 
   - Add Info Modal explaining the app
   - Add modulo algorithm in backend
+  - Implement modulo in form in frontend
 
 - **Notes:**
 
   - Implemented DaisyUI modal explaining the app and technical info
   - Experimented with different algorithms, decided on modulo algorithm
-  - Implemented modulo algorithm in backend
+  - Implemented modulo algorithm in backend and frontend
 
 - **Next Steps:**
 

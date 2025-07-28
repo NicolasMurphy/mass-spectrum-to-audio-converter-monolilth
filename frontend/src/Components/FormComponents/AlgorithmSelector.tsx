@@ -40,7 +40,7 @@ export default function AlgorithmSelector({
             onChange={() => onChange("modulo")}
           />
           <span className="label-text">
-            Modulo: ((mz * factor) % modulus) + constant
+            Modulo: ((mz * factor) % modulus) + base
           </span>
         </label>
       </div>

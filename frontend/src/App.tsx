@@ -33,7 +33,7 @@ function App() {
   const [shift, setShift] = useState<string>("1");
   const [factor, setFactor] = useState<string>("10");
   const [modulus, setModulus] = useState<string>("500");
-  const [constant, setConstant] = useState<string>("100");
+  const [base, setBase] = useState<string>("100");
   const [duration, setDuration] = useState<string>("5");
   const [sampleRate, setSampleRate] = useState<string>("96000");
   const {
@@ -100,7 +100,7 @@ function App() {
       } else if (algorithm === "modulo") {
         requestBody.factor = factor;
         requestBody.modulus = modulus;
-        requestBody.constant = constant;
+        requestBody.base = base;
       }
 
       const response = await fetch(
@@ -147,7 +147,7 @@ function App() {
     shift,
     factor,
     modulus,
-    constant,
+    base,
     duration,
     sampleRate,
     audioUrl,
@@ -258,10 +258,10 @@ function App() {
                   <ModuloParameters
                     factor={factor}
                     modulus={modulus}
-                    constant={constant}
+                    base={base}
                     onFactorChange={setFactor}
                     onModulusChange={setModulus}
-                    onConstantChange={setConstant}
+                    onBaseChange={setBase}
                   />
                 )}
                 <AudioSettings
