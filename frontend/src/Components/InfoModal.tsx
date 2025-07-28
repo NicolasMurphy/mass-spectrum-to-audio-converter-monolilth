@@ -3,11 +3,13 @@ import React from "react";
 const InfoModal: React.FC = () => {
   return (
     <dialog id="info_modal" className="modal">
-      <div className="modal-box max-w-2xl max-h-[90%]">
+      <div className="modal-box max-w-[80%] max-h-[80%]">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">How to Use This App</h3>
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost">✕</button>
+            <button className="btn btn-sm btn-circle btn-ghost text-lg">
+              ✕
+            </button>
           </form>
         </div>
         <div className="space-y-6">
