@@ -1,12 +1,15 @@
-### [2025-07-28] Info Modal
+### [2025-07-28] Info Modal and modulo algorithm implementation
 
 - **Goals:**
 
   - Add Info Modal explaining the app
+  - Add modulo algorithm in backend
 
 - **Notes:**
 
   - Implemented DaisyUI modal explaining the app and technical info
+  - Experimented with different algorithms, decided on modulo algorithm
+  - Implemented modulo algorithm in backend
 
 - **Next Steps:**
 
