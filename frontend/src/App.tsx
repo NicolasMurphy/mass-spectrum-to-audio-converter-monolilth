@@ -250,20 +250,20 @@ function App() {
           </div>
           {/* column 3 - Search history */}
           <div className="order-3 lg:order-3">
-            <div className="card bg-neutral-content w-full max-w-md mx-auto mb-6">
+            <div className="card bg-neutral-content w-full max-w-md mx-auto mb-12">
               <div className="card-body">
-                <RecentlyGenerated
-                  searchHistory={searchHistory}
-                  historyError={historyError}
+                <MostGenerated
+                  popularCompounds={popularCompoundsList}
+                  popularError={popularError}
                   onCompoundClick={handleCompoundClick}
                 />
               </div>
             </div>
             <div className="card bg-neutral-content w-full max-w-md mx-auto">
               <div className="card-body">
-                <MostGenerated
-                  popularCompounds={popularCompoundsList}
-                  popularError={popularError}
+                <RecentlyGenerated
+                  searchHistory={searchHistory}
+                  historyError={historyError}
                   onCompoundClick={handleCompoundClick}
                 />
               </div>

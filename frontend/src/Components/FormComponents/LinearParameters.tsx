@@ -22,9 +22,6 @@ export default function LinearParameters({
         value={offset}
         onChange={(e) => onChange(e.target.value)}
       />
-      <p className="text-xs text-gray-500 mt-1">
-        Shifts all m/z values before pitch conversion.
-      </p>
     </div>
   );
 }
