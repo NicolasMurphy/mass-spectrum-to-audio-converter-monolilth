@@ -3,7 +3,7 @@ import React from "react";
 const InfoModal: React.FC = () => {
   return (
     <dialog id="info_modal" className="modal">
-      <div className="modal-box max-w-2xl max-h-[calc(100vh-2rem)]">
+      <div className="modal-box max-w-2xl" style={{ margin: "2rem 1rem" }}>
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">How to Use This App</h3>
           <form method="dialog">
