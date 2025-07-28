@@ -179,7 +179,7 @@ function App() {
 
   return (
     <div data-theme="corporate" className="min-h-screen bg-base-200">
-      <div className="justify-items-center p-8 flex-col w-full px-4">
+      <div className="justify-items-center p-12 flex-col w-full px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* column 1 - spectrum data tables */}
           <div className="order-2 lg:order-1">

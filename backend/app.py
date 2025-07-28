@@ -76,7 +76,7 @@ def generate_audio_with_data(algorithm):
     if is_rate_limited(ip):
         return {"error": "Rate limit exceeded. Try again later."}, 429
 
-    if algorithm not in ["linear", "inverse"]:
+    if algorithm not in ["linear", "inverse", "modulo"]:
         return {"error": f"Unsupported algorithm '{algorithm}'"}, 400
 
     # Get JSON data from request body
@@ -96,6 +96,9 @@ def generate_audio_with_data(algorithm):
     shift = float(data.get("shift", 1))
     duration = float(data.get("duration", 5.0))
     sample_rate = int(data.get("sample_rate", 96000))
+    factor = float(data.get("factor", 10))
+    modulus = float(data.get("modulus", 500))
+    constant = float(data.get("constant", 100))
 
     if not compound:
         return {"error": "No compound provided"}, 400
@@ -119,6 +122,9 @@ def generate_audio_with_data(algorithm):
             duration=duration,
             sample_rate=sample_rate,
             algorithm=algorithm,
+            factor=factor,
+            modulus=modulus,
+            constant=constant,
         )
 
         audio_base64 = base64.b64encode(wav_buffer.getvalue()).decode()
@@ -128,6 +134,12 @@ def generate_audio_with_data(algorithm):
             algorithm_params = {"offset": offset}
         elif algorithm == "inverse":
             algorithm_params = {"scale": scale, "shift": shift}
+        elif algorithm == "modulo":
+            algorithm_params = {
+                "factor": factor,
+                "modulus": modulus,
+                "constant": constant,
+            }
 
         # Build response
         response_data = {

@@ -18,6 +18,12 @@ def mz_to_frequency_inverse(mz, scale: float = 100000, shift: float = 1):
     return scale / (mz + shift)
 
 
+def mz_to_frequency_modulo(
+    mz, factor: float = 10, modulus: float = 500, constant: float = 100
+):
+    return ((mz * factor) % modulus) + constant
+
+
 def generate_combined_wav_bytes_and_data(
     spectrum_data,
     offset: float = 300,
@@ -26,6 +32,9 @@ def generate_combined_wav_bytes_and_data(
     duration: float = 5.0,
     sample_rate: int = 96000,
     algorithm: str = "linear",
+    factor: float = 10,
+    modulus: float = 500,
+    constant: float = 100,
 ):
     t = np.linspace(0, duration, int(sample_rate * duration), False)
     combined_wave = np.zeros_like(t)
@@ -39,6 +48,10 @@ def generate_combined_wav_bytes_and_data(
             freq = mz_to_frequency_linear(mz, offset=offset)
         elif algorithm == "inverse":
             freq = mz_to_frequency_inverse(mz, scale=scale, shift=shift)
+        elif algorithm == "modulo":
+            freq = mz_to_frequency_modulo(
+                mz, factor=factor, modulus=modulus, constant=constant
+            )
         else:
             raise ValueError(f"Unknown algorithm: {algorithm}")
 
