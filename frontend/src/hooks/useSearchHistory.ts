@@ -13,7 +13,7 @@ interface UseSearchHistoryReturn {
   refetchHistory: () => void;
 }
 
-export function useSearchHistory(limit: number = 50): UseSearchHistoryReturn {
+export function useSearchHistory(limit: number = 100): UseSearchHistoryReturn {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

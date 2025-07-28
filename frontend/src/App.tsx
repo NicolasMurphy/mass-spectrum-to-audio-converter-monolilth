@@ -14,6 +14,8 @@ import LinearParameters from "./Components/FormComponents/LinearParameters";
 import InverseParameters from "./Components/FormComponents/InverseParameters";
 import AudioSettings from "./Components/FormComponents/AudioSettings";
 import SkeletonSpectrumTables from "./Components/SpectrumComponents/SkeletonSpectrumTables";
+import { usePopularCompounds } from "./hooks/usePopularCompounds";
+import MostGenerated from "./Components/MostGeneratedComponents/MostGenerated";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -32,6 +34,10 @@ function App() {
     error: historyError,
     refetchHistory,
   } = useSearchHistory();
+  const { popularCompounds, error: popularError } = usePopularCompounds(20);
+  const popularCompoundsList = popularCompounds.map((item) => ({
+    compound: item.compound,
+  }));
   const [spectrumData, setSpectrumData] = useState<Array<{
     mz: number;
     frequency: number;
@@ -190,7 +196,7 @@ function App() {
           <div className="order-1 lg:order-2">
             <div className="card bg-neutral-content w-full max-w-md mx-auto">
               <div className="card-body">
-                <h1 className="text-3xl font-bold text-center mb-2">
+                <h1 className="text-2xl font-bold text-center mb-2">
                   Mass Spectrum to Audio Converter
                 </h1>
                 <CompoundSearch
@@ -244,11 +250,20 @@ function App() {
           </div>
           {/* column 3 - Search history */}
           <div className="order-3 lg:order-3">
-            <div className="card bg-neutral-content w-full max-w-md mx-auto">
+            <div className="card bg-neutral-content w-full max-w-md mx-auto mb-6">
               <div className="card-body">
                 <RecentlyGenerated
                   searchHistory={searchHistory}
                   historyError={historyError}
+                  onCompoundClick={handleCompoundClick}
+                />
+              </div>
+            </div>
+            <div className="card bg-neutral-content w-full max-w-md mx-auto">
+              <div className="card-body">
+                <MostGenerated
+                  popularCompounds={popularCompoundsList}
+                  popularError={popularError}
                   onCompoundClick={handleCompoundClick}
                 />
               </div>
