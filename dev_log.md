@@ -1,26 +1,43 @@
-### [2025-07-28] Info Modal and modulo algorithm implementation
+### [2025-07-28] Info Modal, modulo algorithm implementation and utilize Render database instead of Massbank API
 
 - **Goals:**
 
   - Add Info Modal explaining the app
   - Add modulo algorithm in backend
   - Implement modulo in form in frontend
+  - Utilize Render database instead of Massbank API
 
 - **Notes:**
 
   - Implemented DaisyUI modal explaining the app and technical info
   - Experimented with different algorithms, decided on modulo algorithm
   - Implemented modulo algorithm in backend and frontend
+  - **Database Migration Process:**
+    - Motivated by SSL certificate expiration issues, eliminating external API dependency, and desire for better performance
+    - Extracted necessary tables from 520MB Massbank.sql file using MariaDB locally
+    - Exported spectrum data from MariaDB to CSV using mysqldump command with four-table join query: `"SELECT p.RECORD as accession, n.CH_NAME as compound_name, p.PK_PEAK_MZ as mz, p.PK_PEAK_INTENSITY as intensity FROM PEAK p JOIN RECORD r ON p.RECORD = r.ACCESSION JOIN COMPOUND_NAME cn ON r.CH = cn.COMPOUND JOIN NAME n ON cn.NAME = n.ID" > massbank_spectrum_data.csv`
+    - Used PowerShell to clean encoding issues (removed non-ASCII characters from 7 compounds): `Get-Content massbank_spectrum_data.csv -Encoding UTF8 | Where-Object { $_ -match '^[a-zA-Z0-9\t\-\.\s_()\/\[\]:;,+]*$' } | Out-File -Encoding UTF8 massbank_spectrum_data_clean.csv`
+    - Imported 6.3M peak records to Render PostgreSQL database with proper data types (DECIMAL precision increased for large intensity values)
+    - Created optimized table structure: `spectrum_data(accession, compound_name, mz, intensity)` and `compound_accessions(compound_name, accession)` lookup table
+  - **Performance Optimization:**
+    - Implemented two-step search pattern matching previous MassBank API usage: fast compound lookup then accession-based peak retrieval
+    - Created strategic indexes: `idx_compound_accessions_name_lower`, `idx_accession`, `idx_compound_name_exact`
+    - Eliminated expensive LIKE queries on large tables by using dedicated compound lookup table\
+  - **Results:** Successfully migrated 6.3M peak records from MassBank's normalized schema, achieving 3x faster performance (1.5s → 470ms average) and eliminated external API dependency, SSL certificate issues, and network latency
 
 - **Next Steps:**
 
-  - Update API Documentation
+  - Remove MassBank SSL certificate and related code
+  - Clean up unnecessary tables and indexes in Render database
+  - Update README - document Render database architecture instead of MassBank API integration
+  - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
+  - Update API Documentation - remove MassBank API references, add modulo algorithm parameters and Render database details
+  - Update error handling for new Render database instead of Massbank API
   - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
   - Simplify SamplePiano width/responsive logic
   - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
   - Organize Typescript types
-  - Migrate all spectrum data over to Render database as to not rely on MassBank API
   - Unit Tests
   - Integration Tests
   - E2E Tests
