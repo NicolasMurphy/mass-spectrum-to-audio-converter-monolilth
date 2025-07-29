@@ -1,49 +1,92 @@
-import requests
-import sys
-import os
+from db.connection_pool import get_connection, return_connection
 
 
 def get_massbank_peaks(compound_name):
-    cafile = os.path.join(os.path.dirname(__file__), "certs", "massbank.eu.crt")
-    r = requests.get(
-        "https://massbank.eu/MassBank-api/records/search",
-        params={"compound_name": compound_name},
-        verify=cafile,
-    )
-    r.raise_for_status()
+    """
+    Get mass spectrum peaks from local PostgreSQL database
+    Two-step search like MassBank API: find compounds first, then get peaks
+    Returns: (spectrum, accession, compound_actual)
+    """
+    conn = None
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
 
-    # Correctly access "data" instead of "accessions"
-    data = r.json().get("data", [])
-    if not data:
-        raise ValueError("No records found")
+        # Step 1: Search the fast compound_accessions table (case-insensitive)
+        search_query = """
+        SELECT accession, compound_name
+        FROM compound_accessions
+        WHERE LOWER(compound_name) = LOWER(%s)
+        ORDER BY accession
+        LIMIT 1
+        """
 
-    accession = data[0]["accession"]
-    print(f"Using accession: {accession}")
+        cursor.execute(search_query, (compound_name,))
+        result = cursor.fetchone()
 
-    record = requests.get(
-        f"https://massbank.eu/MassBank-api/records/{accession}",
-        verify=cafile,
-    )
-    record.raise_for_status()
-    record_data = record.json()
+        if not result:
+            raise ValueError("No records found")
 
-    peak_values = record_data.get("peak", {}).get("peak", {}).get("values", [])
-    spectrum = [(p["mz"], p["intensity"]) for p in peak_values]
-    title = record_data.get("title", "")
-    compound_actual = title.split(";")[0].strip() if title else "Unknown Compound"
+        # Use the first result
+        accession, compound_actual = result
 
-    return spectrum, accession, compound_actual
+        # Step 2: Get all peaks for this specific accession (with DISTINCT to handle any duplicates)
+        peaks_query = """
+        SELECT DISTINCT mz, intensity
+        FROM spectrum_data
+        WHERE accession = %s
+        ORDER BY mz
+        """
+
+        cursor.execute(peaks_query, (accession,))
+        peak_data = cursor.fetchall()
+
+        # Convert to the format expected by converter.py
+        spectrum = [(float(mz), float(intensity)) for mz, intensity in peak_data]
+
+        cursor.close()
+        return spectrum, accession, compound_actual
+
+    except Exception as e:
+        raise ValueError(f"Database error: {e}")
+    finally:
+        if conn:
+            return_connection(conn)
+
+
+def search_compounds(query, limit=10):
+    """
+    Search for compounds matching the query
+    Returns list of (accession, compound_name, peak_count)
+    """
+    conn = None
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        search_query = """
+        SELECT accession, compound_name,
+               COUNT(*) as peak_count
+        FROM spectrum_data
+        WHERE LOWER(compound_name) LIKE LOWER(%s)
+        GROUP BY accession, compound_name
+        ORDER BY peak_count DESC, compound_name
+        LIMIT %s
+        """
+
+        cursor.execute(search_query, (f"%{query}%", limit))
+        results = cursor.fetchall()
+        cursor.close()
+
+        return results
+
+    except Exception as e:
+        print(f"Search error: {e}")
+        return []
+    finally:
+        if conn:
+            return_connection(conn)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python get_massbank_peaks.py <compound_name>")
-        sys.exit(1)
-
-    compound = sys.argv[1]
-    try:
-        spectrum = get_massbank_peaks(compound)
-        for mz, intensity in spectrum:
-            print(f"m/z: {mz:.4f} | intensity: {intensity}")
-    except Exception as e:
-        print(f"Error: {e}")
+    pass
