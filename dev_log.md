@@ -22,12 +22,12 @@
   - **Performance Optimization:**
     - Implemented two-step search pattern matching previous MassBank API usage: fast compound lookup then accession-based peak retrieval
     - Created strategic indexes: `idx_compound_accessions_name_lower`, `idx_accession`, `idx_compound_name_exact`
-    - Eliminated expensive LIKE queries on large tables by using dedicated compound lookup table\
+    - Eliminated expensive LIKE queries on large tables by using dedicated compound lookup table
   - **Results:** Successfully migrated 6.3M peak records from MassBank's normalized schema, achieving 3x faster performance (1.5s → 470ms average) and eliminated external API dependency, SSL certificate issues, and network latency
 
 - **Next Steps:**
 
-  - Remove MassBank SSL certificate and related code
+  - Remove MassBank related code
   - Clean up unnecessary tables and indexes in Render database
   - Update README - document Render database architecture instead of MassBank API integration
   - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
