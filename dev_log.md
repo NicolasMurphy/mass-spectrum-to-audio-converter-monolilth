@@ -1,3 +1,31 @@
+### [2025-07-29] Clean up old Massbank API related code
+
+- **Goals:**
+
+  - Clean up old Massbank API related code
+
+- **Notes:**
+
+  - Moved `massbank.py` to `/db` folder
+  - Renamed `massbank.py` to `render_massbank_queries.py`
+  - Remove `test_massbank.py`
+
+- **Next Steps:**
+
+  - Clean up unnecessary tables and indexes in Render database
+  - Update README - document Render database architecture instead of MassBank API integration
+  - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
+  - Update API Documentation - remove MassBank API references, add modulo algorithm parameters and Render database details
+  - Update error handling for new Render database instead of Massbank API
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Simplify SamplePiano width/responsive logic
+  - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
+  - Organize Typescript types
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-28] Info Modal, modulo algorithm implementation and utilize Render database instead of Massbank API
 
 - **Goals:**

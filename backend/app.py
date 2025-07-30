@@ -1,7 +1,7 @@
 import time, base64, os
 from flask import Flask, request, send_from_directory
 from converter import generate_combined_wav_bytes_and_data
-from massbank import get_massbank_peaks
+from db.render_massbank_queries import get_massbank_peaks
 from flask_cors import CORS
 from db.queries import log_search, get_search_history, get_popular_compounds
 
