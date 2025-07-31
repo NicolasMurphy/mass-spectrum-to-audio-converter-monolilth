@@ -1,19 +1,49 @@
-### [2025-07-29] Clean up old Massbank API related code
+### [2025-07-30] Update API Documentation
+
+- **Goals:**
+
+  - Update ADI Documentation
+
+- **Notes:**
+
+  - Remove MassBank API references, add modulo algorithm parameters and Render database details
+  - Add `/popular` endpoint details to API documentation
+  - Changed `raise ValueError(f"Database error: {e}")` to `raise ValueError(e)` for `get_massbank_peaks` function in `render_massbank_queries.py` - removing the redundant "Database error:" prefix since the API already wraps everything in an "error" field.
+  - Realized new implementation requires an exact match for compound when searching, probably fine to keep it this way, but may consider returning first closest result if an exact match is not found, shouldn't be necessary with autocomplete though
+  - Current autocomplete implementation displays up to 10 results, could be more than that, need to experiment with this.
+
+- **Next Steps:**
+
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Clean up unnecessary tables and indexes in Render database
+  - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
+  - Update error handling for new Render database instead of Massbank API
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Simplify SamplePiano width/responsive logic
+  - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
+  - Organize Typescript types
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+
+### [2025-07-29] Clean up old Massbank API related code and update README
 
 - **Goals:**
 
   - Clean up old Massbank API related code
+  - Update README
 
 - **Notes:**
 
   - Moved `massbank.py` to `/db` folder
   - Renamed `massbank.py` to `render_massbank_queries.py`
   - Remove `test_massbank.py`
+  - Update README
 
 - **Next Steps:**
 
   - Clean up unnecessary tables and indexes in Render database
-  - Update README - document Render database architecture instead of MassBank API integration
   - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
   - Update API Documentation - remove MassBank API references, add modulo algorithm parameters and Render database details
   - Update error handling for new Render database instead of Massbank API

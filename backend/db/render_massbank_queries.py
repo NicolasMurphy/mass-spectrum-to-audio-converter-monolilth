@@ -48,7 +48,7 @@ def get_massbank_peaks(compound_name):
         return spectrum, accession, compound_actual
 
     except Exception as e:
-        raise ValueError(f"Database error: {e}")
+        raise ValueError(e)
     finally:
         if conn:
             return_connection(conn)

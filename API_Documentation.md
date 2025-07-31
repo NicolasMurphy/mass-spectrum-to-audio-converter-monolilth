@@ -2,22 +2,13 @@
 
 ## Overview
 
-The Mass Spectrum to Audio Converter API converts mass spectrometry data into audio files using configurable algorithms and parameters. The API retrieves compound spectra from the MassBank database and generates audio data along with detailed spectrum transformation information.
+The Mass Spectrum to Audio Converter API converts mass spectrometry data into audio files using configurable algorithms and parameters. The API retrieves compound spectra from a dedicated Render database (migrated from MassBank database from [Release 2025.05.1](https://github.com/MassBank/MassBank-data/releases/tag/2025.05.1)) and generates audio data along with detailed spectrum transformation information.
 
 ## Base URL
 
 ```
 https://mass-spectrum-to-audio-converter.onrender.com
 ```
-
-## Data Source
-
-This API integrates with the MassBank database through their REST API:
-
-- **MassBank API Documentation**: https://massbank.eu/MassBank-api/ui/
-- **Search Endpoint**: `/records/search` - Used to find compounds by name
-- **Record Endpoint**: `/records/{accession}` - Used to retrieve detailed spectrum data
-- **Selection Logic**: The first matching record from search results is automatically selected
 
 ---
 
@@ -31,22 +22,27 @@ Generates audio data from a compound's mass spectrum data using the specified al
 
 #### Path Parameters
 
-| Parameter   | Type   | Required | Description                                                          |
-| ----------- | ------ | -------- | -------------------------------------------------------------------- |
-| `algorithm` | string | Yes      | Algorithm for audio generation. Must be either `linear` or `inverse` |
+| Parameter   | Type   | Required | Description                                                                     |
+| ----------- | ------ | -------- | ------------------------------------------------------------------------------- |
+| `algorithm` | string | Yes      | Algorithm for audio generation. Must be either `linear`, `inverse`, or `modulo` |
 
 #### Request Body
 
 **Content-Type:** `application/json`
 
-| Parameter     | Type    | Required | Default | Validation  | Description                                                                                          |
-| ------------- | ------- | -------- | ------- | ----------- | ---------------------------------------------------------------------------------------------------- |
-| `compound`    | string  | Yes      | -       | -           | Name or identifier of the compound to search for                                                     |
-| `offset`      | float   | No       | 300     | -           | Offset added to m/z values during conversion to Hz _(linear algorithm only - ignored by inverse)_    |
-| `scale`       | float   | No       | 100000  | -           | Scaling factor for frequency calculation _(inverse algorithm only - ignored by linear)_              |
-| `shift`       | float   | No       | 1       | -           | Shift value applied to m/z before inverse calculation _(inverse algorithm only - ignored by linear)_ |
-| `sample_rate` | integer | No       | 96000   | 3500-192000 | Audio sample rate in Hz                                                                              |
-| `duration`    | float   | No       | 5.0     | 0.01-30.0   | Duration of generated audio in seconds                                                               |
+| Parameter     | Type    | Required | Default | Validation  | Description                                                        |
+| ------------- | ------- | -------- | ------- | ----------- | ------------------------------------------------------------------ |
+| `compound`    | string  | Yes      | -       | -           | Name or identifier of the compound to search for                   |
+| `offset`      | float   | No       | 300     | -           | `Hz = m/z + offset` _(linear algorithm only)_                      |
+| `scale`       | float   | No       | 100000  | -           | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
+| `shift`       | float   | No       | 1       | -           | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
+| `factor`      | float   | No       | 10      | -           | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
+| `modulus`     | float   | No       | 500     | -           | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
+| `base`        | float   | No       | 100     | -           | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
+| `sample_rate` | integer | No       | 96000   | 3500-192000 | Audio sample rate in Hz                                            |
+| `duration`    | float   | No       | 5.0     | 0.01-30.0   | Duration of generated audio in seconds                             |
+
+**Note:** "Required" means the parameter must be provided in the request. Optional parameters will use their default values if not specified.
 
 #### Response
 
@@ -97,13 +93,13 @@ Generates audio data from a compound's mass spectrum data using the specified al
 
 | Field                         | Type    | Description                                  |
 | ----------------------------- | ------- | -------------------------------------------- |
-| `compound`                    | string  | Actual compound name found in MassBank       |
+| `compound`                    | string  | Actual compound name found in database       |
 | `accession`                   | string  | MassBank accession number                    |
 | `audio_base64`                | string  | Base64-encoded WAV audio file                |
 | `spectrum`                    | array   | Array of spectrum transformation data points |
 | `spectrum[].mz`               | float   | Original m/z value from mass spectrum        |
 | `spectrum[].frequency`        | float   | Converted frequency in Hz                    |
-| `spectrum[].intensity`        | integer | Original intensity value from MassBank       |
+| `spectrum[].intensity`        | integer | Original intensity value from database       |
 | `spectrum[].amplitude_linear` | float   | Normalized amplitude (0-1 range)             |
 | `spectrum[].amplitude_db`     | float   | Amplitude in decibels                        |
 | `algorithm`                   | string  | Algorithm used for conversion                |
@@ -111,6 +107,9 @@ Generates audio data from a compound's mass spectrum data using the specified al
 | `parameters.offset`           | float   | Offset value (linear algorithm only)         |
 | `parameters.scale`            | float   | Scale value (inverse algorithm only)         |
 | `parameters.shift`            | float   | Shift value (inverse algorithm only)         |
+| `parameters.factor`           | float   | Factor value (modulo algorithm only)         |
+| `parameters.modulus`          | float   | Modulus value (modulo algorithm only)        |
+| `parameters.base`             | float   | Base value (modulo algorithm only)           |
 | `audio_settings`              | object  | Audio generation settings                    |
 | `audio_settings.duration`     | float   | Duration of generated audio in seconds       |
 | `audio_settings.sample_rate`  | integer | Audio sample rate in Hz                      |
@@ -132,53 +131,76 @@ Generates audio data from a compound's mass spectrum data using the specified al
 
 **Basic Request (Linear Algorithm)**
 
-```bash
-curl -X POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear \
-  -H "Content-Type: application/json" \
-  -d '{
-    "compound": "caffeine"
-  }'
+```
+POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear
+```
+
+```json
+{
+  "compound": "caffeine"
+}
 ```
 
 **Linear Algorithm with Custom Parameters**
 
-```bash
-curl -X POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear \
-  -H "Content-Type: application/json" \
-  -d '{
-    "compound": "aspirin",
-    "offset": 250,
-    "duration": 10,
-    "sample_rate": 48000
-  }'
+```
+POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/linear
+```
+
+```json
+{
+  "compound": "aspirin",
+  "offset": 250,
+  "duration": 10,
+  "sample_rate": 48000
+}
 ```
 
 **Inverse Algorithm with Custom Parameters**
 
-```bash
-curl -X POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse \
-  -H "Content-Type: application/json" \
-  -d '{
-    "compound": "folate",
-    "scale": 50000,
-    "shift": 2,
-    "duration": 3
-  }'
+```
+POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/inverse
+```
+
+```json
+{
+  "compound": "folate",
+  "scale": 50000,
+  "shift": 2,
+  "duration": 3
+}
+```
+
+**Modulo Algorithm with Custom Parameters**
+
+```
+POST https://mass-spectrum-to-audio-converter.onrender.com/massbank/modulo
+```
+
+```json
+{
+  "compound": "glucose",
+  "factor": 15,
+  "modulus": 600,
+  "base": 150,
+  "duration": 7,
+  "sample_rate": 44100
+}
 ```
 
 ---
 
-### 2. Get Search History
+### 2. Get Recently Generated Compounds
 
 **Endpoint:** `GET /history`
 
-Retrieves the search history of compounds that have been processed.
+Retrieves recently generated compounds.
 
 #### Query Parameters
 
-| Parameter | Type    | Required | Default | Description                                 |
-| --------- | ------- | -------- | ------- | ------------------------------------------- |
-| `limit`   | integer | No       | 20      | Maximum number of history entries to return |
+| Parameter | Type    | Required | Default | Description                                            |
+| --------- | ------- | -------- | ------- | ------------------------------------------------------ |
+| `limit`   | integer | No       | 20      | Maximum number of recently generated entries to return |
 
 #### Response
 
@@ -208,14 +230,71 @@ Retrieves the search history of compounds that have been processed.
 
 #### Example Requests
 
-**Get Last 20 Searches**
+**Get Last 20 Generations**
 
-```bash
-curl https://mass-spectrum-to-audio-converter.onrender.com/history
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/history
 ```
 
-**Get Last 50 Searches**
+**Get Last 50 Generations**
 
-```bash
-curl https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/history?limit=50
+```
+
+### 3. Get Most Generated Compounds
+
+**Endpoint:** `GET /popular`
+
+Retrieves the most frequently generated compounds based on recent generations.
+
+#### Query Parameters
+
+| Parameter | Type    | Required | Default | Description                                        |
+| --------- | ------- | -------- | ------- | -------------------------------------------------- |
+| `limit`   | integer | No       | 20      | Maximum number of most generated entries to return |
+
+#### Response
+
+**Success Response (200 OK)**
+
+```json
+{
+  "popular": [
+    {
+      "compound": "Caffeine",
+      "search_count": 147
+    },
+    {
+      "compound": "Mellein",
+      "search_count": 33
+    },
+    {
+      "compound": "Methyltestosterone",
+      "search_count": 31
+    },
+    {
+      "compound": "BIOTIN",
+      "search_count": 26
+    },
+    {
+      "compound": "Choline",
+      "search_count": 25
+    }
+  ]
+}
+```
+
+#### Example Requests
+
+**Get Top 20 Most Generated Compounds**
+
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/popular
+```
+
+**Get Top 10 Most Generated Compounds**
+
+```
+GET https://mass-spectrum-to-audio-converter.onrender.com/popular?limit=10
 ```
