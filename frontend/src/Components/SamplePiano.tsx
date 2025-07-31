@@ -9,6 +9,7 @@ type Props = {
 
 export default function SamplePiano({ audioUrl }: Props) {
   const [buffer, setBuffer] = useState<Tone.ToneAudioBuffer | null>(null);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const firstNote = MidiNumbers.fromNote("C4");
   const lastNote = MidiNumbers.fromNote("C5");
@@ -31,6 +32,21 @@ export default function SamplePiano({ audioUrl }: Props) {
       });
     }
   }, [audioUrl]);
+
+  useEffect(() => {
+    const compoundInput = document.getElementById("compoundInput");
+
+    const handleFocus = () => setIsInputFocused(true);
+    const handleBlur = () => setIsInputFocused(false);
+
+    compoundInput?.addEventListener("focus", handleFocus);
+    compoundInput?.addEventListener("blur", handleBlur);
+
+    return () => {
+      compoundInput?.removeEventListener("focus", handleFocus);
+      compoundInput?.removeEventListener("blur", handleBlur);
+    };
+  }, []);
 
   const playNote = (midiNumber: number) => {
     if (!buffer) return;
@@ -56,7 +72,7 @@ export default function SamplePiano({ audioUrl }: Props) {
         noteRange={{ first: firstNote, last: lastNote }}
         playNote={playNote}
         stopNote={() => {}}
-        keyboardShortcuts={keyboardShortcuts}
+        keyboardShortcuts={isInputFocused ? undefined : keyboardShortcuts}
       />
     </div>
   );
