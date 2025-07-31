@@ -1,8 +1,10 @@
-### [2025-07-30] Update API Documentation
+### [2025-07-30] Update API Documentation, simplify SamplePiano width logic, and disable piano keyboard shortcuts when typing in compound search
 
 - **Goals:**
 
-  - Update ADI Documentation
+  - Update API Documentation
+  - Simplify SamplePiano width logic
+  - Disable piano keyboard shortcuts when typing in compound search
 
 - **Notes:**
 
@@ -10,18 +12,19 @@
   - Add `/popular` endpoint details to API documentation
   - Changed `raise ValueError(f"Database error: {e}")` to `raise ValueError(e)` for `get_massbank_peaks` function in `render_massbank_queries.py` - removing the redundant "Database error:" prefix since the API already wraps everything in an "error" field.
   - Realized new implementation requires an exact match for compound when searching, probably fine to keep it this way, but may consider returning first closest result if an exact match is not found, shouldn't be necessary with autocomplete though
-  - Current autocomplete implementation displays up to 10 results, could be more than that, need to experiment with this.
+  - Current autocomplete implementation displays up to 10 results, could be more than that, need to experiment with this
+  - Old implementation of SamplePiano width logic was over-engineered, ended up setting the width="440" (appears to be scaled according to internal rendering size) and a max-w-[440px]
+  - Fixed Piano interaction bug - conditionally stop keyboard from playing piano notes when compoundInput is focused
 
 - **Next Steps:**
 
+  - Experiment with larger autocomplete results
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Clean up unnecessary tables and indexes in Render database
   - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
   - Update error handling for new Render database instead of Massbank API
   - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
-  - Simplify SamplePiano width/responsive logic
-  - SamplePiano keyboard interaction should not occur when user is typing in the compound search field
   - Organize Typescript types
   - Unit Tests
   - Integration Tests
