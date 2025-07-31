@@ -42,9 +42,9 @@ export default function CompoundSearch({
     setSelectedIndex(-1);
 
     if (value.length > 0) {
-      const filtered = compounds
-        .filter((comp) => comp.toLowerCase().startsWith(value.toLowerCase()))
-        .slice(0, 10);
+      const filtered = compounds.filter((comp) =>
+        comp.toLowerCase().startsWith(value.toLowerCase())
+      );
       setSuggestions(filtered);
       setShowSuggestions(true);
     } else {
