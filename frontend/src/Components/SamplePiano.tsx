@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Piano, KeyboardShortcuts, MidiNumbers } from "react-piano";
 import "react-piano/dist/styles.css";
 import * as Tone from "tone";
@@ -10,9 +10,6 @@ type Props = {
 export default function SamplePiano({ audioUrl }: Props) {
   const [buffer, setBuffer] = useState<Tone.ToneAudioBuffer | null>(null);
 
-  const [containerWidth, setContainerWidth] = useState<number>(440);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
   const firstNote = MidiNumbers.fromNote("C4");
   const lastNote = MidiNumbers.fromNote("C5");
   const keyboardShortcuts = KeyboardShortcuts.create({
@@ -20,21 +17,6 @@ export default function SamplePiano({ audioUrl }: Props) {
     lastNote,
     keyboardConfig: KeyboardShortcuts.HOME_ROW,
   });
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect.width !== containerWidth) {
-          setContainerWidth(Math.floor(entry.contentRect.width));
-        }
-      }
-    });
-
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, [containerWidth]);
 
   useEffect(() => {
     if (audioUrl) {
@@ -53,7 +35,7 @@ export default function SamplePiano({ audioUrl }: Props) {
   const playNote = (midiNumber: number) => {
     if (!buffer) return;
 
-    const gain = new Tone.Gain(0.2).toDestination(); // Adjust volume here
+    const gain = new Tone.Gain(0.2).toDestination();
 
     const player = new Tone.Player({
       url: buffer,
@@ -67,19 +49,15 @@ export default function SamplePiano({ audioUrl }: Props) {
     player.start();
   };
 
-  const clampedWidth = Math.max(300, Math.min(containerWidth, 440));
-
   return (
-    <div ref={containerRef} className="w-full flex justify-center mt-6">
-      <div className="mx-auto" style={{ width: clampedWidth }}>
-        <Piano
-          width={clampedWidth}
-          noteRange={{ first: firstNote, last: lastNote }}
-          playNote={playNote}
-          stopNote={() => {}}
-          keyboardShortcuts={keyboardShortcuts}
-        />
-      </div>
+    <div className="max-w-[440px] mt-6 mx-auto">
+      <Piano
+        width="440"
+        noteRange={{ first: firstNote, last: lastNote }}
+        playNote={playNote}
+        stopNote={() => {}}
+        keyboardShortcuts={keyboardShortcuts}
+      />
     </div>
   );
 }
