@@ -49,9 +49,7 @@ def generate_combined_wav_bytes_and_data(
         elif algorithm == "inverse":
             freq = mz_to_frequency_inverse(mz, scale=scale, shift=shift)
         elif algorithm == "modulo":
-            freq = mz_to_frequency_modulo(
-                mz, factor=factor, modulus=modulus, base=base
-            )
+            freq = mz_to_frequency_modulo(mz, factor=factor, modulus=modulus, base=base)
         else:
             raise ValueError(f"Unknown algorithm: {algorithm}")
 
@@ -93,3 +91,26 @@ def generate_combined_wav_bytes_and_data(
     wav_buffer.seek(0)
 
     return wav_buffer, transformed_data
+
+
+def parse_spectrum_text(text_input):
+    values = text_input.strip().split()
+    float_values = [float(x) for x in values]
+
+    spectrum_data = []
+    for i in range(0, len(float_values), 2):
+        mz = float_values[i]
+        intensity = float_values[i + 1]
+        spectrum_data.append((mz, intensity))
+
+    return spectrum_data
+
+
+if __name__ == "__main__":
+    test_input = """73.04018778 16.07433749
+75.05583784 2.042927662
+84.08132432 1.258207367"""
+
+    result = parse_spectrum_text(test_input)
+    print(result)
+    print(f"Found {len(result)} peaks")
