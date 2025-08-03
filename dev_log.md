@@ -1,3 +1,33 @@
+### [2025-08-03] Recreate `compounds.json`
+
+- **Goals:**
+
+  - Recreate `compounds.json` to ensure all autocomplete suggestions are in the current database
+
+- **Notes:**
+
+  - Noticed some compounds that were present in `compounds.json` that were not in the current database.
+  - Created a new `compounds.json` file with the current database, and discovered 1633 missing compounds that did not come through during the migration.
+  - I ran a comparison and discovered that all of the missing compounds contained:
+    - Apostrophes
+    - Hash symbols
+    - Unicode characters - α-, β-, Chinese characters, etc.
+    - Various mathematical and chemical notation symbols
+    - Complex escape sequences
+  - For now I updated the autocomplete for accuracy. Need to consider a reimport, or to just leave things as they are. Considering we still have 95.7% of the compounds, and most of the missing ones are highly specialized chemical variants, research compounds with complex notation, different formatting of the same base compounds, unicode/international character variants, etc. I will most likely leave things how they are
+
+- **Next Steps:**
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Clean up unnecessary tables and indexes in Render database
+  - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
+  - Update error handling for new Render database instead of Massbank API
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Organize Typescript types
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-08-02] Test infrastructure improvements
 
 - **Goals:**
