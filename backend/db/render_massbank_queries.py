@@ -54,7 +54,3 @@ def get_massbank_peaks(compound_name):
             cursor.close()
         if conn:
             return_connection(conn)
-
-
-if __name__ == "__main__":
-    pass

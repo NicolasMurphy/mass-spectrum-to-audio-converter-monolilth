@@ -104,13 +104,3 @@ def parse_spectrum_text(text_input):
         spectrum_data.append((mz, intensity))
 
     return spectrum_data
-
-
-if __name__ == "__main__":
-    test_input = """73.04018778 16.07433749
-75.05583784 2.042927662
-84.08132432 1.258207367"""
-
-    result = parse_spectrum_text(test_input)
-    print(result)
-    print(f"Found {len(result)} peaks")
