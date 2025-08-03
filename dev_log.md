@@ -21,6 +21,30 @@
   - Integration Tests
   - E2E Tests
 
+### [2025-08-01] Create `parse_spectrum_text` function
+
+- **Goals:**
+
+  - Create `parse_spectrum_text` function
+
+- **Notes:**
+
+  - Exploring the idea of adding the ability for users to be able to create audio from data not in the database. There are some compounds that are not in MassBank, oxytocin for example. One option would be to allow users to simply copy and paste spectrum data. This functionality would allow for a user to copy and paste (say from HMDB) some number values following the format below. The function assumes pairs of m/z values and intensity values separated by a space, and each pair separated by a new line. The function creates a tuple from this data to be utilized by the existing functions.
+"""73.04018778 16.07433749
+75.05583784 2.042927662
+84.08132432 1.258207367"""
+  - Another option would be to perform a bulk migration from another database that would either be utilized as a fallback (separate tables in database) if a compound is not found, or more ideally, be imported into the Render database following the same schema as the existing tables. Still exploring this idea.
+
+### [2025-07-31] No limit autocomplete
+
+- **Goals:**
+
+  - Remove `.slice(0, 10)` for autocomplete results
+
+- **Notes:**
+
+  - Hardly any noticeable decrease in performance, allows for seeing all compound results, a bit awkward to navigate particularly on mobile. Need to consider lowering the number of results, or adding in a scroll bar on mobile. Will leave it as is for now.
+
 ### [2025-07-30] Update API Documentation, simplify SamplePiano width logic, and disable piano keyboard shortcuts when typing in compound search
 
 - **Goals:**
