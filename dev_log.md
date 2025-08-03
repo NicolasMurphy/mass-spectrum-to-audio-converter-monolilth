@@ -1,3 +1,26 @@
+### [2025-08-02] tests
+
+- **Goals:**
+
+  - tests
+
+- **Notes:**
+
+  - notes
+
+- **Next Steps:**
+  - Noticed some odd behavior with a particular compound (Kaempferol-3-Galactoside-6''-Rhamnoside-3'''-Rhamnoside), somehow ended up in Most Generated, but retrieves "Error: No records found".
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Clean up unnecessary tables and indexes in Render database
+  - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
+  - Update error handling for new Render database instead of Massbank API
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Organize Typescript types
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-07-30] Update API Documentation, simplify SamplePiano width logic, and disable piano keyboard shortcuts when typing in compound search
 
 - **Goals:**

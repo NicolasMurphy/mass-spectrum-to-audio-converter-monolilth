@@ -56,41 +56,5 @@ def get_massbank_peaks(compound_name):
             return_connection(conn)
 
 
-def search_compounds(query, limit=10):
-    """
-    Search for compounds matching the query
-    Returns list of (accession, compound_name, peak_count)
-    """
-    conn = None
-    cursor = None
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        search_query = """
-        SELECT accession, compound_name,
-               COUNT(*) as peak_count
-        FROM spectrum_data
-        WHERE LOWER(compound_name) LIKE LOWER(%s)
-        GROUP BY accession, compound_name
-        ORDER BY peak_count DESC, compound_name
-        LIMIT %s
-        """
-
-        cursor.execute(search_query, (f"%{query}%", limit))
-        results = cursor.fetchall()
-
-        return results
-
-    except Exception as e:
-        print(f"Search error: {e}")
-        return []
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            return_connection(conn)
-
-
 if __name__ == "__main__":
     pass
