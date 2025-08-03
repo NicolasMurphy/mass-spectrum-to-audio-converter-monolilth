@@ -1,9 +1,3 @@
-import sys
-import os
-
-backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, backend_dir)
-
 from converter import (
     mz_to_frequency_linear,
     mz_to_frequency_inverse,
@@ -104,8 +98,3 @@ def test_generate_combined_wav_bytes_and_data_basic():
         assert "intensity" in item
         assert "amplitude_linear" in item
         assert "amplitude_db" in item
-
-
-# python -m pytest backend/tests/ -v
-
-# python -m pytest backend/tests/ --cov=backend --cov-report=html
