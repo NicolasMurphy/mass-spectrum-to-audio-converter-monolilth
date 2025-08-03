@@ -22,6 +22,12 @@
   - Added `__init__.py` and updated imports for cleaner package structure
 
 - **Next Steps:**
+  - Performance optimizations:
+    - Vectorized Operations - for `generate_combined_wav_bytes_and_data`. Currently generating individual sine waves in a loop, vectorization could reduce calculation time 5-10x. Most complex to implement but has the highest reward.
+    - Pre-allocate Arrays - currently creating new arrays for each sine wave. Pre-allocating and reusing arrays would eliminate memory allocation overhead (estimated 20-40% performance increase)
+    - Parallel Processing - For spectra with many peaks, use `multiprocessing` or `numba` JIT compilation (estimated 2-4x speedup for complex spectra with 50+ peaks)
+    - Change sample rate default from 96k to 44.1k (Should be around twice as fast)
+    - Upgrade Render hosting plan - starter plan to standard plan (.1 CPU -> 1+ CPU, 5-10x speedup)
   - Cache frequently searched compounds spectrum data
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Clean up unnecessary tables and indexes in Render database
