@@ -4,6 +4,7 @@
 
   - Recreate `compounds.json` to ensure all autocomplete suggestions are in the current database
   - Clean up `db/` folder - use relative imports instead of absolute imports, remove one-time script files
+  - Formalize `db/` folder as a proper Python package with cleaner import structure
 
 - **Notes:**
 
@@ -16,11 +17,12 @@
     - Various mathematical and chemical notation symbols
     - Complex escape sequences
   - For now I updated the autocomplete for accuracy. Need to consider a reimport, or to just leave things as they are. Considering we still have 95.7% of the compounds, and most of the missing ones are highly specialized chemical variants, research compounds with complex notation, different formatting of the same base compounds, unicode/international character variants, etc. I will most likely leave things how they are
-  - Use relative imports instead of absolute imports
+  - Updated `render_massbank_queries.py` to use relative imports for consistency with `queries.py` (`.connection_pool` instead of `db.connection_pool`)
   - Remove one-time script files - `compounds_json.py`, `find_lost_compounds.py`, `init_db.py`
+  - Added `__init__.py` and updated imports for cleaner package structure
 
 - **Next Steps:**
-  - Cache frequently searched compounds
+  - Cache frequently searched compounds spectrum data
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Clean up unnecessary tables and indexes in Render database
   - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm
