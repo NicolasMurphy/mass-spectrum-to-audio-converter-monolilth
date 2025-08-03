@@ -1,8 +1,9 @@
-### [2025-08-03] Recreate `compounds.json`
+### [2025-08-03] Recreate `compounds.json`, clean up `db/` folder
 
 - **Goals:**
 
   - Recreate `compounds.json` to ensure all autocomplete suggestions are in the current database
+  - Clean up `db/` folder - use relative imports instead of absolute imports, remove one-time script files
 
 - **Notes:**
 
@@ -15,8 +16,11 @@
     - Various mathematical and chemical notation symbols
     - Complex escape sequences
   - For now I updated the autocomplete for accuracy. Need to consider a reimport, or to just leave things as they are. Considering we still have 95.7% of the compounds, and most of the missing ones are highly specialized chemical variants, research compounds with complex notation, different formatting of the same base compounds, unicode/international character variants, etc. I will most likely leave things how they are
+  - Use relative imports instead of absolute imports
+  - Remove one-time script files - `compounds_json.py`, `find_lost_compounds.py`, `init_db.py`
 
 - **Next Steps:**
+  - Cache frequently searched compounds
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Clean up unnecessary tables and indexes in Render database
   - Update tests - mock database calls instead of HTTP requests, add tests for modulo algorithm

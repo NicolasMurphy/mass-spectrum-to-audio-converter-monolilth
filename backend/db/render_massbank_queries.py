@@ -1,4 +1,4 @@
-from db.connection_pool import get_connection, return_connection
+from .connection_pool import get_connection, return_connection
 
 
 def get_massbank_peaks(compound_name):
