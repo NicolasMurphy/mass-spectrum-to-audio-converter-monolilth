@@ -11,10 +11,10 @@ conn = psycopg2.connect(
     host=os.getenv("DB_HOST"),
     port=os.getenv("DB_PORT", 5432),
 )
-cur = conn.cursor()
+cursor = conn.cursor()
 
 # Create the table if it doesn't exist
-cur.execute(
+cursor.execute(
     #     """
     # DROP TABLE IF EXISTS search_history;
     # """
@@ -29,7 +29,7 @@ cur.execute(
 )
 
 conn.commit()
-cur.close()
+cursor.close()
 conn.close()
 
 print("search_history table created or already exists.")

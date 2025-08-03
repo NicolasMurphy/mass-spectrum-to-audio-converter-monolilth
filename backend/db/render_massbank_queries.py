@@ -8,6 +8,7 @@ def get_massbank_peaks(compound_name):
     Returns: (spectrum, accession, compound_actual)
     """
     conn = None
+    cursor = None
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -44,12 +45,13 @@ def get_massbank_peaks(compound_name):
         # Convert to the format expected by converter.py
         spectrum = [(float(mz), float(intensity)) for mz, intensity in peak_data]
 
-        cursor.close()
         return spectrum, accession, compound_actual
 
     except Exception as e:
         raise ValueError(e)
     finally:
+        if cursor:
+            cursor.close()
         if conn:
             return_connection(conn)
 
@@ -60,6 +62,7 @@ def search_compounds(query, limit=10):
     Returns list of (accession, compound_name, peak_count)
     """
     conn = None
+    cursor = None
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -76,7 +79,6 @@ def search_compounds(query, limit=10):
 
         cursor.execute(search_query, (f"%{query}%", limit))
         results = cursor.fetchall()
-        cursor.close()
 
         return results
 
@@ -84,6 +86,8 @@ def search_compounds(query, limit=10):
         print(f"Search error: {e}")
         return []
     finally:
+        if cursor:
+            cursor.close()
         if conn:
             return_connection(conn)
 

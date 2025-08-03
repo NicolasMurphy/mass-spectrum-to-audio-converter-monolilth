@@ -3,11 +3,12 @@ from .connection_pool import get_connection, return_connection
 
 def log_search(compound, accession):
     conn = None
+    cursor = None
     try:
         conn = get_connection()
-        cur = conn.cursor()
+        cursor = conn.cursor()
 
-        cur.execute(
+        cursor.execute(
             """
             INSERT INTO search_history (accession, compound)
             VALUES (%s, %s)
@@ -16,24 +17,26 @@ def log_search(compound, accession):
         )
 
         conn.commit()
-        cur.close()
 
     except Exception as e:
         print(f"Failed to log search: {e}")
         if conn:
             conn.rollback()
     finally:
+        if cursor:
+            cursor.close()
         if conn:
             return_connection(conn)
 
 
 def get_search_history(limit):
     conn = None
+    cursor = None
     try:
         conn = get_connection()
-        cur = conn.cursor()
+        cursor = conn.cursor()
 
-        cur.execute(
+        cursor.execute(
             """
             SELECT accession, compound, created_at
             FROM search_history
@@ -43,8 +46,7 @@ def get_search_history(limit):
             (limit,),
         )
 
-        rows = cur.fetchall()
-        cur.close()
+        rows = cursor.fetchall()
 
         return [
             {"accession": row[0], "compound": row[1], "created_at": row[2].isoformat()}
@@ -55,17 +57,20 @@ def get_search_history(limit):
         print(f"Failed to fetch search history: {e}")
         return []
     finally:
+        if cursor:
+            cursor.close()
         if conn:
             return_connection(conn)
 
 
 def get_popular_compounds(limit):
     conn = None
+    cursor = None
     try:
         conn = get_connection()
-        cur = conn.cursor()
+        cursor = conn.cursor()
 
-        cur.execute(
+        cursor.execute(
             """
             SELECT compound, COUNT(*) as search_count
             FROM search_history
@@ -77,8 +82,7 @@ def get_popular_compounds(limit):
             (limit,),
         )
 
-        rows = cur.fetchall()
-        cur.close()
+        rows = cursor.fetchall()
 
         return [{"compound": row[0], "search_count": row[1]} for row in rows]
 
@@ -86,5 +90,7 @@ def get_popular_compounds(limit):
         print(f"Failed to fetch popular compounds: {e}")
         return []
     finally:
+        if cursor:
+            cursor.close()
         if conn:
             return_connection(conn)
