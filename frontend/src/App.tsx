@@ -35,7 +35,7 @@ function App() {
   const [modulus, setModulus] = useState<string>("500");
   const [base, setBase] = useState<string>("100");
   const [duration, setDuration] = useState<string>("5");
-  const [sampleRate, setSampleRate] = useState<string>("96000");
+  const [sampleRate, setSampleRate] = useState<string>("44100");
   const {
     history: searchHistory,
     error: historyError,

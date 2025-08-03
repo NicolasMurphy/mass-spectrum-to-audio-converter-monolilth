@@ -39,7 +39,7 @@ Generates audio data from a compound's mass spectrum data using the specified al
 | `factor`      | float   | No       | 10      | -           | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
 | `modulus`     | float   | No       | 500     | -           | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
 | `base`        | float   | No       | 100     | -           | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
-| `sample_rate` | integer | No       | 96000   | 3500-192000 | Audio sample rate in Hz                                            |
+| `sample_rate` | integer | No       | 44100   | 3500-192000 | Audio sample rate in Hz                                            |
 | `duration`    | float   | No       | 5.0     | 0.01-30.0   | Duration of generated audio in seconds                             |
 
 **Note:** "Required" means the parameter must be provided in the request. Optional parameters will use their default values if not specified.
@@ -57,7 +57,7 @@ Generates audio data from a compound's mass spectrum data using the specified al
   "audio_base64": "UklGRiSmDgBXQVZFZm10IBAAAAABAAEA...",
   "audio_settings": {
     "duration": 5.0,
-    "sample_rate": 96000
+    "sample_rate": 44100
   },
   "compound": "Caffeine",
   "parameters": {

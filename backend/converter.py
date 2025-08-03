@@ -3,7 +3,7 @@ from scipy.io.wavfile import write
 import io
 
 
-def generate_sine_wave(freq, intensity, duration=5.0, sample_rate=96000):
+def generate_sine_wave(freq, intensity, duration=5.0, sample_rate=44100):
     t = np.linspace(0, duration, int(sample_rate * duration), False)
     amplitude = np.iinfo(np.int16).max * intensity
     wave = amplitude * np.sin(2 * np.pi * freq * t)
@@ -30,7 +30,7 @@ def generate_combined_wav_bytes_and_data(
     scale: float = 100000,
     shift: float = 1,
     duration: float = 5.0,
-    sample_rate: int = 96000,
+    sample_rate: int = 44100,
     algorithm: str = "linear",
     factor: float = 10,
     modulus: float = 500,

@@ -33,7 +33,7 @@ export default function AudioSettings({
         <input
           id="sampleRateInput"
           type="number"
-          placeholder="e.g. 96000"
+          placeholder="e.g. 44100"
           className="input input-bordered w-full"
           value={sampleRate}
           onChange={(e) => {

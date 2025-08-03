@@ -94,7 +94,7 @@ def generate_audio_with_data(algorithm):
     scale = float(data.get("scale", 100000))
     shift = float(data.get("shift", 1))
     duration = float(data.get("duration", 5.0))
-    sample_rate = int(data.get("sample_rate", 96000))
+    sample_rate = int(data.get("sample_rate", 44100))
     factor = float(data.get("factor", 10))
     modulus = float(data.get("modulus", 500))
     base = float(data.get("base", 100))
