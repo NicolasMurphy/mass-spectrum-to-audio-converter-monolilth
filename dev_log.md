@@ -1,12 +1,15 @@
-### [2025-08-02] tests
+### [2025-08-02] Test infrastructure improvements
 
 - **Goals:**
 
-  - tests
+  - Improve unit test coverage and fix cursor resource management bugs
 
 - **Notes:**
 
-  - notes
+  - Added unit tests for `get_massbank_peaks` function
+  - Fixed cursor resource management bug across all database functions - cursors weren't being properly closed when exceptions occurred. Moved `cursor.close()` to `finally` blocks
+  - Standardized cursor variable naming from `cur` to `cursor` for consistency
+  - Removed unused `search_compounds` function and cleaned up debug code
 
 - **Next Steps:**
   - Noticed some odd behavior with a particular compound (Kaempferol-3-Galactoside-6''-Rhamnoside-3'''-Rhamnoside), somehow ended up in Most Generated, but retrieves "Error: No records found".
@@ -30,9 +33,9 @@
 - **Notes:**
 
   - Exploring the idea of adding the ability for users to be able to create audio from data not in the database. There are some compounds that are not in MassBank, oxytocin for example. One option would be to allow users to simply copy and paste spectrum data. This functionality would allow for a user to copy and paste (say from HMDB) some number values following the format below. The function assumes pairs of m/z values and intensity values separated by a space, and each pair separated by a new line. The function creates a tuple from this data to be utilized by the existing functions.
-"""73.04018778 16.07433749
+    `73.04018778 16.07433749
 75.05583784 2.042927662
-84.08132432 1.258207367"""
+84.08132432 1.258207367`
   - Another option would be to perform a bulk migration from another database that would either be utilized as a fallback (separate tables in database) if a compound is not found, or more ideally, be imported into the Render database following the same schema as the existing tables. Still exploring this idea.
 
 ### [2025-07-31] No limit autocomplete
