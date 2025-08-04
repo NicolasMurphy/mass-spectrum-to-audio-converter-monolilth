@@ -1,4 +1,4 @@
-### [2025-08-03] Recreate `compounds.json`, clean up `db/` folder, performance optimizations
+### [2025-08-03] Recreate `compounds.json`, clean up `db/` folder, performance optimizations, Refactor types
 
 - **Goals:**
 
@@ -6,6 +6,7 @@
   - Clean up `db/` folder - use relative imports instead of absolute imports, remove one-time script files
   - Formalize `db/` folder as a proper Python package with cleaner import structure
   - Experiment with different performance optimizations
+  - Refactor TypeScript types to `types.ts`
 
 - **Notes:**
 
@@ -23,6 +24,7 @@
   - Added `__init__.py` and updated imports for cleaner package structure
   - Experimented with vectorized operations, results were not as promising as hoped
   - Updated all mentions of 96000 -> 44100 sample rate, with this lower default, there is a noticeable performance improvement. No difference in sound quality, users can still switch to a higher sample rate when they need to download the file
+  - Moved all interfaces and types to `types.ts`, organized with comments
 
 - **Next Steps:**
   - Performance optimizations:
@@ -31,7 +33,7 @@
     - Parallel Processing - For spectra with many peaks, use `multiprocessing` or `numba` JIT compilation (estimated 2-4x speedup for complex spectra with 50+ peaks)
     - ~~Change sample rate default from 96k to 44.1k (Should be around twice as fast)~~ Ran some tests - ~17% improvement for small spectra, ~53% improvement for large spectra.
     - Upgrade Render backend hosting plan - starter plan to standard plan (.5 CPU -> 1+ CPU, 5-10x speedup)
-    - Upgrade to PostgreSQL 17
+    - ~~Upgrade to PostgreSQL 17~~ Seems to have actually decreased performance? Hard to tell with network variability, noting to perform more strict "before" tests in the future
   - Cache frequently searched compounds spectrum data
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Clean up unnecessary tables and indexes in Render database
@@ -39,7 +41,6 @@
   - Update error handling for new Render database instead of Massbank API
   - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
-  - Organize Typescript types
   - Unit Tests
   - Integration Tests
   - E2E Tests
