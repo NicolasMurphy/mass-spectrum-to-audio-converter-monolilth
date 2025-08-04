@@ -1,6 +1,4 @@
-interface StatusMessageProps {
-  status: string;
-}
+import { type StatusMessageProps } from "../types";
 
 export default function StatusMessage({ status }: StatusMessageProps) {
   if (!status) return null;

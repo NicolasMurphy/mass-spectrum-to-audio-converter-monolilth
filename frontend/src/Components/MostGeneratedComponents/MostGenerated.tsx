@@ -1,8 +1,4 @@
-interface MostGeneratedProps {
-  popularCompounds: Array<{ compound: string }>;
-  popularError: string | null;
-  onCompoundClick: (compound: string) => void;
-}
+import { type MostGeneratedProps } from "../../types";
 
 export default function MostGenerated({
   popularCompounds,

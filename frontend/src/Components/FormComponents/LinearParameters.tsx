@@ -1,7 +1,4 @@
-interface LinearParametersProps {
-  offset: string;
-  onChange: (value: string) => void;
-}
+import { type LinearParametersProps } from "../../types";
 
 export default function LinearParameters({
   offset,

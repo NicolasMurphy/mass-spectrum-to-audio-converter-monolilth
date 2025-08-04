@@ -1,9 +1,4 @@
-interface AudioSettingsProps {
-  duration: string;
-  sampleRate: string;
-  onDurationChange: (value: string) => void;
-  onSampleRateChange: (value: string) => void;
-}
+import { type AudioSettingsProps } from "../../types";
 
 export default function AudioSettings({
   duration,

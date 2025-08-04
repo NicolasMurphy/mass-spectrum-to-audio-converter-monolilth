@@ -1,9 +1,4 @@
-interface InverseParametersProps {
-  scale: string;
-  shift: string;
-  onScaleChange: (value: string) => void;
-  onShiftChange: (value: string) => void;
-}
+import { type InverseParametersProps } from "../../types";
 
 export default function InverseParameters({
   scale,

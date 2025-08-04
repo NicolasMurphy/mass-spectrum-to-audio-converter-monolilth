@@ -1,11 +1,4 @@
-interface ModuloParametersProps {
-  factor: string;
-  modulus: string;
-  base: string;
-  onFactorChange: (value: string) => void;
-  onModulusChange: (value: string) => void;
-  onBaseChange: (value: string) => void;
-}
+import { type ModuloParametersProps } from "../../types";
 
 export default function ModuloParameters({
   factor,
@@ -48,9 +41,7 @@ export default function ModuloParameters({
       </div>
       <div className="form-control mb-4">
         <label className="label" htmlFor="baseInput">
-          <span className="label-text font-semibold">
-            Base (Modulo only)
-          </span>
+          <span className="label-text font-semibold">Base (Modulo only)</span>
         </label>
         <input
           id="baseInput"

@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-
-interface PopularCompound {
-  compound: string;
-  search_count: number;
-}
+import { type PopularCompound } from "../types";
 
 export const usePopularCompounds = (limit: number = 20) => {
   const [popularCompounds, setPopularCompounds] = useState<PopularCompound[]>(

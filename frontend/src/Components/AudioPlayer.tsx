@@ -1,7 +1,4 @@
-interface AudioPlayerProps {
-  audioUrl: string;
-  downloadName: string;
-}
+import { type AudioPlayerProps } from "../types";
 
 export default function AudioPlayer({
   audioUrl,

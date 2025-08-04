@@ -1,17 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-
-interface HistoryEntry {
-  compound: string;
-  accession: string;
-  created_at: string;
-}
-
-interface UseSearchHistoryReturn {
-  history: HistoryEntry[];
-  error: string | null;
-  loading: boolean;
-  refetchHistory: () => void;
-}
+import { type UseSearchHistoryReturn, type HistoryEntry } from "../types";
 
 export function useSearchHistory(limit: number = 100): UseSearchHistoryReturn {
   const [history, setHistory] = useState<HistoryEntry[]>([]);

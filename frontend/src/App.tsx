@@ -18,6 +18,7 @@ import { usePopularCompounds } from "./hooks/usePopularCompounds";
 import MostGenerated from "./Components/MostGeneratedComponents/MostGenerated";
 import InfoModal from "./Components/InfoModal";
 import ModuloParameters from "./Components/FormComponents/ModuloParameters";
+import { type Algorithm, type SpectrumData } from "./types";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -25,9 +26,7 @@ function App() {
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [compoundName, setCompoundName] = useState<string>("");
   const [accession, setAccession] = useState<string>("");
-  const [algorithm, setAlgorithm] = useState<"linear" | "inverse" | "modulo">(
-    "linear"
-  );
+  const [algorithm, setAlgorithm] = useState<Algorithm>("linear");
   const [offset, setOffset] = useState<string>("300");
   const [scale, setScale] = useState<string>("100000");
   const [shift, setShift] = useState<string>("1");
@@ -45,13 +44,9 @@ function App() {
   const popularCompoundsList = popularCompounds.map((item) => ({
     compound: item.compound,
   }));
-  const [spectrumData, setSpectrumData] = useState<Array<{
-    mz: number;
-    frequency: number;
-    intensity: number;
-    amplitude_linear: number;
-    amplitude_db: number;
-  }> | null>(null);
+  const [spectrumData, setSpectrumData] = useState<Array<SpectrumData> | null>(
+    null
+  );
 
   const handleFetch = useCallback(async () => {
     if (!compound.trim()) {

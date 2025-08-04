@@ -1,8 +1,4 @@
-interface RecentlyGeneratedProps {
-  searchHistory: Array<{ compound: string }>;
-  historyError: string | null;
-  onCompoundClick: (compound: string) => void;
-}
+import { type RecentlyGeneratedProps } from "../../types";
 
 export default function RecentlyGenerated({
   searchHistory,

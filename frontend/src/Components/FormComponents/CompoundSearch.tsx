@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-
-interface CompoundSearchProps {
-  compound: string;
-  onCompoundChange: (value: string) => void;
-}
+import { type CompoundSearchProps } from "../../types";
 
 export default function CompoundSearch({
   compound,

@@ -1,7 +1,4 @@
-interface NameAndAccessionProps {
-  compoundName: string;
-  accession: string;
-}
+import { type NameAndAccessionProps } from "../types";
 
 export default function NameAndAccession({
   compoundName,

@@ -1,7 +1,4 @@
-interface AlgorithmSelectorProps {
-  algorithm: "linear" | "inverse" | "modulo";
-  onChange: (algorithm: "linear" | "inverse" | "modulo") => void;
-}
+import { type AlgorithmSelectorProps } from "../../types";
 
 export default function AlgorithmSelector({
   algorithm,

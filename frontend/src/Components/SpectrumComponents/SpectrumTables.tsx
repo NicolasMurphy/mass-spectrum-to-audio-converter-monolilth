@@ -1,14 +1,4 @@
-interface SpectrumData {
-  mz: number;
-  frequency: number;
-  intensity: number;
-  amplitude_linear: number;
-  amplitude_db: number;
-}
-
-interface SpectrumTablesProps {
-  spectrumData: SpectrumData[] | null;
-}
+import { type SpectrumTablesProps } from "../../types";
 
 export default function SpectrumTables({ spectrumData }: SpectrumTablesProps) {
   if (!spectrumData) return null;
