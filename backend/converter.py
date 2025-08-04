@@ -93,14 +93,14 @@ def generate_combined_wav_bytes_and_data(
     return wav_buffer, transformed_data
 
 
-def parse_spectrum_text(text_input):
-    values = text_input.strip().split()
-    float_values = [float(x) for x in values]
+# def parse_spectrum_text(text_input):
+#     values = text_input.strip().split()
+#     float_values = [float(x) for x in values]
 
-    spectrum_data = []
-    for i in range(0, len(float_values), 2):
-        mz = float_values[i]
-        intensity = float_values[i + 1]
-        spectrum_data.append((mz, intensity))
+#     spectrum_data = []
+#     for i in range(0, len(float_values), 2):
+#         mz = float_values[i]
+#         intensity = float_values[i + 1]
+#         spectrum_data.append((mz, intensity))
 
-    return spectrum_data
+#     return spectrum_data

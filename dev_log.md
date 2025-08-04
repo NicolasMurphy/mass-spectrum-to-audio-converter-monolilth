@@ -1,3 +1,30 @@
+### [2025-08-04] Add unit tests for modulo algorithm
+
+- **Goals:**
+
+  - Add unit tests for modulo algorithm
+
+- **Notes:**
+
+  - Currently at 86% coverage
+
+- **Next Steps:**
+
+  - Performance optimizations:
+    - Pre-allocate Arrays - currently creating new arrays for each sine wave. Pre-allocating and reusing arrays would eliminate memory allocation overhead (estimated 20-40% performance increase)
+    - Parallel Processing - For spectra with many peaks, use `multiprocessing` or `numba` JIT compilation (estimated 2-4x speedup for complex spectra with 50+ peaks)
+    - Upgrade Render backend hosting plan - starter plan to standard plan (.5 CPU -> 1+ CPU, 5-10x speedup)
+  - Cache frequently searched compounds spectrum data
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Clean up unnecessary tables and indexes in Render database
+  - Update tests - mock database calls instead of HTTP requests
+  - Update error handling for new Render database instead of Massbank API
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-08-03] Recreate `compounds.json`, clean up `db/` folder, performance optimizations, Refactor types
 
 - **Goals:**
@@ -27,6 +54,7 @@
   - Moved all interfaces and types to `types.ts`, organized with comments
 
 - **Next Steps:**
+
   - Performance optimizations:
     - ~~Vectorized Operations - for `generate_combined_wav_bytes_and_data`. Currently generating individual sine waves in a loop, vectorization could reduce calculation time 5-10x. Most complex to implement but has the highest reward.~~ Vectorization proved not as promising as hoped, showed minimal speed improvements for smaller spectra (caffeine: 9 peaks) and caused memory allocation errors for large spectra (1,815 peaks = 6.5GB RAM requirement). Scrapping this approach.
     - Pre-allocate Arrays - currently creating new arrays for each sine wave. Pre-allocating and reusing arrays would eliminate memory allocation overhead (estimated 20-40% performance increase)
@@ -59,6 +87,7 @@
   - Removed unused `search_compounds` function and cleaned up debug code
 
 - **Next Steps:**
+
   - Noticed some odd behavior with a particular compound (Kaempferol-3-Galactoside-6''-Rhamnoside-3'''-Rhamnoside), somehow ended up in Most Generated, but retrieves "Error: No records found".
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Clean up unnecessary tables and indexes in Render database
