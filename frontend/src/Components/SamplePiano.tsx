@@ -2,12 +2,9 @@ import { useEffect, useState } from "react";
 import { Piano, KeyboardShortcuts, MidiNumbers } from "react-piano";
 import "react-piano/dist/styles.css";
 import * as Tone from "tone";
+import { type SamplePianoProps } from "../types";
 
-type Props = {
-  audioUrl: string;
-};
-
-export default function SamplePiano({ audioUrl }: Props) {
+export default function SamplePiano({ audioUrl }: SamplePianoProps) {
   const [buffer, setBuffer] = useState<Tone.ToneAudioBuffer | null>(null);
   const [isInputFocused, setIsInputFocused] = useState(false);
 

@@ -1,34 +1,12 @@
-export interface AudioPlayerProps {
-  audioUrl: string;
-  downloadName: string;
-}
-
-export interface NameAndAccessionProps {
-  compoundName: string;
-  accession: string;
-}
-
-export interface StatusMessageProps {
-  status: string;
-}
+// =====================================
+// Algorithm
+// =====================================
 
 export type Algorithm = "linear" | "inverse" | "modulo";
 
 export interface AlgorithmSelectorProps {
   algorithm: Algorithm;
   onChange: (algorithm: Algorithm) => void;
-}
-
-export interface AudioSettingsProps {
-  duration: string;
-  sampleRate: string;
-  onDurationChange: (value: string) => void;
-  onSampleRateChange: (value: string) => void;
-}
-
-export interface CompoundSearchProps {
-  compound: string;
-  onCompoundChange: (value: string) => void;
 }
 
 export interface InverseParametersProps {
@@ -52,17 +30,9 @@ export interface ModuloParametersProps {
   onBaseChange: (value: string) => void;
 }
 
-export interface MostGeneratedProps {
-  popularCompounds: Array<{ compound: string }>;
-  popularError: string | null;
-  onCompoundClick: (compound: string) => void;
-}
-
-export interface RecentlyGeneratedProps {
-  searchHistory: Array<{ compound: string }>;
-  historyError: string | null;
-  onCompoundClick: (compound: string) => void;
-}
+// =====================================
+// Spectrum Tables
+// =====================================
 
 export interface SpectrumData {
   mz: number;
@@ -76,10 +46,9 @@ export interface SpectrumTablesProps {
   spectrumData: SpectrumData[] | null;
 }
 
-export interface PopularCompound {
-  compound: string;
-  search_count: number;
-}
+// =====================================
+// Lists
+// =====================================
 
 export interface HistoryEntry {
   compound: string;
@@ -92,4 +61,59 @@ export interface UseSearchHistoryReturn {
   error: string | null;
   loading: boolean;
   refetchHistory: () => void;
+}
+
+export interface RecentlyGeneratedProps {
+  searchHistory: Array<{ compound: string }>;
+  historyError: string | null;
+  onCompoundClick: (compound: string) => void;
+}
+
+export interface PopularCompound {
+  compound: string;
+  search_count: number;
+}
+
+export interface MostGeneratedProps {
+  popularCompounds: Array<{ compound: string }>;
+  popularError: string | null;
+  onCompoundClick: (compound: string) => void;
+}
+
+// =====================================
+// Audio
+// =====================================
+
+export interface AudioPlayerProps {
+  audioUrl: string;
+  downloadName: string;
+}
+
+export interface AudioSettingsProps {
+  duration: string;
+  sampleRate: string;
+  onDurationChange: (value: string) => void;
+  onSampleRateChange: (value: string) => void;
+}
+
+export type SamplePianoProps = {
+  audioUrl: string;
+};
+
+// =====================================
+// Display
+// =====================================
+
+export interface CompoundSearchProps {
+  compound: string;
+  onCompoundChange: (value: string) => void;
+}
+
+export interface NameAndAccessionProps {
+  compoundName: string;
+  accession: string;
+}
+
+export interface StatusMessageProps {
+  status: string;
 }
