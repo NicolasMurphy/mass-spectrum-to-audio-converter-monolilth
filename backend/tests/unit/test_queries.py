@@ -1,9 +1,13 @@
 from unittest.mock import patch, MagicMock
+from db.queries import log_search, get_search_history
+from db.connection_pool import init_pool
+import pytest
 
 
-# Mock psycopg2.pool BEFORE any imports that use it
-with patch("psycopg2.pool.SimpleConnectionPool"):
-    from db.queries import log_search, get_search_history
+@pytest.fixture(autouse=True)
+def mock_connection_pool():
+    with patch("db.connection_pool.connection_pool") as mock_pool:
+        yield mock_pool
 
 
 @patch("db.queries.get_connection")

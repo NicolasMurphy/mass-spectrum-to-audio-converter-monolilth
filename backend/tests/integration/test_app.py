@@ -2,9 +2,7 @@ import pytest
 from unittest.mock import patch
 import json
 
-
-# Mock psycopg2.pool BEFORE importing app
-with patch("psycopg2.pool.SimpleConnectionPool"):
+with patch("db.connection_pool.init_pool"):
     from app import app
 
 
