@@ -155,6 +155,10 @@ function App() {
   useEffect(() => {
     const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === "Enter") {
+        const activeElement = document.activeElement;
+        if (activeElement?.getAttribute("data-random-button") === "true") {
+          return;
+        }
         handleFetchRef.current();
       }
     };
@@ -206,7 +210,9 @@ function App() {
             <div className="card bg-neutral-content w-full max-w-md mx-auto">
               <div className="card-body">
                 <button
+                  type="button"
                   className="btn btn-circle btn-ghost btn-xs text-info absolute top-2 right-2"
+                  title="How to use this app"
                   onClick={() =>
                     (
                       document.getElementById("info_modal") as HTMLDialogElement
@@ -266,7 +272,8 @@ function App() {
                   onSampleRateChange={setSampleRate}
                 />
                 <button
-                  className="btn btn-primary w-full mb-4"
+                  type="button"
+                  className="btn btn-primary mb-4"
                   onClick={triggerFetch}
                   disabled={status === "Fetching audio..."}
                 >

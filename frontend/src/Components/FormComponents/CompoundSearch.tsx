@@ -83,22 +83,42 @@ export default function CompoundSearch({
     }
   };
 
+  const handleRandomCompound = () => {
+    const randomIndex = Math.floor(Math.random() * compounds.length);
+    const randomCompound = compounds[randomIndex];
+    onCompoundChange(randomCompound);
+    setShowSuggestions(false);
+    setSelectedIndex(-1);
+  };
+
   return (
     <div className="form-control mb-4 relative">
       <label className="label" htmlFor="compoundInput">
         <span className="label-text font-semibold">Compound Name</span>
       </label>
-      <input
-        id="compoundInput"
-        type="text"
-        placeholder="e.g. caffeine"
-        className="input input-bordered w-full"
-        value={compound}
-        onChange={(e) => handleInputChange(e.target.value)}
-        onKeyDown={handleKeyDown}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
-        autoComplete="off"
-      />
+      <div className="flex gap-2">
+        <input
+          id="compoundInput"
+          type="text"
+          placeholder="e.g. caffeine"
+          className="input input-bordered w-full"
+          value={compound}
+          onChange={(e) => handleInputChange(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+          autoComplete="off"
+        />
+        <button
+          type="button"
+          onClick={handleRandomCompound}
+          disabled={compounds.length === 0}
+          className="btn btn-ghost btn-square text-xl"
+          title="Random compound"
+          data-random-button="true"
+        >
+          🎲
+        </button>
+      </div>
       {showSuggestions && suggestions.length > 0 && (
         <ul
           className="suggestion-list absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto z-10"

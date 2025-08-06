@@ -7,7 +7,10 @@ const InfoModal: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-lg">How to Use This App</h3>
           <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost text-lg">
+            <button
+              className="btn btn-sm btn-circle btn-ghost text-lg"
+              title="Close"
+            >
               ✕
             </button>
           </form>
