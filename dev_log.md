@@ -1,3 +1,32 @@
+### [2025-08-06] Add random compound feature
+
+- **Goals:**
+
+  - Add random compound feature
+
+- **Notes:**
+
+  - Populate a random compound from `compounds.json` using `Math.random()`
+  - Prevent global enter key from triggering audio generation when random button is focused (using `document.activeElement` check)
+  - Add type and title for buttons where needed for improved accessibility
+
+- **Next Steps:**
+
+  - Performance optimizations:
+    - Pre-allocate Arrays - currently creating new arrays for each sine wave. Pre-allocating and reusing arrays would eliminate memory allocation overhead (estimated 20-40% performance increase)
+    - Parallel Processing - For spectra with many peaks, use `multiprocessing` or `numba` JIT compilation (estimated 2-4x speedup for complex spectra with 50+ peaks)
+    - Upgrade Render backend hosting plan - starter plan to standard plan (.5 CPU -> 1+ CPU, 5-10x speedup)
+  - Cache frequently searched compounds spectrum data
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Clean up unnecessary tables and indexes in Render database
+  - Update tests - mock database calls instead of HTTP requests
+  - Update error handling for new Render database instead of Massbank API
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+
 ### [2025-08-05] Refactor connection pool to explicit initialization pattern
 
 - **Goals:**
