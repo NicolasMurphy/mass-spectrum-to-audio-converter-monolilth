@@ -4,6 +4,7 @@ from flask_cors import CORS
 from converter import generate_combined_wav_bytes_and_data
 from db import get_massbank_peaks, log_search, get_search_history, get_popular_compounds
 from db.connection_pool import init_pool
+import requests
 
 init_pool()
 
@@ -115,6 +116,10 @@ def generate_audio_with_data(algorithm):
 
         log_search(compound_actual, accession)
 
+        send_webhook_notification(
+            compound_actual, accession, algorithm, duration, sample_rate
+        )
+
         wav_buffer, transformed_data = generate_combined_wav_bytes_and_data(
             spectrum,
             offset=offset,
@@ -167,6 +172,29 @@ def popular():
         return {"popular": popular_data}, 200
     except Exception as e:
         return {"error": str(e)}, 500
+
+
+def send_webhook_notification(
+    compound_name, accession, algorithm, duration, sample_rate
+):
+    """Send webhook notification when a compound is generated"""
+    webhook_url = os.getenv("WEBHOOK_URL")
+
+    if not webhook_url:
+        return
+
+    payload = {
+        "content": f"**New Compound Generated!**\n\n**Compound:** {compound_name}\n**Accession:** {accession}\n**Algorithm:** {algorithm}\n**Duration:** {duration}s\n**Sample Rate:** {sample_rate}Hz"
+    }
+
+    try:
+        response = requests.post(webhook_url, json=payload, timeout=5)
+        if response.status_code == 204:
+            print("Webhook sent successfully!")
+        else:
+            print(f"Webhook failed with status {response.status_code}: {response.text}")
+    except requests.exceptions.RequestException as e:
+        print(f"Webhook request failed: {e}")
 
 
 if __name__ == "__main__":
