@@ -32,7 +32,7 @@ Generates audio data from a compound's mass spectrum data using the specified al
 
 | Parameter     | Type    | Required | Default | Validation  | Description                                                        |
 | ------------- | ------- | -------- | ------- | ----------- | ------------------------------------------------------------------ |
-| `compound`    | string  | Yes      | -       | -           | Name or identifier of the compound to search for                   |
+| `compound`    | string  | Yes      | -       | -           | Name of the compound to search for                                 |
 | `offset`      | float   | No       | 300     | -           | `Hz = m/z + offset` _(linear algorithm only)_                      |
 | `scale`       | float   | No       | 100000  | -           | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
 | `shift`       | float   | No       | 1       | -           | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |

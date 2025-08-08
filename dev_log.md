@@ -1,14 +1,16 @@
-### [2025-08-07] Implement Compound Generated Webhook
+### [2025-08-07] Implement Compound Generated Webhook and fix improper logging and webhook on audio generation failure
 
 - **Goals:**
 
   - Implement Discord Webhook for Compound Generated
+  - Fix improper logging and webhook on audio generation failure
 
 - **Notes:**
 
   - Motivated to learn how to use webhooks, and implementing a webhook in this app made sense for visibility and learning
   - Originally tried to setup an email webhook, but Discord was free and provided a better UX for my needs
   - Learned Discord webhooks expect `{"content": "message"}` format and return 204 status (No Content) for successful requests
+  - Noticed that I was still getting webhook notifications when getting `Error: float division by zero`. Upon closer inspection realized the compounds were also being logged on these errors. The log and webhook should only occur on successful generation. Fixed by moving `log_search` and `send_webhook_notification` calls after `generate_combined_wav_bytes_and_data` in the `generate_audio_with_data` function.
 
 - **Next Steps:**
 
@@ -26,6 +28,7 @@
   - Unit Tests
   - Integration Tests
   - E2E Tests
+  - Bug: Display error if all frequencies are below 0 hz
 
 ### [2025-08-06] Add random compound feature
 

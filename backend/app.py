@@ -114,12 +114,6 @@ def generate_audio_with_data(algorithm):
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(compound)
 
-        log_search(compound_actual, accession)
-
-        send_webhook_notification(
-            compound_actual, accession, algorithm, duration, sample_rate
-        )
-
         wav_buffer, transformed_data = generate_combined_wav_bytes_and_data(
             spectrum,
             offset=offset,
@@ -131,6 +125,14 @@ def generate_audio_with_data(algorithm):
             factor=factor,
             modulus=modulus,
             base=base,
+        )
+
+        # log AFTER audio generation
+        log_search(compound_actual, accession)
+
+        # send webhook AFTER audio generation
+        send_webhook_notification(
+            compound_actual, accession, algorithm, duration, sample_rate
         )
 
         audio_base64 = base64.b64encode(wav_buffer.getvalue()).decode()
