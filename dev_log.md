@@ -1,9 +1,10 @@
-### [2025-08-07] Implement Compound Generated Webhook and fix improper logging and webhook on audio generation failure
+### [2025-08-07] Implement Compound Generated Webhook, fix improper logging and webhook on audio generation failure, make webhook background thread
 
 - **Goals:**
 
   - Implement Discord Webhook for Compound Generated
   - Fix improper logging and webhook on audio generation failure
+  - Make webhook background thread for performance
 
 - **Notes:**
 
@@ -11,6 +12,8 @@
   - Originally tried to setup an email webhook, but Discord was free and provided a better UX for my needs
   - Learned Discord webhooks expect `{"content": "message"}` format and return 204 status (No Content) for successful requests
   - Noticed that I was still getting webhook notifications when getting `Error: float division by zero`. Upon closer inspection realized the compounds were also being logged on these errors. The log and webhook should only occur on successful generation. Fixed by moving `log_search` and `send_webhook_notification` calls after `generate_combined_wav_bytes_and_data` in the `generate_audio_with_data` function.
+  - Noticed a decrease in performance, realized webhook function was waiting for Discord response - blocking the main thread. Made webhook run asynchronously in background thread
+  - Upgraded to Render Standard plan (.5 CPU → 1 CPU, 512MB → 2GB RAM) for backend, will see if performance increase is noticeable
 
 - **Next Steps:**
 
