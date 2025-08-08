@@ -18,8 +18,8 @@ def init_pool(config=None):
 
     if config is None:
         config = {
-            "minconn": 1,
-            "maxconn": 5,
+            "minconn": 2,
+            "maxconn": 20,
             "dbname": os.getenv("DB_NAME"),
             "user": os.getenv("DB_USER"),
             "password": os.getenv("DB_PASSWORD"),
