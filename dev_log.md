@@ -13,14 +13,13 @@
   - Learned Discord webhooks expect `{"content": "message"}` format and return 204 status (No Content) for successful requests
   - Noticed that I was still getting webhook notifications when getting `Error: float division by zero`. Upon closer inspection realized the compounds were also being logged on these errors. The log and webhook should only occur on successful generation. Fixed by moving `log_search` and `send_webhook_notification` calls after `generate_combined_wav_bytes_and_data` in the `generate_audio_with_data` function.
   - Noticed a decrease in performance, realized webhook function was waiting for Discord response - blocking the main thread. Made webhook run asynchronously in background thread
-  - Upgraded to Render Standard plan (.5 CPU → 1 CPU, 512MB → 2GB RAM) for backend, will see if performance increase is noticeable
+  - ~~Upgraded to Render Standard plan (.5 CPU → 1 CPU, 512MB → 2GB RAM) for backend, will see if performance increase is noticeable~~ Not hitting anywhere near the CPU or RAM limits, switched back to starter plan
 
 - **Next Steps:**
 
   - Performance optimizations:
     - Pre-allocate Arrays - currently creating new arrays for each sine wave. Pre-allocating and reusing arrays would eliminate memory allocation overhead (estimated 20-40% performance increase)
     - Parallel Processing - For spectra with many peaks, use `multiprocessing` or `numba` JIT compilation (estimated 2-4x speedup for complex spectra with 50+ peaks)
-    - Upgrade Render backend hosting plan - starter plan to standard plan (.5 CPU -> 1+ CPU, 5-10x speedup)
   - Cache frequently searched compounds spectrum data
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Clean up unnecessary tables and indexes in Render database
