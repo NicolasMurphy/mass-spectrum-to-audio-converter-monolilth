@@ -5,6 +5,7 @@ from converter import generate_combined_wav_bytes_and_data
 from db import get_massbank_peaks, log_search, get_search_history, get_popular_compounds
 from db.connection_pool import init_pool
 import requests
+import threading
 
 init_pool()
 
@@ -130,10 +131,13 @@ def generate_audio_with_data(algorithm):
         # log AFTER audio generation
         log_search(compound_actual, accession)
 
-        # send webhook AFTER audio generation
-        send_webhook_notification(
-            compound_actual, accession, algorithm, duration, sample_rate
-        )
+        # send webhook AFTER audio generation (background thread)
+        def send_webhook_async():
+            send_webhook_notification(
+                compound_actual, accession, algorithm, duration, sample_rate
+            )
+
+        threading.Thread(target=send_webhook_async, daemon=True).start()
 
         audio_base64 = base64.b64encode(wav_buffer.getvalue()).decode()
 
