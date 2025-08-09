@@ -99,7 +99,7 @@ Generates audio data from a compound's mass spectrum data using the specified al
 | `spectrum`                    | array   | Array of spectrum transformation data points |
 | `spectrum[].mz`               | float   | Original m/z value from mass spectrum        |
 | `spectrum[].frequency`        | float   | Converted frequency in Hz                    |
-| `spectrum[].intensity`        | integer | Original intensity value from database       |
+| `spectrum[].intensity`        | float   | Original intensity value from database       |
 | `spectrum[].amplitude_linear` | float   | Normalized amplitude (0-1 range)             |
 | `spectrum[].amplitude_db`     | float   | Amplitude in decibels                        |
 | `algorithm`                   | string  | Algorithm used for conversion                |

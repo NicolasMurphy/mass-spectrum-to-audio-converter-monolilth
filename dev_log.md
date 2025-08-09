@@ -8,7 +8,7 @@
 
 - **Notes:**
 
-  - Motivated to learn how to use webhooks, and implementing a webhook in this app made sense for visibility and learning
+  - Motivated to learn how to use webhooks, and implementing a webhook in this app made sense for learning and visibility on user actions
   - Originally tried to setup an email webhook, but Discord was free and provided a better UX for my needs
   - Learned Discord webhooks expect `{"content": "message"}` format and return 204 status (No Content) for successful requests
   - Noticed that I was still getting webhook notifications when getting `Error: float division by zero`. Upon closer inspection realized the compounds were also being logged on these errors. The log and webhook should only occur on successful generation. Fixed by moving `log_search` and `send_webhook_notification` calls after `generate_combined_wav_bytes_and_data` in the `generate_audio_with_data` function.
