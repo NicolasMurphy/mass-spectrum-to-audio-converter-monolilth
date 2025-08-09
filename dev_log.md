@@ -1,3 +1,31 @@
+### [2025-08-09] Pre-allocate Arrays
+
+- **Goals:**
+
+  - Pre-allocate Arrays for performance
+
+- **Notes:**
+
+  - ~30-40% performance gain for compounds with large amounts of peaks (tested locally with 1,815 peak compound 13.8s → 9.3s, some variance in production, hard to tell with network variability), no noticeable gain for compounds with a smaller amount of peaks
+  - Clarified behavior with comments, comments were a bit verbose so I cleaned it up a bit. Could still be a bit cleaner.
+
+- **Next Steps:**
+
+  - Clean up `converter.py` - organize/clean comments, move algorithm functions to own file
+  - Performance optimizations:
+    - JIT Compilation - Try `numba` JIT compilation (estimated 1.5-2x speedup for small spectra, 2-3x for large spectra). Deployment considerations: +200MB build size, longer initial deploy time, cold start penalty. Worth trying given performance gains.
+    - Cache frequently searched compounds spectrum data
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Clean up unnecessary tables and indexes in Render database
+  - Update tests - mock database calls instead of HTTP requests
+  - Update error handling for new Render database instead of Massbank API
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Unit Tests
+  - Integration Tests
+  - E2E Tests
+  - Bug: Display error if all frequencies are below 0 hz
+
 ### [2025-08-07] Implement Compound Generated Webhook, fix improper logging and webhook on audio generation failure, make webhook background thread
 
 - **Goals:**
