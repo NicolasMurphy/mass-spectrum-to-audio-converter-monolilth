@@ -1,4 +1,4 @@
-### [2025-08-10] Refactor/Organize File/Folder Structure in Backend, Unit Tests
+### [2025-08-10] Refactor/Organize File/Folder Structure in Backend, Unit Tests, Create Database md files
 
 - **Goals:**
 
@@ -6,6 +6,7 @@
   - Reorganize test structure to mirror code organization
   - Add unit tests for `generate_sine_wave` function
   - Improve code documentation with NumPy function explanations
+  - Create `database_schema.md` and `db_usage_stats.md`
 
 - **Notes:**
 
@@ -14,15 +15,16 @@
   - Unit tests for `generate_sine_wave`
   - Enhanced docstring in `audio_generation.py` with NumPy function explanations
   - Fix failing test in CI - "db.connection_pool.init_pool" -> "db.init_pool"
+  - Did an analysis of current database structure (creating `database_schema.md` and `db_usage_stats.md`) in preparation for Redis export
 
 - **Next Steps:**
 
   - Performance optimizations:
-    - Cache frequently searched compounds spectrum data
-    - JIT Compilation - Try `numba` JIT compilation (estimated 1.5-2x speedup for small spectra, 2-3x for large spectra). Deployment considerations: +200MB build size, longer initial deploy time, cold start penalty. Worth trying given performance gains.
+    - Cache compounds spectrum data - Exploring Redis as a potential option for this:
+      - One-time bulk export of compound_accessions and spectrum_data from PostgreSQL to Redis, keyed by accession; search_history excluded
+      - Backend will query Redis first with PostgreSQL fallback
   - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
   - Refactor `app.py`
-  - Clean up unnecessary tables and indexes in Render database
   - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
   - Bug: Display error if all frequencies are below 0 hz
@@ -790,7 +792,7 @@ Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceed
 - **Notes:**
 
   - Have been stuck on the keyboard not centering on mobile devices. Plan is to experiment further with Responsive design mode in Firefox. Also observed some unexpected layout issues in Firefox, even at standard laptop screen sizes.
-  - Massbank cert expires Aug 15, will likely have to download a newer cert. Possible more sustainable solutions: Use Let’s Encrypt Root CA, or (back up plan) auto renew the cert (parse through a live TLS connection)
+  - Massbank cert expires Aug 15, will likely have to download a newer cert. Possible more sustainable solutions: Use Let's Encrypt Root CA, or (back up plan) auto renew the cert (parse through a live TLS connection)
   - Keyboard plays when entering compound, not too concerning, but ideally should not be doing that. Not an immediate bug to address, but making note of it.
   - Consider help text for explaining what m/z is - end user may not understand what is happening
   - Consider using a different library for keyboard
@@ -818,9 +820,9 @@ Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceed
 
 - **Notes:**
 
-  - Commented out all code related to the `logarithmic` algorithm — not as applicable as initially expected; may revisit later
+  - Commented out all code related to the `logarithmic` algorithm - not as applicable as initially expected; may revisit later
   - Keyboard is still not centered on all mobile devices. Difficult to troubleshoot since Chrome's Toggle Device Toolbar is not rendering accurately; need a better strategy for debugging mobile layout
-  - Discovered that Vercel's `Ignored Build Step` logic only checks the latest commit in a push for changes. This becomes an issue with multi-commit pushes where the final commit doesn’t touch the watched folder - the build is skipped even if earlier commits did. Not ideal. Could explore workarounds, but for now, it's just important to be aware of the behavior. Avoid multi-commit pushes, or ensure the last commit touches the target folder.
+  - Discovered that Vercel's `Ignored Build Step` logic only checks the latest commit in a push for changes. This becomes an issue with multi-commit pushes where the final commit doesn't touch the watched folder - the build is skipped even if earlier commits did. Not ideal. Could explore workarounds, but for now, it's just important to be aware of the behavior. Avoid multi-commit pushes, or ensure the last commit touches the target folder.
 
 - **Next Steps:**
 
@@ -954,7 +956,7 @@ Error 500: HTTPSConnectionPool(host='massbank.eu', port=443): Max retries exceed
   - `get_massbank_peaks.py` was renamed to `massbank.py` for clarity
   - New CLI tool `generate_from_massbank.py` was created to fetch data and generate `.wav` files in one step
   - Verified the script returns `(m/z, intensity)` tuples, compatible with the existing audio converter
-  - Basic Flask API endpoint `/generate?compound=NAME` is now functional — returns a `.wav` file using a `BytesIO` stream
+  - Basic Flask API endpoint `/generate?compound=NAME` is now functional - returns a `.wav` file using a `BytesIO` stream
   - Removed unused files: `generate_from_massbank.py` and `fetch_hmdb.py`
   - Removed unused dependency: `beautifulsoup4`
 
