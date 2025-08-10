@@ -1,3 +1,32 @@
+### [2025-08-10] Refactor/Organize File/Folder Structure in Backend, Unit Tests
+
+- **Goals:**
+
+  - Refactor backend into organized packages (`audio/`, `db/`)
+  - Reorganize test structure to mirror code organization
+  - Add unit tests for `generate_sine_wave` function
+  - Improve code documentation with NumPy function explanations
+
+- **Notes:**
+
+  - Created `audio/` package with `frequency_algorithms.py` and `audio_generation.py`
+  - Reorganized tests into `tests/unit/test_audio/` and `tests/unit/test_db/` structure
+  - Unit tests for `generate_sine_wave`
+  - Enhanced docstring in `audio_generation.py` with NumPy function explanations
+  - Fix failing test in CI - "db.connection_pool.init_pool" -> "db.init_pool"
+
+- **Next Steps:**
+
+  - Performance optimizations:
+    - Cache frequently searched compounds spectrum data
+    - JIT Compilation - Try `numba` JIT compilation (estimated 1.5-2x speedup for small spectra, 2-3x for large spectra). Deployment considerations: +200MB build size, longer initial deploy time, cold start penalty. Worth trying given performance gains.
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Refactor `app.py`
+  - Clean up unnecessary tables and indexes in Render database
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Bug: Display error if all frequencies are below 0 hz
+
 ### [2025-08-09] Pre-allocate Arrays
 
 - **Goals:**
