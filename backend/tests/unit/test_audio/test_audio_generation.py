@@ -2,17 +2,30 @@ from audio import (
     generate_sine_wave,
     generate_combined_wav_bytes_and_data,
 )
+import numpy as np
 
 
-# TODO: Update this unit test
 # generate sine wave tests
-# def test_generate_sine_wave_basic():
-#     """Test that generate_sine_wave returns correct array length"""
-#     wave = generate_sine_wave(440, 0.5, duration=1.0, sample_rate=44100)
+def test_generate_sine_wave_returns_buffer():
+    """Test that generate_sine_wave returns the same buffer object it was given"""
 
-#     # Should have correct number of samples
-#     expected_samples = int(44100 * 1.0)  # sample_rate * duration
-#     assert len(wave) == expected_samples
+    time_array = np.linspace(0, 0.1, 800, False)  # dummy data
+    wave_buffer = np.zeros_like(time_array)  # array of 800 zeroes
+
+    result = generate_sine_wave(440, 0.5, time_array, wave_buffer)
+
+    assert result is wave_buffer
+
+
+def test_generate_sine_wave_modifies_buffer():
+    """Test that generate_sine_wave modifies the wave_buffer (not all zeros)"""
+
+    time_array = np.linspace(0, 0.1, 800, False)  # dummy data
+    wave_buffer = np.zeros_like(time_array)  # array of 800 zeroes
+
+    generate_sine_wave(440, 0.5, time_array, wave_buffer)
+
+    assert not np.all(wave_buffer == 0)
 
 
 # generate combined wav bytes and data tests
