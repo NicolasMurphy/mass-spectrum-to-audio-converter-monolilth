@@ -1,6 +1,6 @@
 # Mass Spectrum Database Schema
 
-This document summarizes how the Render-hosted mass-spectrum database is used by the backend. There are four tables in the schema, but only three of them are accessed by the current code. The `search_history` table is the **only** table that the backend writes to; the others are read-only.
+This document covers how the backend uses the `mass_spectrum_db` database hosted on Render. The database has four tables, but the current code only uses three of them. Only the `search_history` table gets written to - everything else is read-only.
 
 ## Active tables and indexes
 

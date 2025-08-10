@@ -1,6 +1,6 @@
 # Database Usage Statistics
 
-This document captures usage metrics for the Render-hosted mass-spectrum database as observed via PostgreSQL's `pg_stat_user_indexes` and `pg_stat_all_tables` views on August 10, 2025. These statistics provide insight into which indexes and tables are actively used by the backend and which remain idle.
+This document captures usage metrics for the `mass_spectrum_db` database hosted on Render as observed via PostgreSQL's `pg_stat_user_indexes` and `pg_stat_all_tables` views on August 10, 2025. These statistics provide insight into which indexes and tables are actively used by the backend and which remain idle.
 
 ## Index scans (`pg_stat_user_indexes`)
 
