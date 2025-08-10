@@ -13,6 +13,12 @@ Sine Wave Generation:
 - np.sin() converts radians to wave heights (-1 to +1)
 - Multiply by amplitude to get final audio values
 - np.sin(..., out=buffer) writes directly into buffer (no temporary arrays)
+
+Key NumPy Functions:
+- np.sin(): Vectorized sine calculation using the system's optimized math library
+  (e.g., Ubuntu → glibc's libm, Windows → Microsoft's UCRT), always outputs [-1, 1]
+- np.linspace(start, stop, num, endpoint): Creates evenly spaced numbers over an interval (endpoint=False excludes the stop value)
+- np.zeros_like(array): Returns array of zeros with same shape/type as input array
 """
 
 import numpy as np
