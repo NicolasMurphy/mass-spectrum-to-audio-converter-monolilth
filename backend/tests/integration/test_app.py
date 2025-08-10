@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 import json
 
-with patch("db.connection_pool.init_pool"):
+with patch("db.init_pool"):
     from app import app
 
 
