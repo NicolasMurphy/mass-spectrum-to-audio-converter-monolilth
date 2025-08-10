@@ -1,4 +1,4 @@
-from .connection_pool import get_connection, return_connection
+from db import get_connection, return_connection
 
 
 def log_search(compound, accession):

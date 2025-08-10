@@ -11,6 +11,7 @@
 
 - **Next Steps:**
 
+  - Rewrite unit test for `generate_sine_wave`
   - Clean up `converter.py` - organize/clean comments, move algorithm functions to own file
   - Performance optimizations:
     - JIT Compilation - Try `numba` JIT compilation (estimated 1.5-2x speedup for small spectra, 2-3x for large spectra). Deployment considerations: +200MB build size, longer initial deploy time, cold start penalty. Worth trying given performance gains.

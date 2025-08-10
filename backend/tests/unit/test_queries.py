@@ -1,6 +1,5 @@
 from unittest.mock import patch, MagicMock
-from db.queries import log_search, get_search_history
-from db.connection_pool import init_pool
+from db import log_search, get_search_history
 import pytest
 
 

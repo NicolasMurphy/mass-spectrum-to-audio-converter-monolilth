@@ -18,6 +18,11 @@ Sine Wave Generation:
 import numpy as np
 from scipy.io.wavfile import write
 import io
+from .frequency_algorithms import (
+    mz_to_frequency_linear,
+    mz_to_frequency_inverse,
+    mz_to_frequency_modulo,
+)
 
 
 def generate_sine_wave(freq, intensity, time_array, wave_buffer):
@@ -26,20 +31,6 @@ def generate_sine_wave(freq, intensity, time_array, wave_buffer):
     np.sin(2 * np.pi * freq * time_array, out=wave_buffer)
     wave_buffer *= amplitude
     return wave_buffer
-
-
-def mz_to_frequency_linear(mz, offset: float = 300):
-    return mz + offset
-
-
-def mz_to_frequency_inverse(mz, scale: float = 100000, shift: float = 1):
-    return scale / (mz + shift)
-
-
-def mz_to_frequency_modulo(
-    mz, factor: float = 10, modulus: float = 500, base: float = 100
-):
-    return ((mz * factor) % modulus) + base
 
 
 def generate_combined_wav_bytes_and_data(

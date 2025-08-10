@@ -1,6 +1,5 @@
 from unittest.mock import patch, MagicMock
-from db.render_massbank_queries import get_massbank_peaks
-from db.connection_pool import init_pool
+from db import get_massbank_peaks
 import pytest
 
 

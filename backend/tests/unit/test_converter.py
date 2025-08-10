@@ -1,8 +1,7 @@
-from converter import (
+from audio import (
     mz_to_frequency_linear,
     mz_to_frequency_inverse,
     mz_to_frequency_modulo,
-    generate_sine_wave,
     generate_combined_wav_bytes_and_data,
 )
 
