@@ -1,3 +1,21 @@
+### [2025-08-11] Experiment with Redis
+
+- **Goals:**
+
+  - Experiment with Redis caching for performance gain
+
+- **Notes:**
+
+  - My initial hopes of Redis improving performance proved futile (~150ms Redis vs ~135ms PostgreSQL), I may have not done enough research. It appears Redis performance benefits really shine with many concurrent users, something that this doesn't fit the scope of this app. I still have a few other things I want to try performance wise, but the app is already plenty fast - I was curious to see how much juice there is left to squeeze. May revisit performance later, and Redis, if it comes back in scope.
+
+- **Next Steps:**
+
+  - Add input validation: Frontend and backend validation for empty/invalid parameters to prevent JSON parsing errors and 500 responses.
+  - Refactor `app.py`
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Bug: Display error if all frequencies are below 0 hz
+
 ### [2025-08-10] Refactor/Organize File/Folder Structure in Backend, Unit Tests, Create Database md files
 
 - **Goals:**
