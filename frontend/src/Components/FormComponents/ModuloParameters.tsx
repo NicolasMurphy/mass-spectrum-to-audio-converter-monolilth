@@ -15,6 +15,7 @@ export default function ModuloParameters({
           <span className="label-text font-semibold">Factor (Modulo only)</span>
         </label>
         <input
+          required
           id="factorInput"
           type="number"
           placeholder="e.g. 10"
@@ -31,6 +32,7 @@ export default function ModuloParameters({
           </span>
         </label>
         <input
+          required
           id="modulusInput"
           type="number"
           placeholder="e.g. 500"
@@ -44,6 +46,7 @@ export default function ModuloParameters({
           <span className="label-text font-semibold">Base (Modulo only)</span>
         </label>
         <input
+          required
           id="baseInput"
           type="number"
           placeholder="e.g. 100"

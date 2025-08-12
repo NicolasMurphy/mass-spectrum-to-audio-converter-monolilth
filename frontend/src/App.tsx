@@ -170,10 +170,6 @@ function App() {
     };
   }, []);
 
-  const triggerFetch = () => {
-    handleFetch();
-  };
-
   const downloadName = `${compoundName}-${accession}.wav`;
 
   useEffect(() => {
@@ -187,6 +183,11 @@ function App() {
 
   const handleCompoundClick = (compound: string) => {
     setCompound(compound);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleFetch();
   };
 
   return (
@@ -236,49 +237,50 @@ function App() {
                 <h1 className="text-xl font-bold text-center mb-4">
                   Mass Spectrum to Audio Converter
                 </h1>
-                <CompoundSearch
-                  compound={compound}
-                  onCompoundChange={setCompound}
-                />
-                <AlgorithmSelector
-                  algorithm={algorithm}
-                  onChange={setAlgorithm}
-                />
-                {algorithm === "linear" && (
-                  <LinearParameters offset={offset} onChange={setOffset} />
-                )}
-                {algorithm === "inverse" && (
-                  <InverseParameters
-                    scale={scale}
-                    shift={shift}
-                    onScaleChange={setScale}
-                    onShiftChange={setShift}
+                <form onSubmit={handleSubmit}>
+                  <CompoundSearch
+                    compound={compound}
+                    onCompoundChange={setCompound}
                   />
-                )}
-                {algorithm === "modulo" && (
-                  <ModuloParameters
-                    factor={factor}
-                    modulus={modulus}
-                    base={base}
-                    onFactorChange={setFactor}
-                    onModulusChange={setModulus}
-                    onBaseChange={setBase}
+                  <AlgorithmSelector
+                    algorithm={algorithm}
+                    onChange={setAlgorithm}
                   />
-                )}
-                <AudioSettings
-                  duration={duration}
-                  sampleRate={sampleRate}
-                  onDurationChange={setDuration}
-                  onSampleRateChange={setSampleRate}
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary mb-4"
-                  onClick={triggerFetch}
-                  disabled={status === "Fetching audio..."}
-                >
-                  Generate Audio
-                </button>
+                  {algorithm === "linear" && (
+                    <LinearParameters offset={offset} onChange={setOffset} />
+                  )}
+                  {algorithm === "inverse" && (
+                    <InverseParameters
+                      scale={scale}
+                      shift={shift}
+                      onScaleChange={setScale}
+                      onShiftChange={setShift}
+                    />
+                  )}
+                  {algorithm === "modulo" && (
+                    <ModuloParameters
+                      factor={factor}
+                      modulus={modulus}
+                      base={base}
+                      onFactorChange={setFactor}
+                      onModulusChange={setModulus}
+                      onBaseChange={setBase}
+                    />
+                  )}
+                  <AudioSettings
+                    duration={duration}
+                    sampleRate={sampleRate}
+                    onDurationChange={setDuration}
+                    onSampleRateChange={setSampleRate}
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-primary mb-4 w-full"
+                    disabled={status === "Fetching audio..."}
+                  >
+                    Generate Audio
+                  </button>
+                </form>
                 {status && <StatusMessage status={status} />}
                 {compoundName && accession && (
                   <NameAndAccession

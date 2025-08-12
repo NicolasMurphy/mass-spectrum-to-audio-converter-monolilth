@@ -13,6 +13,7 @@ export default function InverseParameters({
           <span className="label-text font-semibold">Scale (Inverse only)</span>
         </label>
         <input
+          required
           id="scaleInput"
           type="number"
           placeholder="e.g. 100000"
@@ -27,6 +28,7 @@ export default function InverseParameters({
           <span className="label-text font-semibold">Shift (Inverse only)</span>
         </label>
         <input
+          required
           id="shiftInput"
           type="number"
           placeholder="e.g. 1"

@@ -12,6 +12,7 @@ export default function LinearParameters({
         </span>
       </label>
       <input
+        required
         id="offsetInput"
         type="number"
         placeholder="e.g. 300"

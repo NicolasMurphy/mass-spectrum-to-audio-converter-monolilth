@@ -98,6 +98,7 @@ export default function CompoundSearch({
       </label>
       <div className="flex gap-2">
         <input
+          required
           id="compoundInput"
           type="text"
           placeholder="e.g. caffeine"

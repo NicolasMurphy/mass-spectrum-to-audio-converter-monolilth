@@ -13,6 +13,7 @@ export default function AudioSettings({
           <span className="label-text font-semibold">Duration</span>
         </label>
         <input
+          required
           id="durationInput"
           type="number"
           placeholder="e.g. 5"
@@ -26,6 +27,7 @@ export default function AudioSettings({
           <span className="label-text font-semibold">Sample Rate (Hz)</span>
         </label>
         <input
+          required
           id="sampleRateInput"
           type="number"
           placeholder="e.g. 44100"

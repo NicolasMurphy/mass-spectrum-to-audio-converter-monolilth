@@ -10,6 +10,7 @@ export default function AlgorithmSelector({
       <div className="flex flex-col gap-2">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
+            required
             type="radio"
             name="algorithm"
             className="radio radio-primary"
@@ -20,6 +21,7 @@ export default function AlgorithmSelector({
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
+            required
             type="radio"
             name="algorithm"
             className="radio radio-primary"
@@ -30,6 +32,7 @@ export default function AlgorithmSelector({
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
+            required
             type="radio"
             name="algorithm"
             className="radio radio-primary"
