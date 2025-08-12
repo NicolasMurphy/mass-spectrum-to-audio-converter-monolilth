@@ -30,7 +30,7 @@ def test_post_endpoint_rejects_missing_json(client):
 def test_post_endpoint_rejects_missing_compound(client):
     """Test that POST /massbank/linear requires compound parameter"""
 
-    request_data = {"duration": 5.0}
+    request_data = {"duration": 5}
 
     response = client.post(
         "/massbank/linear",
@@ -56,7 +56,10 @@ def test_post_endpoint_rejects_invalid_algorithm(client):
 
     assert response.status_code == 400
     response_data = json.loads(response.data)
-    assert response_data["error"] == "Unsupported algorithm 'fourier'"
+    assert (
+        response_data["error"]
+        == "Unsupported algorithm: 'fourier'. Must be 'linear', 'inverse', or 'modulo'"
+    )
 
 
 def test_post_endpoint_rejects_invalid_duration(client):

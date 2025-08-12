@@ -100,14 +100,38 @@ def generate_audio_with_data(algorithm):
             return {"error": "Invalid sample rate. Must be an integer."}, 400
 
     compound = data.get("compound")
-    offset = float(data.get("offset", 300))
-    scale = float(data.get("scale", 100000))
-    shift = float(data.get("shift", 1))
-    duration = float(data.get("duration", 5.0))
-    sample_rate = int(data.get("sample_rate", 44100))
-    factor = float(data.get("factor", 10))
-    modulus = float(data.get("modulus", 500))
-    base = float(data.get("base", 100))
+    try:
+        offset = float(data.get("offset", 300))
+    except (ValueError, TypeError):
+        return {"error": "Invalid offset. Must be a float."}, 400
+    try:
+        scale = float(data.get("scale", 100000))
+    except (ValueError, TypeError):
+        return {"error": "Invalid scale. Must be a float."}, 400
+    try:
+        shift = float(data.get("shift", 1))
+    except (ValueError, TypeError):
+        return {"error": "Invalid shift. Must be a float."}, 400
+    try:
+        duration = float(data.get("duration", 5))
+    except (ValueError, TypeError):
+        return {"error": "Invalid duration. Must be a float."}, 400
+    try:
+        sample_rate = int(data.get("sample_rate", 44100))
+    except (ValueError, TypeError):
+        return {"error": "Invalid sample_rate. Must be an integer."}, 400
+    try:
+        factor = float(data.get("factor", 10))
+    except (ValueError, TypeError):
+        return {"error": "Invalid factor. Must be a float."}, 400
+    try:
+        modulus = float(data.get("modulus", 500))
+    except (ValueError, TypeError):
+        return {"error": "Invalid modulus. Must be a float."}, 400
+    try:
+        base = float(data.get("base", 100))
+    except (ValueError, TypeError):
+        return {"error": "Invalid base. Must be a float."}, 400
 
     if not compound or not compound.strip():
         return {"error": "No compound provided"}, 400

@@ -44,7 +44,7 @@ def generate_combined_wav_bytes_and_data(
     offset: float = 300,
     scale: float = 100000,
     shift: float = 1,
-    duration: float = 5.0,
+    duration: float = 5,
     sample_rate: int = 44100,
     algorithm: str = "linear",
     factor: float = 10,
