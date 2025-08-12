@@ -80,7 +80,6 @@ def generate_audio_with_data(algorithm):
         .split(",")[0]
         .strip()
     )
-    print(f"Client IP: {ip}")
     if is_rate_limited(ip):
         return {"error": "Rate limit exceeded. Try again later."}, 429
 
@@ -108,7 +107,7 @@ def generate_audio_with_data(algorithm):
     modulus = float(data.get("modulus", 500))
     base = float(data.get("base", 100))
 
-    if not compound:
+    if not compound or not compound.strip():
         return {"error": "No compound provided"}, 400
 
     if not (0.01 <= duration <= 30):
@@ -171,8 +170,12 @@ def generate_audio_with_data(algorithm):
 
         return response_data, 200
 
-    except Exception as e:
-        return {"error": str(e)}, 500
+    except ValueError as e:
+        error_msg = str(e)
+        if "No records found" in error_msg:
+            return {"error": error_msg}, 404
+        else:
+            return {"error": error_msg}, 400
 
 
 @app.route("/popular", methods=["GET"])

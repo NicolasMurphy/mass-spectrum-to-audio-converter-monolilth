@@ -125,7 +125,8 @@ Generates audio data from a compound's mass spectrum data using the specified al
 | 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`      |
 | 400         | Invalid JSON               | `{"error": "No JSON data provided"}`                         |
 | 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`         |
-| 500         | Internal server error      | `{"error": "No records found"}`                              |
+| 404         | Compound not found         | `{"error": "No records found"}`                              |
+| 500         | Internal server error      | `{"error": "Internal server error"}`                         |
 
 #### Example Requests
 
