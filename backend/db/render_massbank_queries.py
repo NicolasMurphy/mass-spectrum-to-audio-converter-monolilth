@@ -1,19 +1,4 @@
-# import redis
-# import json
 from db import get_connection, return_connection
-
-# redis_client = redis.from_url(
-#     "redis url goes here",
-#     decode_responses=True,
-# )
-
-
-# def dedupe_peaks(peaks):
-#     """Remove duplicate [mz, intensity] pairs"""
-#     seen = set()
-#     return [
-#         peak for peak in peaks if not (tuple(peak) in seen or seen.add(tuple(peak)))
-#     ]
 
 
 def get_massbank_peaks(compound_name):
@@ -22,32 +7,6 @@ def get_massbank_peaks(compound_name):
     Two-step search like MassBank API: find compounds first, then get peaks
     Returns: (spectrum, accession, compound_actual)
     """
-
-    # # Try Redis first
-    # try:
-    #     print(f"Trying Redis for: {compound_name}")
-    #     accession = redis_client.get(f"v1:accmap:{compound_name.lower()}")
-
-    #     if accession:
-    #         print(f"Found in Redis: {accession}")
-    #         spectrum_data = redis_client.get(f"v1:acc:{accession}")
-    #         if spectrum_data and isinstance(spectrum_data, str):
-    #             print("Using Redis data!")
-    #             data = json.loads(spectrum_data)
-    #             # Deduplicate peaks on fetch
-    #             peaks = dedupe_peaks(data["peaks"])
-    #             spectrum = [(float(mz), float(intensity)) for mz, intensity in peaks]
-    #             return spectrum, accession, compound_name
-    #         else:
-    #             print("No spectrum data, falling back to PG")
-    #     else:
-    #         print(f"'{compound_name}' not in Redis, using PG")
-
-    # except Exception as e:
-    #     print(f"Redis error: {e}, falling back to PostgreSQL")
-
-    # print("Using PostgreSQL fallback")
-
     conn = None
     cursor = None
     try:

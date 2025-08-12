@@ -1,12 +1,16 @@
-### [2025-08-11] Experiment with Redis
+### [2025-08-11] Experiment with Redis and experiment with composite index on PostgreSQL
 
 - **Goals:**
 
   - Experiment with Redis caching for performance gain
+  - Experiment with composite index for PostgreSQL query performance gain
 
 - **Notes:**
 
   - My initial hopes of Redis improving performance proved futile (~150ms Redis vs ~135ms PostgreSQL), I may have not done enough research. It appears Redis performance benefits really shine with many concurrent users, something that this doesn't fit the scope of this app. I still have a few other things I want to try performance wise, but the app is already plenty fast - I was curious to see how much juice there is left to squeeze. May revisit performance later, and Redis, if it comes back in scope.
+  - Added `idx_spectrum_accession_mz` on `spectrum_data (accession, mz)` following suggestion to optimize the `ORDER BY mz` clause
+  - Performance testing showed no meaningful improvement (~200ms before/after)
+  - `EXPLAIN ANALYZE` revealed PostgreSQL still prefers the original `idx_accession` index for typical queries
 
 - **Next Steps:**
 
