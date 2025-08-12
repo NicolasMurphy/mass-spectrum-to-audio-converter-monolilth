@@ -1,13 +1,15 @@
-### [2025-08-12] Backend/Frontend Validation for parameters
+### [2025-08-12] Backend/Frontend Validation for parameters, Implement background thread for `log_search`
 
 - **Goals:**
 
   - Backend/Frontend Validation for parameters
+  - Implement background thread for `log_search`
 
 - **Notes:**
 
   - Backend validation: Added try/except validation for all parameters, proper HTTP status codes
   - Frontend validation: Added HTML form with required fields, fixed global enter key bypassing validation
+  - Background thread for `log_search` resulted in a consistent ~100ms performance improvement!
 
 - **Next Steps:**
 

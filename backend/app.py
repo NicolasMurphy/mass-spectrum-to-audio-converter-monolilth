@@ -159,7 +159,9 @@ def generate_audio_with_data(algorithm):
         )
 
         # log AFTER audio generation
-        log_search(compound_actual, accession)
+        threading.Thread(
+            target=log_search, args=(compound_actual, accession), daemon=True
+        ).start()
 
         # send webhook AFTER audio generation (background thread)
         def send_webhook_async():
