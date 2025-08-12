@@ -159,7 +159,10 @@ function App() {
         if (activeElement?.getAttribute("data-random-button") === "true") {
           return;
         }
-        handleFetchRef.current();
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (submitButton) {
+          (submitButton as HTMLButtonElement).click();
+        }
       }
     };
 
