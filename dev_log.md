@@ -1,3 +1,21 @@
+### [2025-08-12] Backend/Frontend Validation for parameters
+
+- **Goals:**
+
+  - Backend/Frontend Validation for parameters
+
+- **Notes:**
+
+  - Backend validation: Added try/except validation for all parameters, proper HTTP status codes
+  - Frontend validation: Added HTML form with required fields, fixed global enter key bypassing validation
+
+- **Next Steps:**
+
+  - Refactor `app.py`
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Bug: Display error if all frequencies are below 0 hz
+
 ### [2025-08-11] Experiment with Redis and experiment with composite index on PostgreSQL
 
 - **Goals:**
