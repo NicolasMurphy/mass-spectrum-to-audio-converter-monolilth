@@ -84,7 +84,9 @@ def generate_audio_with_data(algorithm):
         return {"error": "Rate limit exceeded. Try again later."}, 429
 
     if algorithm not in ["linear", "inverse", "modulo"]:
-        return {"error": f"Unsupported algorithm '{algorithm}'"}, 400
+        return {
+            "error": f"Unsupported algorithm: '{algorithm}'. Must be 'linear', 'inverse', or 'modulo'"
+        }, 400
 
     # Get JSON data from request body
     data = request.get_json()

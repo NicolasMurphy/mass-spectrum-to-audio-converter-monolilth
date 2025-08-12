@@ -32,7 +32,7 @@ Generates audio data from a compound's mass spectrum data using the specified al
 
 | Parameter     | Type    | Required | Default | Validation  | Description                                                        |
 | ------------- | ------- | -------- | ------- | ----------- | ------------------------------------------------------------------ |
-| `compound`    | string  | Yes      | -       | -           | Name of the compound to search for                                 |
+| `compound`    | string  | Yes      | -       | Non-empty   | Name of the compound to search for                                 |
 | `offset`      | float   | No       | 300     | -           | `Hz = m/z + offset` _(linear algorithm only)_                      |
 | `scale`       | float   | No       | 100000  | -           | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
 | `shift`       | float   | No       | 1       | -           | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
@@ -116,17 +116,17 @@ Generates audio data from a compound's mass spectrum data using the specified al
 
 **Error Responses**
 
-| Status Code | Description                | Example Response                                             |
-| ----------- | -------------------------- | ------------------------------------------------------------ |
-| 400         | Invalid algorithm          | `{"error": "Unsupported algorithm 'fourier'"}`               |
-| 400         | Missing compound           | `{"error": "No compound provided"}`                          |
-| 400         | Invalid duration           | `{"error": "Duration must be between 0.01 and 30 seconds."}` |
-| 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000"}`   |
-| 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`      |
-| 400         | Invalid JSON               | `{"error": "No JSON data provided"}`                         |
-| 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`         |
-| 404         | Compound not found         | `{"error": "No records found"}`                              |
-| 500         | Internal server error      | `{"error": "Internal server error"}`                         |
+| Status Code | Description                | Example Response                                                                          |
+| ----------- | -------------------------- | ----------------------------------------------------------------------------------------- |
+| 400         | Invalid algorithm          | `{"error": "Unsupported algorithm: 'fourier'. Must be 'linear', 'inverse', or 'modulo'"}` |
+| 400         | Missing compound           | `{"error": "No compound provided"}`                                                       |
+| 400         | Invalid duration           | `{"error": "Duration must be between 0.01 and 30 seconds."}`                              |
+| 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000"}`                                |
+| 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`                                   |
+| 400         | Invalid JSON               | `{"error": "No JSON data provided"}`                                                      |
+| 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`                                      |
+| 404         | Compound not found         | `{"error": "No records found"}`                                                           |
+| 500         | Internal server error      | `{"error": "Internal server error"}`                                                      |
 
 #### Example Requests
 
