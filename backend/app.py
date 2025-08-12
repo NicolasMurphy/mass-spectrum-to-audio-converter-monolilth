@@ -178,6 +178,8 @@ def generate_audio_with_data(algorithm):
             return {"error": error_msg}, 404
         else:
             return {"error": error_msg}, 400
+    except Exception as e:
+        return {"error": "Internal server error"}, 500
 
 
 @app.route("/popular", methods=["GET"])
