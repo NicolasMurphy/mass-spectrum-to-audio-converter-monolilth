@@ -10,8 +10,8 @@ from db import (
     init_pool,
 )
 from utils.rate_limiting import is_rate_limited
+from utils.webhook import send_webhook_notification
 from api.validation import validate_algorithm, validate_and_parse_parameters
-import requests
 import threading
 
 init_pool()
@@ -64,8 +64,6 @@ def generate_audio_with_data(algorithm):
         params = validate_and_parse_parameters(data)
     except ValueError as e:
         return {"error": str(e)}, 400
-
-    # data = request.get_json() used to be here
 
     try:
         spectrum, accession, compound_actual = get_massbank_peaks(params["compound"])
@@ -148,29 +146,6 @@ def popular():
         return {"popular": popular_data}, 200
     except Exception as e:
         return {"error": str(e)}, 500
-
-
-def send_webhook_notification(
-    compound_name, accession, algorithm, duration, sample_rate
-):
-    """Send webhook notification when a compound is generated"""
-    webhook_url = os.getenv("WEBHOOK_URL")
-
-    if not webhook_url:
-        return
-
-    payload = {
-        "content": f"**New Compound Generated!**\n\n**Compound:** {compound_name}\n**Accession:** {accession}\n**Algorithm:** {algorithm}\n**Duration:** {duration}s\n**Sample Rate:** {sample_rate}Hz"
-    }
-
-    try:
-        response = requests.post(webhook_url, json=payload, timeout=5)
-        if response.status_code == 204:
-            print("Webhook sent successfully!")
-        else:
-            print(f"Webhook failed with status {response.status_code}: {response.text}")
-    except requests.exceptions.RequestException as e:
-        print(f"Webhook request failed: {e}")
 
 
 if __name__ == "__main__":

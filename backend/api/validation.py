@@ -68,7 +68,6 @@ def validate_and_parse_parameters(data):
     if not 3500 <= sample_rate <= 192000:
         raise ValueError("Sample rate must be between 3500 and 192000")
 
-    # Return all parsed parameters
     return {
         "compound": compound,
         "offset": offset,
