@@ -10,6 +10,7 @@ from db import (
     init_pool,
 )
 from utils.rate_limiting import is_rate_limited
+from api.validation import validate_algorithm, validate_and_parse_parameters
 import requests
 import threading
 
@@ -52,79 +53,34 @@ def generate_audio_with_data(algorithm):
     if is_rate_limited(ip):
         return {"error": "Rate limit exceeded. Try again later."}, 429
 
-    if algorithm not in ["linear", "inverse", "modulo"]:
-        return {
-            "error": f"Unsupported algorithm: '{algorithm}'. Must be 'linear', 'inverse', or 'modulo'"
-        }, 400
+    try:
+        validate_algorithm(algorithm)
+    except ValueError as e:
+        return {"error": str(e)}, 400
 
-    # Get JSON data from request body
     data = request.get_json()
-    if not data:
-        return {"error": "No JSON data provided"}, 400
-
-    # Validate sample_rate BEFORE conversion
-    raw_sr = data.get("sample_rate")
-    if raw_sr is not None:
-        if isinstance(raw_sr, float) or (isinstance(raw_sr, str) and "." in raw_sr):
-            return {"error": "Invalid sample rate. Must be an integer."}, 400
-
-    compound = data.get("compound")
-    try:
-        offset = float(data.get("offset", 300))
-    except (ValueError, TypeError):
-        return {"error": "Invalid offset. Must be a float."}, 400
-    try:
-        scale = float(data.get("scale", 100000))
-    except (ValueError, TypeError):
-        return {"error": "Invalid scale. Must be a float."}, 400
-    try:
-        shift = float(data.get("shift", 1))
-    except (ValueError, TypeError):
-        return {"error": "Invalid shift. Must be a float."}, 400
-    try:
-        duration = float(data.get("duration", 5))
-    except (ValueError, TypeError):
-        return {"error": "Invalid duration. Must be a float."}, 400
-    try:
-        sample_rate = int(data.get("sample_rate", 44100))
-    except (ValueError, TypeError):
-        return {"error": "Invalid sample_rate. Must be an integer."}, 400
-    try:
-        factor = float(data.get("factor", 10))
-    except (ValueError, TypeError):
-        return {"error": "Invalid factor. Must be a float."}, 400
-    try:
-        modulus = float(data.get("modulus", 500))
-    except (ValueError, TypeError):
-        return {"error": "Invalid modulus. Must be a float."}, 400
-    try:
-        base = float(data.get("base", 100))
-    except (ValueError, TypeError):
-        return {"error": "Invalid base. Must be a float."}, 400
-
-    if not compound or not compound.strip():
-        return {"error": "No compound provided"}, 400
-
-    if not (0.01 <= duration <= 30):
-        return {"error": "Duration must be between 0.01 and 30 seconds."}, 400
-
-    if not 3500 <= sample_rate <= 192000:
-        return {"error": "Sample rate must be between 3500 and 192000"}, 400
 
     try:
-        spectrum, accession, compound_actual = get_massbank_peaks(compound)
+        params = validate_and_parse_parameters(data)
+    except ValueError as e:
+        return {"error": str(e)}, 400
+
+    # data = request.get_json() used to be here
+
+    try:
+        spectrum, accession, compound_actual = get_massbank_peaks(params["compound"])
 
         wav_buffer, transformed_data = generate_combined_wav_bytes_and_data(
             spectrum,
-            offset=offset,
-            scale=scale,
-            shift=shift,
-            duration=duration,
-            sample_rate=sample_rate,
+            offset=params["offset"],
+            scale=params["scale"],
+            shift=params["shift"],
+            duration=params["duration"],
+            sample_rate=params["sample_rate"],
             algorithm=algorithm,
-            factor=factor,
-            modulus=modulus,
-            base=base,
+            factor=params["factor"],
+            modulus=params["modulus"],
+            base=params["base"],
         )
 
         # log AFTER audio generation
@@ -135,7 +91,11 @@ def generate_audio_with_data(algorithm):
         # send webhook AFTER audio generation (background thread)
         def send_webhook_async():
             send_webhook_notification(
-                compound_actual, accession, algorithm, duration, sample_rate
+                compound_actual,
+                accession,
+                algorithm,
+                params["duration"],
+                params["sample_rate"],
             )
 
         threading.Thread(target=send_webhook_async, daemon=True).start()
@@ -144,14 +104,14 @@ def generate_audio_with_data(algorithm):
 
         # Prepare algorithm parameters based on algorithm type
         if algorithm == "linear":
-            algorithm_params = {"offset": offset}
+            algorithm_params = {"offset": params["offset"]}
         elif algorithm == "inverse":
-            algorithm_params = {"scale": scale, "shift": shift}
+            algorithm_params = {"scale": params["scale"], "shift": params["shift"]}
         elif algorithm == "modulo":
             algorithm_params = {
-                "factor": factor,
-                "modulus": modulus,
-                "base": base,
+                "factor": params["factor"],
+                "modulus": params["modulus"],
+                "base": params["base"],
             }
 
         # Build response
@@ -162,7 +122,10 @@ def generate_audio_with_data(algorithm):
             "spectrum": transformed_data,
             "algorithm": algorithm,
             "parameters": algorithm_params,
-            "audio_settings": {"duration": duration, "sample_rate": sample_rate},
+            "audio_settings": {
+                "duration": params["duration"],
+                "sample_rate": params["sample_rate"],
+            },
         }
 
         return response_data, 200
