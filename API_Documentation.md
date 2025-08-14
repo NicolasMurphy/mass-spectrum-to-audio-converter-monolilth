@@ -122,7 +122,7 @@ Generates audio data from a compound's mass spectrum data using the specified al
 | 400         | Missing compound           | `{"error": "No compound provided"}`                                                       |
 | 400         | Invalid parameter type     | `{"error": "Invalid offset. Must be a float."}`                                           |
 | 400         | Invalid duration           | `{"error": "Duration must be between 0.01 and 30 seconds."}`                              |
-| 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000"}`                                |
+| 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000."}`                               |
 | 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`                                   |
 | 400         | Invalid JSON               | `{"error": "No JSON data provided"}`                                                      |
 | 429         | Rate limit exceeded        | `{"error": "Rate limit exceeded. Try again later."}`                                      |

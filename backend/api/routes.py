@@ -30,11 +30,7 @@ def history():
 
 
 def generate_audio_with_data(algorithm):
-    ip = (
-        request.headers.get("X-Forwarded-For", request.remote_addr or "")
-        .split(",")[0]
-        .strip()
-    )
+    ip = get_client_ip
     if is_rate_limited(ip):
         return {"error": "Rate limit exceeded. Try again later."}, 429
 

@@ -66,7 +66,7 @@ def validate_and_parse_parameters(data):
         raise ValueError("Duration must be between 0.01 and 30 seconds.")
 
     if not 3500 <= sample_rate <= 192000:
-        raise ValueError("Sample rate must be between 3500 and 192000")
+        raise ValueError("Sample rate must be between 3500 and 192000.")
 
     return {
         "compound": compound,
@@ -79,3 +79,6 @@ def validate_and_parse_parameters(data):
         "modulus": modulus,
         "base": base,
     }
+
+
+# TODO: Add range validation for all parameters

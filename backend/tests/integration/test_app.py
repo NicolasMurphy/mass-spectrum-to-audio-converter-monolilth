@@ -91,7 +91,7 @@ def test_post_endpoint_rejects_invalid_sample_rate_range(client):
 
     assert response.status_code == 400
     response_data = json.loads(response.data)
-    assert response_data["error"] == "Sample rate must be between 3500 and 192000"
+    assert response_data["error"] == "Sample rate must be between 3500 and 192000."
 
 
 def test_post_endpoint_rejects_invalid_sample_rate_type(client):
