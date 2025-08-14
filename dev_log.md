@@ -1,3 +1,24 @@
+### [2025-08-13] Refactor `app.py`, Write validation unit tests
+
+- **Goals:**
+
+  - Refactor `app.py`
+  - Write validation unit tests
+
+- **Notes:**
+
+  - Refactored `app.py` - created `api/routes.py`, `api/validation.py`, `utils/rate_limiting.py` and `utils/webhook.py`
+  - Wrote validation unit tests - currently at 82% coverage
+  - Noticed I don't have range validation for some parameters - security issue, added to next step
+  - Considering adding a validation library, need to research Pydantic
+  - Removed "Display error if all frequencies are below 0 hz" - low impact edge case, not breaking anything
+
+- **Next Steps:**
+
+  - Add range validation for all parameters
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+
 ### [2025-08-12] Backend/Frontend Validation for parameters, Implement background thread for `log_search`
 
 - **Goals:**
