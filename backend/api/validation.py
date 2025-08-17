@@ -5,6 +5,11 @@ def validate_algorithm(algorithm):
         )
 
 
+def validate_number_range(value, param_name):
+    if not (-1_000_000 <= value <= 1_000_000):
+        raise ValueError(f"{param_name} must be between -1,000,000 and 1,000,000.")
+
+
 def validate_and_parse_parameters(data):
     if not data:
         raise ValueError("No JSON data provided")
@@ -20,21 +25,27 @@ def validate_and_parse_parameters(data):
     if not compound or not compound.strip():
         raise ValueError("No compound provided")
 
+    if len(compound) > 349:
+        raise ValueError("Compound name is too long. Maximum length is 349 characters.")
+
     # Parse all parameters with error handling
     try:
         offset = float(data.get("offset", 300))
     except (ValueError, TypeError):
         raise ValueError("Invalid offset. Must be a float.")
+    validate_number_range(offset, "offset")
 
     try:
         scale = float(data.get("scale", 100000))
     except (ValueError, TypeError):
         raise ValueError("Invalid scale. Must be a float.")
+    validate_number_range(scale, "scale")
 
     try:
         shift = float(data.get("shift", 1))
     except (ValueError, TypeError):
         raise ValueError("Invalid shift. Must be a float.")
+    validate_number_range(shift, "shift")
 
     try:
         duration = float(data.get("duration", 5))
@@ -50,18 +61,22 @@ def validate_and_parse_parameters(data):
         factor = float(data.get("factor", 10))
     except (ValueError, TypeError):
         raise ValueError("Invalid factor. Must be a float.")
+    validate_number_range(factor, "factor")
 
     try:
         modulus = float(data.get("modulus", 500))
     except (ValueError, TypeError):
         raise ValueError("Invalid modulus. Must be a float.")
+    validate_number_range(modulus, "modulus")
 
     try:
         base = float(data.get("base", 100))
     except (ValueError, TypeError):
         raise ValueError("Invalid base. Must be a float.")
+    validate_number_range(base, "base")
 
     # Validate ranges
+
     if not (0.01 <= duration <= 30):
         raise ValueError("Duration must be between 0.01 and 30 seconds.")
 
@@ -79,6 +94,3 @@ def validate_and_parse_parameters(data):
         "modulus": modulus,
         "base": base,
     }
-
-
-# TODO: Add range validation for all parameters
