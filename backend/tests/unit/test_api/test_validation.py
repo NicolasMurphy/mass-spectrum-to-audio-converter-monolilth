@@ -94,6 +94,15 @@ def test_validate_and_parse_parameters_none_data():
         assert "No JSON data provided" == str(e)
 
 
+def test_validate_and_parse_parameters_compound_whitespace():
+    data = {"compound": "   "}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "No compound provided" == str(e)
+
+
 def test_validate_and_parse_parameters_no_compound():
     data = {"compound": ""}
     try:
@@ -114,7 +123,10 @@ def test_validate_and_parse_parameters_compound_too_long():
         assert "Compound name is too long. Maximum length is 349 characters." == str(e)
 
 
-def test_validate_and_parse_parameters_invalid_sample_rate():
+# Invalid types
+
+
+def test_validate_and_parse_parameters_invalid_sample_rate_float():
     data = {"compound": "Caffeine", "sample_rate": "5000.1"}
     try:
         validate_and_parse_parameters(data)
@@ -132,6 +144,72 @@ def test_validate_and_parse_parameters_invalid_offset():
         assert "Invalid offset. Must be a float." == str(e)
 
 
+def test_validate_and_parse_parameters_invalid_scale():
+    data = {"compound": "Caffeine", "scale": "Not a number"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Invalid scale. Must be a float." == str(e)
+
+
+def test_validate_and_parse_parameters_invalid_shift():
+    data = {"compound": "Caffeine", "shift": "Not a number"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Invalid shift. Must be a float." == str(e)
+
+
+def test_validate_and_parse_parameters_invalid_duration():
+    data = {"compound": "Caffeine", "duration": "Not a number"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Invalid duration. Must be a float." == str(e)
+
+
+def test_validate_and_parse_parameters_invalid_factor():
+    data = {"compound": "Caffeine", "factor": "Not a number"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Invalid factor. Must be a float." == str(e)
+
+
+def test_validate_and_parse_parameters_invalid_modulus():
+    data = {"compound": "Caffeine", "modulus": "Not a number"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Invalid modulus. Must be a float." == str(e)
+
+
+def test_validate_and_parse_parameters_invalid_base():
+    data = {"compound": "Caffeine", "base": "Not a number"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Invalid base. Must be a float." == str(e)
+
+
+def test_validate_and_parse_parameters_invalid_sample_rate_not_a_number():
+    data = {"compound": "Caffeine", "sample_rate": "Not a number"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Invalid sample_rate. Must be an integer." == str(e)
+
+
+# Range tests
+
+
 def test_validate_and_parse_parameters_offset_too_low():
     data = {"compound": "Caffeine", "offset": "-1000001"}
     try:
@@ -143,6 +221,96 @@ def test_validate_and_parse_parameters_offset_too_low():
 
 def test_validate_and_parse_parameters_offset_too_high():
     data = {"compound": "Caffeine", "offset": "1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_scale_too_low():
+    data = {"compound": "Caffeine", "scale": "-1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_scale_too_high():
+    data = {"compound": "Caffeine", "scale": "1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_shift_too_low():
+    data = {"compound": "Caffeine", "shift": "-1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_shift_too_high():
+    data = {"compound": "Caffeine", "shift": "1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_factor_too_low():
+    data = {"compound": "Caffeine", "factor": "-1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_factor_too_high():
+    data = {"compound": "Caffeine", "factor": "1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_modulus_too_low():
+    data = {"compound": "Caffeine", "modulus": "-1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_modulus_too_high():
+    data = {"compound": "Caffeine", "modulus": "1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_base_too_low():
+    data = {"compound": "Caffeine", "base": "-1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_base_too_high():
+    data = {"compound": "Caffeine", "base": "1000001"}
     try:
         validate_and_parse_parameters(data)
         assert False, "Expected ValueError to be raised"
