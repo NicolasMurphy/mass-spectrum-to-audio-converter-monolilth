@@ -101,6 +101,7 @@ export default function CompoundSearch({
           required
           id="compoundInput"
           type="text"
+          maxLength={349}
           placeholder="e.g. caffeine"
           className="input input-bordered w-full"
           value={compound}

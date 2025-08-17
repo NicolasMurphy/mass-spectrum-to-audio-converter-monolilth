@@ -15,6 +15,8 @@ export default function LinearParameters({
         required
         id="offsetInput"
         type="number"
+        min="-1000000"
+        max="1000000"
         placeholder="e.g. 300"
         className="input input-bordered w-full"
         value={offset}

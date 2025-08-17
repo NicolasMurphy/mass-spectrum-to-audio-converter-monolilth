@@ -18,6 +18,8 @@ export default function ModuloParameters({
           required
           id="factorInput"
           type="number"
+          min="-1000000"
+          max="1000000"
           placeholder="e.g. 10"
           className="input input-bordered w-full"
           value={factor}
@@ -35,6 +37,8 @@ export default function ModuloParameters({
           required
           id="modulusInput"
           type="number"
+          min="-1000000"
+          max="1000000"
           placeholder="e.g. 500"
           className="input input-bordered w-full"
           value={modulus}
@@ -49,6 +53,8 @@ export default function ModuloParameters({
           required
           id="baseInput"
           type="number"
+          min="-1000000"
+          max="1000000"
           placeholder="e.g. 100"
           className="input input-bordered w-full"
           value={base}

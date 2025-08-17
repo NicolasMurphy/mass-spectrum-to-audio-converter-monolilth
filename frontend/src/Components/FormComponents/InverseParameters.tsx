@@ -14,6 +14,8 @@ export default function InverseParameters({
         </label>
         <input
           required
+          min="-1000000"
+          max="1000000"
           id="scaleInput"
           type="number"
           placeholder="e.g. 100000"
@@ -29,6 +31,8 @@ export default function InverseParameters({
         </label>
         <input
           required
+          min="-1000000"
+          max="1000000"
           id="shiftInput"
           type="number"
           placeholder="e.g. 1"
