@@ -30,17 +30,17 @@ Generates audio data from a compound's mass spectrum data using the specified al
 
 **Content-Type:** `application/json`
 
-| Parameter     | Type    | Required | Default | Validation                 | Description                                                        |
-| ------------- | ------- | -------- | ------- | -------------------------- | ------------------------------------------------------------------ |
-| `compound`    | string  | Yes      | -       | Non-empty                  | Name of the compound to search for                                 |
-| `offset`      | float   | No       | 300     | Valid float                | `Hz = m/z + offset` _(linear algorithm only)_                      |
-| `scale`       | float   | No       | 100000  | Valid float                | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
-| `shift`       | float   | No       | 1       | Valid float                | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
-| `factor`      | float   | No       | 10      | Valid float                | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
-| `modulus`     | float   | No       | 500     | Valid float                | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
-| `base`        | float   | No       | 100     | Valid float                | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
-| `sample_rate` | integer | No       | 44100   | Valid integer, 3500-192000 | Audio sample rate in Hz                                            |
-| `duration`    | float   | No       | 5       | Valid float, 0.01-30.0     | Duration of generated audio in seconds                             |
+| Parameter     | Type    | Required | Default | Validation                    | Description                                                        |
+| ------------- | ------- | -------- | ------- | ----------------------------- | ------------------------------------------------------------------ |
+| `compound`    | string  | Yes      | -       | Non-empty, max 349 characters | Name of the compound to search for                                 |
+| `offset`      | float   | No       | 300     | -1,000,000 to 1,000,000       | `Hz = m/z + offset` _(linear algorithm only)_                      |
+| `scale`       | float   | No       | 100000  | -1,000,000 to 1,000,000       | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
+| `shift`       | float   | No       | 1       | -1,000,000 to 1,000,000       | `Hz = scale / (m/z + shift)` _(inverse algorithm only)_            |
+| `factor`      | float   | No       | 10      | -1,000,000 to 1,000,000       | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
+| `modulus`     | float   | No       | 500     | -1,000,000 to 1,000,000       | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
+| `base`        | float   | No       | 100     | -1,000,000 to 1,000,000       | `Hz = ((m/z * factor) % modulus) + base` _(modulo algorithm only)_ |
+| `sample_rate` | integer | No       | 44100   | 3500 to 192000                | Audio sample rate in Hz                                            |
+| `duration`    | float   | No       | 5       | 0.01 to 30.0                  | Duration of generated audio in seconds                             |
 
 **Note:** "Required" means the parameter must be provided in the request. Optional parameters will use their default values if not specified.
 
@@ -120,7 +120,9 @@ Generates audio data from a compound's mass spectrum data using the specified al
 | ----------- | -------------------------- | ----------------------------------------------------------------------------------------- |
 | 400         | Invalid algorithm          | `{"error": "Unsupported algorithm: 'fourier'. Must be 'linear', 'inverse', or 'modulo'"}` |
 | 400         | Missing compound           | `{"error": "No compound provided"}`                                                       |
+| 400         | Compound too long          | `{"error": "Compound name is too long. Maximum length is 349 characters."}`               |
 | 400         | Invalid parameter type     | `{"error": "Invalid offset. Must be a float."}`                                           |
+| 400         | Parameter out of range     | `{"error": "offset must be between -1,000,000 and 1,000,000."}`                           |
 | 400         | Invalid duration           | `{"error": "Duration must be between 0.01 and 30 seconds."}`                              |
 | 400         | Invalid sample rate        | `{"error": "Sample rate must be between 3500 and 192000."}`                               |
 | 400         | Invalid sample rate format | `{"error": "Invalid sample rate. Must be an integer."}`                                   |
