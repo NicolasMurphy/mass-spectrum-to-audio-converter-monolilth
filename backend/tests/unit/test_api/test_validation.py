@@ -1,5 +1,6 @@
 from api.validation import validate_algorithm, validate_and_parse_parameters
 
+
 # Validate algorithm tests
 
 
@@ -102,6 +103,17 @@ def test_validate_and_parse_parameters_no_compound():
         assert "No compound provided" == str(e)
 
 
+def test_validate_and_parse_parameters_compound_too_long():
+    data = {
+        "compound": "2-[(4R,5S,6S,7R,9R,11E,13E,15R,16R)-15-[[(2R,3R,4R,5R,6R)-3,4-dimethoxy-6-methyl-5-oxidanyl-oxan-2-yl]oxymethyl]-6-[(2R,3R,4R,5S,6R)-4-(dimethylamino)-5-[(2S,4R,5S,6S)-4,6-dimethyl-4,5-bis(oxidanyl)oxan-2-yl]oxy-6-methyl-3-oxidanyl-oxan-2-yl]oxy-16-ethyl-5,9,13-trimethyl-4-oxidanyl-2,10-bis(oxidanylidene)-1-oxacyclohexadeca-11,13-dien-7-yl]ethanall"
+    }
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Compound name is too long. Maximum length is 349 characters." == str(e)
+
+
 def test_validate_and_parse_parameters_invalid_sample_rate():
     data = {"compound": "Caffeine", "sample_rate": "5000.1"}
     try:
@@ -118,6 +130,24 @@ def test_validate_and_parse_parameters_invalid_offset():
         assert False, "Expected ValueError to be raised"
     except ValueError as e:
         assert "Invalid offset. Must be a float." == str(e)
+
+
+def test_validate_and_parse_parameters_offset_too_low():
+    data = {"compound": "Caffeine", "offset": "-1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
+
+
+def test_validate_and_parse_parameters_offset_too_high():
+    data = {"compound": "Caffeine", "offset": "1000001"}
+    try:
+        validate_and_parse_parameters(data)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "must be between -1,000,000 and 1,000,000." in str(e)
 
 
 def test_validate_and_parse_parameters_duration_too_low():
