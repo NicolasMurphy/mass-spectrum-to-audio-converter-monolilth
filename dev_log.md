@@ -1,3 +1,23 @@
+### [2025-08-16] Add range validation for all parameters
+
+- **Goals:**
+
+  - Add range validation for all parameters
+  - Write unit tests for all functions in `validation.py`
+
+- **Notes:**
+
+  - Added validation for a max length of 349 for compound (based on longest compound name)
+  - Added a -1000000 to 1000000 validation range for all number inputs (excluding duration and sample rate)
+  - Added input constraints for all parameters in frontend
+  - Wrote unit tests for all new validation (84% total test coverage, 100% for `validation.py`)
+
+- **Next Steps:**
+
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Dockerize for easier development/deployment and local database for better testing
+
 ### [2025-08-13] Refactor `app.py`, Write validation unit tests
 
 - **Goals:**
