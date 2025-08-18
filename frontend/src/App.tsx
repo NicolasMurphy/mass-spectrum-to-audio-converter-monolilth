@@ -19,6 +19,7 @@ import MostGenerated from "./Components/MostGeneratedComponents/MostGenerated";
 import InfoModal from "./Components/InfoModal";
 import ModuloParameters from "./Components/FormComponents/ModuloParameters";
 import { type Algorithm, type SpectrumData } from "./types";
+import EmptyDataPlaceholder from "./Components/SpectrumComponents/EmptyDataPlaceholder";
 
 function App() {
   const [compound, setCompound] = useState<string>("");
@@ -201,10 +202,12 @@ function App() {
           <div className="order-2 lg:order-1">
             <div className="card bg-neutral-content w-full max-w-md mx-auto">
               <div className="card-body">
-                {spectrumData ? (
+                {status === "Fetching audio..." ? (
+                  <SkeletonSpectrumTables />
+                ) : spectrumData ? (
                   <SpectrumTables spectrumData={spectrumData} />
                 ) : (
-                  <SkeletonSpectrumTables />
+                  <EmptyDataPlaceholder />
                 )}
               </div>
             </div>

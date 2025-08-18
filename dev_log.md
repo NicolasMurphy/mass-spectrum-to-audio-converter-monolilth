@@ -1,3 +1,20 @@
+### [2025-08-17] Show Placeholder for Spectrum Tables
+
+- **Goals:**
+
+  - Show Placeholder for Spectrum Tables
+
+- **Notes:**
+
+  - Improved Spectrum Tables flow, original implementation had skeleton tables on initial page load. More standard UX pattern is to only show skeletons when something is loading. Improved flow: Placeholder -> Skeleton -> Data.
+
+- **Next Steps:**
+
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+  - Dockerize for easier development/deployment and local database for better testing
+
+
 ### [2025-08-16] Add range validation for all parameters
 
 - **Goals:**
