@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+__pycache__
+*.pyc
+.env.local
+*.md
+.coverage
+frontend/node_modules
