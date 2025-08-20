@@ -1,0 +1,41 @@
+# docker-compose.dev.yml
+services:
+  app:
+    build:
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://massbank_user:password@postgres:5432/massbank
+      - DB_NAME=massbank
+      - DB_USER=massbank_user
+      - DB_PASSWORD=password
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - FLASK_ENV=development
+    command: ["python", "-c", "import app; app.app.run(host='0.0.0.0', port=5000, debug=True)"]
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: massbank
+      POSTGRES_USER: massbank_user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/mass_spectrum_db.sql:/docker-entrypoint-initdb.d/mass_spectrum_db.sql
+      - ./db/init.sh:/docker-entrypoint-initdb.d/init.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U massbank_user -d massbank"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+    ports:
+      - "5432:5432"  # Optional: for direct DB access
+
+volumes:
+  postgres_data:

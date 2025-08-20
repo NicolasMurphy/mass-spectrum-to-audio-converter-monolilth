@@ -1,4 +1,3 @@
-import os
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from db import init_pool
@@ -45,3 +44,7 @@ def serve_static_or_spa(path):
 app.route("/history", methods=["GET"])(history)
 app.route("/massbank/<algorithm>", methods=["POST"])(generate_audio_with_data)
 app.route("/popular", methods=["GET"])(popular)
+
+if __name__ == "__main__":
+    # Important: bind to 0.0.0.0 for Docker, and stay running
+    app.run(host="0.0.0.0", port=5000, debug=True)
