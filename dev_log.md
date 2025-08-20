@@ -1,3 +1,35 @@
+### [2025-08-19] Use local database with Docker
+
+- **Goals:**
+
+  - Dump production database and use data as local database with Docker
+
+- **Notes:**
+
+  - Continuing along fully "dockerizing" the project. Dumped production database, created `init.sh` and `docker-compose.dev.yml` for development with local database.
+
+- **Next Steps:**
+
+  - Optimize Docker configuration (Docker override, run `docker-compose up` for development instead of `docker-compose -f docker-compose.dev.yml up`)
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+
+### [2025-08-18] Dockerize the project (monolith)
+
+- **Goals:**
+
+  - Dockerize and deploy on Render
+
+- **Notes:**
+
+  - Instead of deploying the Backend on Render and the Frontend on Vercel, it makes more sense to make the project a monolith for ease of development, testing, deployment, etc.
+
+- **Next Steps:**
+
+  - Dump database for local dev and set up with Docker
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+
 ### [2025-08-17] Show Placeholder for Spectrum Tables
 
 - **Goals:**
