@@ -7,6 +7,7 @@ services:
       - "5000:5000"
     env_file:
       - .env
+    command: ["python", "app.py"]
     depends_on:
       postgres:
         condition: service_healthy
