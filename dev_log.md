@@ -1,10 +1,11 @@
-### [2025-08-23] Simplify Docker Setup, Remove CORS, Redirect old Vercel URL to new URL
+### [2025-08-23] Simplify Docker Setup, Remove CORS, Redirect old Vercel URL to new URL, update README
 
 - **Goals:**
 
   - Simplify Docker configuration for easier development workflow
   - Remove unnecessary CORS configuration from monolith
   - Made the old hosted URL redirect to the current Render URL
+  - Updated README to reflect new environment/deployment configuration as well as instructions to run the project locally
 
 - **Notes:**
 
@@ -18,7 +19,6 @@
 
 - **Next Steps:**
 
-  - Rewrite README, changes to tech (no longer using Vercel), include instructions for running on your machine
   - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
 
