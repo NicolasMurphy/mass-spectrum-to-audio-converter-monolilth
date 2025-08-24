@@ -15,3 +15,5 @@ psql -v ON_ERROR_STOP=0 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" < /d
 
 echo "Database initialization complete!"
 echo "Note: Some permission errors at the end are normal and can be ignored"
+
+# Band-aid solution since I forgot to remove permissions when dumping prod db

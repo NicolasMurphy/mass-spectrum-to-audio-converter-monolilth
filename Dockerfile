@@ -4,8 +4,7 @@ COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ ./
 
-# Production API URL - will be set by Render or build args
-ARG VITE_API_URL
+ARG VITE_API_URL=http://localhost:5000
 ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
@@ -23,4 +22,4 @@ COPY app.py ./
 COPY --from=frontend-builder /app/frontend/dist ./static/
 
 EXPOSE 5000
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
+CMD ["python", "app.py"]
