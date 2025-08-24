@@ -1,3 +1,25 @@
+### [2025-08-23] Simplify Docker Setup, Remove CORS
+
+- **Goals:**
+
+  - Simplify Docker configuration for easier development workflow
+  - Remove unnecessary CORS configuration from monolith
+
+- **Notes:**
+
+  - `docker-compose up` now works for development
+  - Fixed production deployment: changed Dockerfile CMD from `python app.py` to `gunicorn`
+    - This eliminates Flask debug mode in production (no more debugger PINs in Render logs)
+    - docker-compose overrides with `python app.py` for local development debug mode
+  - Removed CORS configuration and `flask-cors` dependency (unnecessary for monolith)
+  - `init.sh` has `ON_ERROR_STOP=0` to ignore permission errors, since when I originally dumped the production data, I forgot to not dump permissions (determined this is low priority, and will be focusing on other things for now. Just making a note of it here)
+
+- **Next Steps:**
+
+  - Rename old repo and rename this repo, ensure render url matches
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+
 ### [2025-08-19] Use local database with Docker
 
 - **Goals:**
@@ -45,7 +67,6 @@
   - Sort table columns by clicking on table headers
   - Spectrum tables can be quite large, perhaps a conditional scroll bar?
   - Dockerize for easier development/deployment and local database for better testing
-
 
 ### [2025-08-16] Add range validation for all parameters
 
