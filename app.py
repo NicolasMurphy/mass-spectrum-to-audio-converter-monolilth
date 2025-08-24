@@ -1,17 +1,10 @@
 from flask import Flask, send_from_directory
-from flask_cors import CORS
 from db import init_pool
 from api.routes import history, generate_audio_with_data, popular
 
 init_pool()
 
 app = Flask(__name__, static_folder="static", static_url_path="")
-
-CORS(
-    app,
-    expose_headers=["X-Compound", "X-Accession"],
-)
-
 
 @app.route("/")
 def serve_index():
