@@ -70,7 +70,7 @@ This project uses migrated data from MassBank hosted on Render, uses spectrometr
    docker-compose up
    ```
 
-   **Note:** The first startup will take several minutes as it imports the 465MB database file.
+   **Note:** The first startup can take 15+ minutes as it imports the 465MB database file.
 
 5. **Access the application:**
 

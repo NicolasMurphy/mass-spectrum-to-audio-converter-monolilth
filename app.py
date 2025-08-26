@@ -1,10 +1,30 @@
+import time
+import psycopg2
 from flask import Flask, send_from_directory
 from db import init_pool
 from api.routes import history, generate_audio_with_data, popular
 
-init_pool()
+
+def wait_for_database():
+    max_attempts = 30
+    for attempt in range(max_attempts):
+        try:
+            init_pool()
+            return
+        except psycopg2.OperationalError:
+            if attempt < max_attempts - 1:
+                print(
+                    f"Database not ready, waiting 30s... (attempt {attempt + 1}/{max_attempts})"
+                )
+                time.sleep(30)
+            else:
+                raise
+
+
+wait_for_database()
 
 app = Flask(__name__, static_folder="static", static_url_path="")
+
 
 @app.route("/")
 def serve_index():

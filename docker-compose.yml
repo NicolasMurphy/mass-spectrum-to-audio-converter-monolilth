@@ -11,6 +11,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
 
   postgres:
     image: postgres:17
@@ -23,13 +24,14 @@ services:
       - ./db/mass_spectrum_db.sql:/docker-entrypoint-initdb.d/mass_spectrum_db.sql
       - ./db/init.sh:/docker-entrypoint-initdb.d/init.sh
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U massbank_user -d massbank"]
-      interval: 30s
+      test: ["CMD-SHELL", "psql -U massbank_user -d massbank -c 'SELECT COUNT(*) FROM spectrum_data;' 2>/dev/null | grep -E '^[[:space:]]*[1-9][0-9]{6}' || exit 1"] # wait for 7 digit number (millions of rows)
+      interval: 60s
       timeout: 10s
-      retries: 20
-      start_period: 60s
+      retries: 25
+      start_period: 300s
     ports:
       - "5432:5432"
+    restart: unless-stopped
 
 volumes:
   postgres_data:
