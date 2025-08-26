@@ -1,3 +1,18 @@
+### [2025-08-25] Improve Docker startup experience for database initialization
+
+- **Goals:**
+
+  - Improve UX for running locally
+
+- **Notes:**
+
+  - Before these changes, the app container would exit early during database import, and postgres would exit 10 or so minutes later, requiring users to run `docker-compose up` twice with no clear indication of what was happening. Added retry logic to `app.py` to wait for database readiness, restart policies and adjusted healthcheck in `docker-compose.yml` for automatic recovery, progress messages in `init.sh` during import, and updated README to note the 15+ minutes first startup time.
+
+- **Next Steps:**
+
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+
 ### [2025-08-23] Simplify Docker Setup, Remove CORS, Redirect old Vercel URL to new URL, update README
 
 - **Goals:**
@@ -15,7 +30,7 @@
     - docker-compose overrides with `python app.py` for local development debug mode
   - Removed CORS configuration and `flask-cors` dependency (unnecessary for monolith)
   - `init.sh` has `ON_ERROR_STOP=0` to ignore permission errors, since when I originally dumped the production data, I forgot to not dump permissions (determined this is low priority, and will be focusing on other things for now. Just making a note of it here)
-  - Old Vercel URL now redirects to current Render urL
+  - Old Vercel URL now redirects to current Render URL
 
 - **Next Steps:**
 
