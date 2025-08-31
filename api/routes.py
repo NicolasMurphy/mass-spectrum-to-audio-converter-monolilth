@@ -3,17 +3,8 @@ import threading
 from flask import request, send_from_directory
 from audio import generate_combined_wav_bytes_and_data
 from db import get_massbank_peaks, log_search, get_search_history, get_popular_compounds
-from utils.rate_limiting import is_rate_limited
 from utils.webhook import send_webhook_notification
 from .validation import validate_algorithm, validate_and_parse_parameters
-
-
-def get_client_ip():
-    return (
-        request.headers.get("X-Forwarded-For", request.remote_addr or "")
-        .split(",")[0]
-        .strip()
-    )
 
 
 def serve_frontend():
@@ -30,9 +21,6 @@ def history():
 
 
 def generate_audio_with_data(algorithm):
-    ip = get_client_ip()
-    if is_rate_limited(ip):
-        return {"error": "Rate limit exceeded. Try again later."}, 429
 
     try:
         validate_algorithm(algorithm)

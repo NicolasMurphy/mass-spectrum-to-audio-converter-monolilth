@@ -1,8 +1,9 @@
-### [2025-08-31] Improve Spectrum Tables UX
+### [2025-08-31] Improve Spectrum Tables UX, fix rate limiting issue
 
 - **Goals:**
 
   - Improve Spectrum Tables UX
+  - Explore and fix rate limiting bug
 
 - **Notes:**
 
@@ -12,7 +13,10 @@
   - Used a more readable font for the numerical data
   - Replace magic numbers with named constants
   - Extract sorting types to `types.ts`
+
   - Also added `CHOKIDAR_USEPOLLING=true` to frontend environment in `docker-compose.override.yml` to ensure hot reloading
+
+  - Noticed rate limiting was not functioning as expected at some point since switching over to Docker. Was able to go beyond the limit threshold, and was getting limited across IPs. Discovered this was due to a multi-worker concurrency issue. Fixed by replacing custom rate-limiting logic with flask-limiter. Set default limiting for all API endpoints to be 200 per minute, and the `/massbank/<algorithm>` endpoint to be 20 per 5 minutes.
 
 ### [2025-08-30] Hot Reloading for Development
 
