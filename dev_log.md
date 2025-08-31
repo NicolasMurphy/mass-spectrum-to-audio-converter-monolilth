@@ -16,7 +16,7 @@
 
   - Also added `CHOKIDAR_USEPOLLING=true` to frontend environment in `docker-compose.override.yml` to ensure hot reloading
 
-  - Noticed rate limiting was not functioning as expected at some point since switching over to Docker. Was able to go beyond the limit threshold, and was getting limited across IPs. Discovered this was due to a multi-worker concurrency issue. Fixed by replacing custom rate-limiting logic with flask-limiter. Set default limiting for all API endpoints to be 200 per minute, and the `/massbank/<algorithm>` endpoint to be 20 per 5 minutes.
+  - Noticed rate limiting was not functioning as expected at some point since switching over to Docker. Was able to go beyond the limit threshold, and was getting limited across IPs. Discovered this was due to a multi-worker concurrency issue. ~~Fixed by replacing custom rate-limiting logic with flask-limiter. Set default limiting for all API endpoints to be 200 per minute, and the `/massbank/<algorithm>` endpoint to be 20 per 5 minutes.~~ Decided to remove all rate limiting logic and rely on Render for abuse prevention. App level rate limiting is overkill at this stage (CPU intensive operations already provides a natural sort of rate limiting). May implement Redis-backed rate limiting if needed in the future.
 
 ### [2025-08-30] Hot Reloading for Development
 

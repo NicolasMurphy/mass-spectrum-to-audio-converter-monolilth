@@ -2,8 +2,6 @@ import time
 import psycopg2
 from flask import Flask, send_from_directory
 from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from db import init_pool
 from api.routes import history, generate_audio_with_data, popular
 
@@ -28,23 +26,7 @@ wait_for_database()
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
-limiter = Limiter(
-    key_func=get_remote_address,
-    default_limits=["2 per minute"],
-    headers_enabled=True,
-)
-
-limiter.init_app(app)
-
 CORS(app)
-
-
-@app.errorhandler(429)
-def ratelimit_handler(e):
-    return {
-        "error": "Rate limit exceeded. Try again later.",
-        "retry_after": e.retry_after,
-    }, 429
 
 
 @app.route("/")
@@ -68,9 +50,7 @@ def serve_static_or_spa(path):
 
 
 app.route("/history", methods=["GET"])(history)
-app.route("/massbank/<algorithm>", methods=["POST"])(
-    limiter.limit("20 per 5 minutes")(generate_audio_with_data)
-)
+app.route("/massbank/<algorithm>", methods=["POST"])(generate_audio_with_data)
 app.route("/popular", methods=["GET"])(popular)
 
 if __name__ == "__main__":
