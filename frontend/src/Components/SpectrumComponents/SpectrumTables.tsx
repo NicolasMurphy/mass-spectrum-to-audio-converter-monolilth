@@ -5,6 +5,9 @@ import "../../App.css";
 type SortField = "mz" | "intensity" | "frequency" | "amplitude_db";
 type SortDirection = "asc" | "desc";
 
+const SCROLL_THRESHOLD = 9;
+const TABLE_MAX_HEIGHT = "max-h-62.5";
+
 export default function SpectrumTables({ spectrumData }: SpectrumTablesProps) {
   const [sortField, setSortField] = useState<SortField>("mz");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -81,15 +84,17 @@ export default function SpectrumTables({ spectrumData }: SpectrumTablesProps) {
 
   if (!spectrumData) return null;
 
-  const needsScrolling = sortedData.length > 9;
-  const audioNeedsScrolling = sortedAudioData.length > 9;
+  const needsScrolling = sortedData.length > SCROLL_THRESHOLD;
+  const audioNeedsScrolling = sortedAudioData.length > SCROLL_THRESHOLD;
 
   return (
     <>
       {/* Original Mass Spectrum Data */}
       <h2 className="font-bold text-lg mb-2">Mass Spectrum Data</h2>
       <div
-        className={`mb-6 ${needsScrolling ? "max-h-62.5 overflow-y-auto" : ""}`}
+        className={`mb-6 ${
+          needsScrolling ? `${TABLE_MAX_HEIGHT} overflow-y-auto` : ""
+        }`}
       >
         <table className="table table-compact table-zebra text-xs">
           <thead className={needsScrolling ? "sticky top-0 z-10" : ""}>
@@ -132,7 +137,9 @@ export default function SpectrumTables({ spectrumData }: SpectrumTablesProps) {
       {/* Transformed Audio Data */}
       <h2 className="font-bold text-lg mb-2">Audio Transformation Data</h2>
       <div
-        className={`${audioNeedsScrolling ? "max-h-62.5 overflow-y-auto" : ""}`}
+        className={`${
+          audioNeedsScrolling ? `${TABLE_MAX_HEIGHT} overflow-y-auto` : ""
+        }`}
       >
         <table className="table table-compact table-zebra text-xs">
           <thead className={audioNeedsScrolling ? "sticky top-0 z-10" : ""}>
