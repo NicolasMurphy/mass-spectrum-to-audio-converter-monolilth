@@ -89,9 +89,7 @@ export default function SpectrumTables({ spectrumData }: SpectrumTablesProps) {
       {/* Original Mass Spectrum Data */}
       <h2 className="font-bold text-lg mb-2">Mass Spectrum Data</h2>
       <div
-        className={`overflow-x-auto mb-6 ${
-          needsScrolling ? "max-h-62.5 overflow-y-auto" : ""
-        }`}
+        className={`mb-6 ${needsScrolling ? "max-h-62.5 overflow-y-auto" : ""}`}
       >
         <table className="table table-compact table-zebra text-xs">
           <thead className={needsScrolling ? "sticky top-0 z-10" : ""}>
@@ -134,9 +132,7 @@ export default function SpectrumTables({ spectrumData }: SpectrumTablesProps) {
       {/* Transformed Audio Data */}
       <h2 className="font-bold text-lg mb-2">Audio Transformation Data</h2>
       <div
-        className={`overflow-x-auto ${
-          audioNeedsScrolling ? "max-h-62.5 overflow-y-auto" : ""
-        }`}
+        className={`${audioNeedsScrolling ? "max-h-62.5 overflow-y-auto" : ""}`}
       >
         <table className="table table-compact table-zebra text-xs">
           <thead className={audioNeedsScrolling ? "sticky top-0 z-10" : ""}>

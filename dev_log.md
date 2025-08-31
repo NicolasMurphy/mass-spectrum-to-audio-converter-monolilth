@@ -1,3 +1,17 @@
+### [2025-08-31] Improve Spectrum Tables UX
+
+- **Goals:**
+
+  - Improve Spectrum Tables UX
+
+- **Notes:**
+
+  - Added conditional scroll bar when over 9 rows of data are present
+  - Added sortable table columns by clicking on table headers functionality
+  - Decreased table cell size to fit more data on screen
+  - Used a more readable font for the numerical data
+  - Also added `CHOKIDAR_USEPOLLING=true` to frontend environment in `docker-compose.override.yml` to ensure hot reloading
+
 ### [2025-08-30] Hot Reloading for Development
 
 - **Goals:**
