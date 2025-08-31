@@ -1,6 +1,7 @@
 import time
 import psycopg2
 from flask import Flask, send_from_directory
+from flask_cors import CORS
 from db import init_pool
 from api.routes import history, generate_audio_with_data, popular
 
@@ -24,6 +25,8 @@ def wait_for_database():
 wait_for_database()
 
 app = Flask(__name__, static_folder="static", static_url_path="")
+
+CORS(app)
 
 
 @app.route("/")

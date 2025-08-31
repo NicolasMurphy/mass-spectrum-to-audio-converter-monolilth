@@ -74,7 +74,7 @@ This project uses migrated data from MassBank hosted on Render, uses spectrometr
 
 5. **Access the application:**
 
-   Open your browser and go to: **http://localhost:5000**
+   Open your browser and go to: **http://localhost:5173**
 
 ---
 

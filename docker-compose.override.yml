@@ -1,0 +1,25 @@
+services:
+  app:
+    volumes:
+      - ./api:/app/api
+      - ./audio:/app/audio
+      - ./db:/app/db
+      - ./utils:/app/utils
+      - ./app.py:/app/app.py
+      - ./.env:/app/.env
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - ./frontend/package.json:/app/package.json
+    environment:
+      - VITE_API_URL=http://localhost:5000

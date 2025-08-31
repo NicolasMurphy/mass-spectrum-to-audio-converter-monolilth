@@ -1,3 +1,18 @@
+### [2025-08-25] Hot Reloading for Development
+
+- **Goals:**
+
+  - Hot Reloading for Development
+
+- **Notes:**
+
+  - When I changed the project into a monolith, I hadn't considered the effect this would have on frontend development. Created `docker-compose.override.yml` and `frontend/Dockerfile.dev` to ensure separate services for frontend hot reloading, while maintaining the monolith for production deployment
+
+- **Next Steps:**
+
+  - Sort table columns by clicking on table headers
+  - Spectrum tables can be quite large, perhaps a conditional scroll bar?
+
 ### [2025-08-25] Improve Docker startup experience for database initialization
 
 - **Goals:**
