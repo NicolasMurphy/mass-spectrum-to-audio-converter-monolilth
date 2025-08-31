@@ -6,7 +6,7 @@
 
 - **Notes:**
 
-  - When I changed the project into a monolith, I hadn't considered the effect this would have on frontend development. Created `docker-compose.override.yml` and `frontend/Dockerfile.dev` to ensure separate services for frontend hot reloading, while maintaining the monolith for production deployment
+  - When I changed the project into a monolith, I hadn't considered the effect this would have on frontend development. Created `docker-compose.override.yml`, `frontend/Dockerfile.dev`, and CORS to ensure separate services for frontend hot reloading, while maintaining the monolith for production deployment
 
 - **Next Steps:**
 
