@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
-import { type SpectrumTablesProps } from "../../types";
+import {
+  type SpectrumTablesProps,
+  type SortField,
+  type SortDirection,
+} from "../../types";
 import "../../App.css";
-
-type SortField = "mz" | "intensity" | "frequency" | "amplitude_db";
-type SortDirection = "asc" | "desc";
 
 const SCROLL_THRESHOLD = 9;
 const TABLE_MAX_HEIGHT = "max-h-62.5";

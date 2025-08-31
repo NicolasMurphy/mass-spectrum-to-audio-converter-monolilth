@@ -11,6 +11,7 @@
   - Decreased table cell size to fit more data on screen
   - Used a more readable font for the numerical data
   - Replace magic numbers with named constants
+  - Extract sorting types to `types.ts`
   - Also added `CHOKIDAR_USEPOLLING=true` to frontend environment in `docker-compose.override.yml` to ensure hot reloading
 
 ### [2025-08-30] Hot Reloading for Development
