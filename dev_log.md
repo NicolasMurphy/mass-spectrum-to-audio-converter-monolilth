@@ -1,3 +1,19 @@
+### [2025-08-31] Improve Spectrum Tables UX
+
+- **Goals:**
+
+  - Improve Spectrum Tables UX
+
+- **Notes:**
+
+  - Added conditional scroll bar when over 9 rows of data are present
+  - Added sortable table columns by clicking on table headers functionality
+  - Decreased table cell size to fit more data on screen
+  - Used a more readable font for the numerical data
+  - Replace magic numbers with named constants
+  - Extract sorting types to `types.ts`
+  - Also added `CHOKIDAR_USEPOLLING=true` to frontend environment in `docker-compose.override.yml` to ensure hot reloading
+
 ### [2025-08-30] Hot Reloading for Development
 
 - **Goals:**
@@ -6,7 +22,7 @@
 
 - **Notes:**
 
-  - When I changed the project into a monolith, I hadn't considered the effect this would have on frontend development. Created `docker-compose.override.yml` and `frontend/Dockerfile.dev` to ensure separate services for frontend hot reloading, while maintaining the monolith for production deployment
+  - When I changed the project into a monolith, I hadn't considered the effect this would have on frontend development. Created `docker-compose.override.yml`, `frontend/Dockerfile.dev`, and CORS to ensure separate services for frontend hot reloading, while maintaining the monolith for production deployment
 
 - **Next Steps:**
 
