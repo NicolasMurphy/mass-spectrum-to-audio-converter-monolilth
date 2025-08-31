@@ -46,6 +46,9 @@ export interface SpectrumTablesProps {
   spectrumData: SpectrumData[] | null;
 }
 
+export type SortField = "mz" | "intensity" | "frequency" | "amplitude_db";
+export type SortDirection = "asc" | "desc";
+
 // =====================================
 // Lists
 // =====================================

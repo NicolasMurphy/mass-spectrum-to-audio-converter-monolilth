@@ -31,15 +31,11 @@ export default function SkeletonSpectrumTables() {
           <thead>
             <tr>
               <th>Frequency (Hz)</th>
-              <th>Amplitude</th>
               <th>Amplitude (dB)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>
-                <div className="skeleton h-8 w-full"></div>
-              </td>
               <td>
                 <div className="skeleton h-8 w-full"></div>
               </td>
