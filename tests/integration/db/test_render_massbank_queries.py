@@ -1,13 +1,5 @@
 import pytest
-from db import get_massbank_peaks, init_pool, close_all_connections
-
-
-@pytest.fixture(scope="module", autouse=True)
-def setup_database():
-    """Initialize database connection pool for integration tests"""
-    init_pool()
-    yield
-    close_all_connections()
+from db import get_massbank_peaks
 
 
 def test_get_massbank_peaks():
@@ -18,4 +10,17 @@ def test_get_massbank_peaks():
     assert accession is not None
     assert "caffeine" in compound_actual.lower()
 
+
+def test_get_massbank_peaks_not_found():
+    with pytest.raises(ValueError):
+        get_massbank_peaks("nonexistentcompound")
+
+
+def test_get_massbank_peaks_case_insensitive():
+    spectrum_lower = get_massbank_peaks("caffeine")[0]
+    spectrum_upper = get_massbank_peaks("CAFFEINE")[0]
+    assert spectrum_lower == spectrum_upper
+
+
 # docker-compose exec app python -m pytest tests/ -v
+# docker-compose exec app python -m pytest tests/ --cov=. --cov-report=html
