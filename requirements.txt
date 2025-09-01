@@ -1,8 +1,8 @@
-numpy==1.26.3
-scipy==1.14.1
-requests==2.32.3
-flask==3.1.1
-gunicorn
+numpy==2.3.0
+scipy==1.16.0
+requests==2.32.5
+flask==3.1.2
+gunicorn==23.0.0
 psycopg2-binary==2.9.10
 python-dotenv==1.1.1
 flask-cors==6.0.1

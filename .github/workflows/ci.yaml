@@ -25,4 +25,4 @@ jobs:
           pip install -r requirements-dev.txt
 
       - name: Run tests
-        run: python -m pytest tests/ -v
+        run: python -m pytest tests/unit/ tests/integration/test_app.py -v

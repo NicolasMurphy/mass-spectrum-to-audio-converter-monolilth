@@ -1,5 +1,10 @@
 services:
   app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        INSTALL_DEV: "true"
     volumes:
       - ./api:/app/api
       - ./audio:/app/audio
@@ -7,6 +12,7 @@ services:
       - ./utils:/app/utils
       - ./app.py:/app/app.py
       - ./.env:/app/.env
+      - ./tests:/app/tests
     environment:
       - FLASK_ENV=development
       - FLASK_DEBUG=1
