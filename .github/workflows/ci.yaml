@@ -29,13 +29,6 @@ jobs:
       - name: Start services
         run: docker compose up -d
 
-      - name: Debug database state
-        run: |
-          echo "Checking database contents..."
-          docker compose exec -T postgres psql -U massbank_user -d massbank -c "SELECT COUNT(*) FROM spectrum_data;"
-          docker compose exec -T postgres psql -U massbank_user -d massbank -c "SELECT COUNT(*) FROM compound_accessions;"
-          echo "Database check complete"
-
       - name: Run all tests
         run: docker compose exec -T app python -m pytest tests/ -v --cov=. --cov-report=term-missing
 

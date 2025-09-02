@@ -3,3 +3,9 @@ __pycache__/
 .coverage
 dev-commands.md
 *.sql
+
+# Playwright
+tests/e2e/node_modules/
+tests/e2e/test-results/
+tests/e2e/playwright-report/
+tests/e2e/playwright/.cache/

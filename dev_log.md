@@ -1,3 +1,14 @@
+### [2025-09-01] Configure CI to use database dump, begin writing tests with Playwright
+
+- **Goals:**
+
+  - Configure CI to use database dump
+  - Begin writing tests with Playwright
+
+- **Notes:**
+
+  - Downloading the database and initializing the database takes about 20-30 minutes on my machine, so I figured trying to get a CI workflow going for this would be slow and cumbersome. But to my surprise the entire CI workflow only takes a little over 2 minutes (including downloading and initializing the 465mb database)! I severely underestimated the speed and optimizations of GitHub's machines. Good news is I can have a much stronger CI - testing something much closer to my production environment!
+
 ### [2025-08-31] Replace mock tests with tests that call local database
 
 - **Goals:**
