@@ -9,20 +9,29 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-
-      - name: Install dependencies
+      - name: Create .env file
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+          echo "FLASK_ENV=development" >> .env
+          echo "DB_NAME=massbank" >> .env
+          echo "DB_USER=massbank_user" >> .env
+          echo "DB_PASSWORD=password" >> .env
+          echo "DB_HOST=postgres" >> .env
+          echo "DB_PORT=5432" >> .env
 
-      - name: Run tests
-        run: python -m pytest tests/unit/ -v
+      - name: Download database file
+        run: |
+          curl -L -o db/mass_spectrum_db.sql \
+          https://github.com/NicolasMurphy/mass-spectrum-to-audio-converter/releases/download/2025-08-19/mass_spectrum_db.sql
+
+      - name: Start services
+        run: docker-compose up -d
+
+      - name: Run all tests
+        run: docker-compose exec -T app python -m pytest tests/ -v --cov=. --cov-report=term-missing
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose down -v

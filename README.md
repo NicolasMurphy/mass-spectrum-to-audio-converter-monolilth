@@ -64,6 +64,8 @@ This project uses migrated data from MassBank hosted on Render, uses spectrometr
    DB_PORT=5432
    ```
 
+   **Note:** This is for local development only!
+
 4. **Start the application:**
 
    ```bash
