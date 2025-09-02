@@ -23,4 +23,4 @@ def test_get_massbank_peaks_case_insensitive():
 
 
 # docker-compose exec app python -m pytest tests/ -v
-# docker-compose exec app python -m pytest tests/ --cov=. --cov-report=html
+# docker-compose exec app python -m pytest tests/ --cov=. --cov-report=term-missing

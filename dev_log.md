@@ -1,3 +1,14 @@
+### [2025-08-31] Replace mock tests with tests that call local database
+
+- **Goals:**
+
+  - Replace mock tests with tests that call local database
+
+- **Notes:**
+
+  - Since I came to the conclusion that mocking isn't ideal for testing this app, I created a local database to serve my testing needs. Although I am using a production database dump with ALL the data (465 MB), which makes it not ideal for a CI workflow. For now the integration tests I wrote or only meant to be ran locally while Docker is running. I think for the future a "mini" database would be ideal for a CI workflow with these tests.
+  - Currently at 89% test coverage
+
 ### [2025-08-31] Improve Spectrum Tables UX, fix rate limiting issue
 
 - **Goals:**
