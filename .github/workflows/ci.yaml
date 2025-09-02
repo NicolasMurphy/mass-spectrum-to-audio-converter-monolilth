@@ -27,11 +27,11 @@ jobs:
           https://github.com/NicolasMurphy/mass-spectrum-to-audio-converter/releases/download/2025-08-19/mass_spectrum_db.sql
 
       - name: Start services
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Run all tests
-        run: docker-compose exec -T app python -m pytest tests/ -v --cov=. --cov-report=term-missing
+        run: docker compose exec -T app python -m pytest tests/ -v --cov=. --cov-report=term-missing
 
       - name: Cleanup
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v
