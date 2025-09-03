@@ -1,3 +1,4 @@
+import os
 import time
 import psycopg2
 from flask import Flask, send_from_directory
@@ -26,7 +27,8 @@ wait_for_database()
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
-CORS(app)
+if os.getenv("FLASK_ENV") == "development":
+    CORS(app)
 
 
 @app.route("/")
