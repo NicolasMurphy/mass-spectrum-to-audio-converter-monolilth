@@ -1,3 +1,24 @@
+### [2025-09-03] Display peak count in spectrum tables
+
+- **Goals:**
+
+  - Display peak count in spectrum tables
+
+- **Notes:**
+
+  - Display peak count next to table header using `spectrumData.length`
+  - Updated e2e test `compound-search.spec.js` to expect correct peak count to be visible
+
+### [2025-09-02] Continue writing Playwright tests
+
+- **Goals:**
+
+  - Continue writing Playwright tests
+
+- **Notes:**
+
+  - Seems like the typical e2e strategy is to write tests for "user flows". Given that this app is a single page, it seems to make more sense to test features instead. Will play it by ear.
+
 ### [2025-09-01] Configure CI to use database dump, begin writing tests with Playwright
 
 - **Goals:**

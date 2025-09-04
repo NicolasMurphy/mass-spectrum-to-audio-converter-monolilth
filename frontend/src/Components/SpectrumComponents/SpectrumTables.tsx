@@ -91,7 +91,13 @@ export default function SpectrumTables({ spectrumData }: SpectrumTablesProps) {
   return (
     <>
       {/* Original Mass Spectrum Data */}
-      <h2 className="font-bold text-lg mb-2">Mass Spectrum Data</h2>
+      <h2 className="font-bold text-lg mb-2">
+        Mass Spectrum Data
+        <span className="text-sm font-scientific text-base-content/50">
+          {" "}
+          ({spectrumData.length} peaks)
+        </span>
+      </h2>
       <div
         className={`mb-6 ${
           needsScrolling ? `${TABLE_MAX_HEIGHT} overflow-y-auto` : ""

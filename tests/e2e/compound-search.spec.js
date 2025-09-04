@@ -8,8 +8,8 @@ test('user can search for caffeine and generate audio', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Compound Name' }).fill('caffeine');
   await page.getByRole('button', { name: 'Generate Audio' }).click();
 
-  // table titles are visible
-  await expect(page.getByRole('heading', { name: 'Mass Spectrum Data' })).toBeVisible();
+  // table titles (and correct peaks) are visible
+  await expect(page.getByRole('heading', { name: 'Mass Spectrum Data (9 peaks)' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Audio Transformation Data' })).toBeVisible();
 
   // success message, compound, accession, download button, audio player are visible
