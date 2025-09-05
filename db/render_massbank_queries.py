@@ -36,6 +36,7 @@ def get_massbank_peaks(compound_name):
         SELECT DISTINCT mz, intensity
         FROM spectrum_data
         WHERE accession = %s
+        AND intensity > 0
         ORDER BY mz
         """
 
