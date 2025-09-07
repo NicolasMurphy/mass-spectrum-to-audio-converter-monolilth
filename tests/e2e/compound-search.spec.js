@@ -15,7 +15,7 @@ test('user can search for caffeine and generate audio', async ({ page }) => {
   // success message, compound, accession, download button, audio player are visible
   await expect(page.getByText('Success!')).toBeVisible();
   await expect(page.getByText('Compound: Caffeine')).toBeVisible();
-  await expect(page.getByText('Accession: MSBNK-ACES_SU-')).toBeVisible();
+  await expect(page.getByText('Accession: MSBNK-ACES_SU-AS000088')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Download WAV' })).toBeVisible();
   await expect(page.locator('audio')).toBeVisible();
 
