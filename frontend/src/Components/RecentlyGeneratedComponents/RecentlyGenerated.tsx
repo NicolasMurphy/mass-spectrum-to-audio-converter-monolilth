@@ -13,7 +13,10 @@ export default function RecentlyGenerated({
           <p className="text-sm">{historyError}</p>
         </div>
       ) : (
-        <div className="flex flex-wrap gap-2">
+        <div
+          className="flex flex-wrap gap-2"
+          data-testid="recently-generated-list"
+        >
           {searchHistory.map((entry, i) => (
             <div
               key={i}

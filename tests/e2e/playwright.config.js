@@ -1,4 +1,4 @@
-const { defineConfig } = require("@playwright/test");
+const { defineConfig, devices } = require("@playwright/test");
 
 module.exports = defineConfig({
   use: {
@@ -8,4 +8,15 @@ module.exports = defineConfig({
   },
   outputDir: "test-results/",
   reporter: [["list"], ["html", { outputFolder: "playwright-report" }]],
+
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    { name: "webkit", use: { ...devices["Desktop Safari"] } },
+
+    { name: "mobile-safari", use: { ...devices["iPhone 16"] } },
+    { name: "mobile-chrome", use: { ...devices["Galaxy S25"] } },
+
+    { name: "tablet", use: { ...devices["iPad Pro"] } },
+  ],
 });
