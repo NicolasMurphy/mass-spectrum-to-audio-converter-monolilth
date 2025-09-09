@@ -29,13 +29,13 @@ jobs:
       - name: Start services
         run: docker compose up -d
 
-      - name: Run all tests
-        run: docker compose exec -T app python -m pytest tests/ -v --cov=. --cov-report=term-missing
+      - name: Run backend tests
+        run: docker compose exec -T app python -m pytest tests/ -v -s --cov=. --cov-report=term-missing
 
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: "24"
 
       - name: Install Playwright dependencies
         run: |
