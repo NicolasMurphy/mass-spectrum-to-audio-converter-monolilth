@@ -48,10 +48,18 @@ function App() {
   const [spectrumData, setSpectrumData] = useState<Array<SpectrumData> | null>(
     null
   );
+  const [inputMode, setInputMode] = useState<"massbank" | "custom">("massbank");
+  const [spectrumText, setSpectrumText] = useState<string>("");
 
   const handleFetch = useCallback(async () => {
-    if (!compound.trim()) {
+    // Validation based on input mode
+    if (inputMode === "massbank" && !compound.trim()) {
       setStatus("Please enter a compound name.");
+      return;
+    }
+
+    if (inputMode === "custom" && !spectrumText.trim()) {
+      setStatus("Please enter spectrum data.");
       return;
     }
 
@@ -82,12 +90,26 @@ function App() {
     }
 
     try {
+      // Choose endpoint based on mode
+      const endpoint =
+        inputMode === "massbank"
+          ? `${import.meta.env.VITE_API_URL}/massbank/${algorithm}`
+          : `${import.meta.env.VITE_API_URL}/custom/${algorithm}`;
+
+      // Build request body based on mode
       const requestBody: Record<string, string | number> = {
-        compound,
         duration: durationNum,
         sample_rate: sampleRateNum,
       };
 
+      // Add mode-specific data
+      if (inputMode === "massbank") {
+        requestBody.compound = compound;
+      } else {
+        requestBody.spectrum_text = spectrumText;
+      }
+
+      // Add algorithm-specific parameters
       if (algorithm === "linear") {
         requestBody.offset = offset;
       } else if (algorithm === "inverse") {
@@ -99,16 +121,13 @@ function App() {
         requestBody.base = base;
       }
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/massbank/${algorithm}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -137,6 +156,8 @@ function App() {
     }
   }, [
     compound,
+    spectrumText,
+    inputMode,
     algorithm,
     offset,
     scale,
@@ -243,11 +264,47 @@ function App() {
                 <h1 className="text-xl font-bold text-center mb-4">
                   Mass Spectrum to Audio Converter
                 </h1>
+
+                <div className="tabs tabs-boxed mb-4">
+                  <button
+                    className={`tab ${
+                      inputMode === "massbank" ? "tab-active" : ""
+                    }`}
+                    onClick={() => setInputMode("massbank")}
+                  >
+                    MassBank
+                  </button>
+                  <button
+                    className={`tab ${
+                      inputMode === "custom" ? "tab-active" : ""
+                    }`}
+                    onClick={() => setInputMode("custom")}
+                  >
+                    Custom
+                  </button>
+                </div>
+
                 <form onSubmit={handleSubmit}>
-                  <CompoundSearch
-                    compound={compound}
-                    onCompoundChange={setCompound}
-                  />
+                  {inputMode === "massbank" ? (
+                    <CompoundSearch
+                      compound={compound}
+                      onCompoundChange={setCompound}
+                    />
+                  ) : (
+                    <div className="form-control mb-4">
+                      <label className="label">
+                        <span className="label-text font-semibold">
+                          Spectrum Data
+                        </span>
+                      </label>
+                      <textarea
+                        className="textarea textarea-bordered h-32"
+                        placeholder="Enter spectrum data (m/z intensity pairs)&#10;Example:&#10;73.04018778 16.07433749&#10;75.05583784 2.042927662"
+                        value={spectrumText}
+                        onChange={(e) => setSpectrumText(e.target.value)}
+                      />
+                    </div>
+                  )}
                   <AlgorithmSelector
                     algorithm={algorithm}
                     onChange={setAlgorithm}
