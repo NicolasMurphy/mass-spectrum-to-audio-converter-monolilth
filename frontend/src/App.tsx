@@ -208,6 +208,7 @@ function App() {
 
   const handleCompoundClick = (compound: string) => {
     setCompound(compound);
+    setInputMode("massbank");
   };
 
   const handleSubmit = (e: React.FormEvent) => {
