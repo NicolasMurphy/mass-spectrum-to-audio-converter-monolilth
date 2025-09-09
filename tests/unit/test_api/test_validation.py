@@ -1,4 +1,8 @@
-from api import validate_algorithm, validate_and_parse_parameters
+from api import (
+    validate_algorithm,
+    validate_and_parse_parameters,
+    validate_spectrum_text_range,
+)
 
 
 # Validate algorithm tests
@@ -352,3 +356,28 @@ def test_validate_and_parse_parameters_sample_rate_too_high():
         assert False, "Expected ValueError to be raised"
     except ValueError as e:
         assert "Sample rate must be between 3500 and 192000." == str(e)
+
+
+# Custom compound validation tests
+
+
+def test_validate_spectrum_text_range_valid():
+    validate_spectrum_text_range("1 2")
+    validate_spectrum_text_range("73.04018778 16.07433749")
+    validate_spectrum_text_range("1" * 100000)
+
+
+def test_validate_spectrum_text_range_too_short():
+    try:
+        validate_spectrum_text_range("12")
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Spectrum data must be between 3 and 100,000 characters." == str(e)
+
+
+def test_validate_spectrum_text_range_too_long():
+    try:
+        validate_spectrum_text_range("1" * 100001)
+        assert False, "Expected ValueError to be raised"
+    except ValueError as e:
+        assert "Spectrum data must be between 3 and 100,000 characters." == str(e)

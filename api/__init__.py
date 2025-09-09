@@ -14,6 +14,7 @@ from .routes import (
 from .validation import (
     validate_algorithm,
     validate_and_parse_parameters,
+    validate_spectrum_text_range,
 )
 
 __all__ = [
@@ -24,4 +25,5 @@ __all__ = [
     "popular",
     "validate_algorithm",
     "validate_and_parse_parameters",
+    "validate_spectrum_text_range",
 ]
