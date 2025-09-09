@@ -1,4 +1,4 @@
-from api.validation import validate_algorithm, validate_and_parse_parameters
+from api import validate_algorithm, validate_and_parse_parameters
 
 
 # Validate algorithm tests

@@ -4,7 +4,7 @@ import psycopg2
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from db import init_pool
-from api.routes import (
+from api import (
     history,
     generate_audio_with_data,
     generate_audio_with_custom_data,
