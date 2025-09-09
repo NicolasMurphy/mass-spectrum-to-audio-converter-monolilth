@@ -4,7 +4,11 @@ from flask import request, send_from_directory
 from audio import generate_combined_wav_bytes_and_data, parse_spectrum_text
 from db import get_massbank_peaks, log_search, get_search_history, get_popular_compounds
 from utils.webhook import send_webhook_notification
-from .validation import validate_algorithm, validate_and_parse_parameters
+from .validation import (
+    validate_algorithm,
+    validate_and_parse_parameters,
+    validate_spectrum_text_range,
+)
 
 
 def serve_frontend():
@@ -126,6 +130,12 @@ def generate_audio_with_custom_data(algorithm):
 
     if not data or "spectrum_text" not in data:
         return {"error": "spectrum_text is required"}, 400
+
+    spectrum_text = data["spectrum_text"]
+    try:
+        validate_spectrum_text_range(spectrum_text)
+    except ValueError as e:
+        return {"error": str(e)}, 400
 
     # dummy compound to reuse existing validation logic
     data_with_dummy = data.copy()
