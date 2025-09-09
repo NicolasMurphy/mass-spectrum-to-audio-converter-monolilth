@@ -29,6 +29,7 @@ from .frequency_algorithms import (
     mz_to_frequency_inverse,
     mz_to_frequency_modulo,
 )
+import re
 
 
 def generate_sine_wave(freq, intensity, time_array, wave_buffer):
@@ -115,16 +116,22 @@ def generate_combined_wav_bytes_and_data(
     return wav_buffer, transformed_data
 
 
-# TODO: Implement custom compound generation
+def parse_spectrum_text(text_input):
+    try:
+        values = re.split(r"\s+", text_input.strip())
+        float_values = [float(x) for x in values if x]
 
-# def parse_spectrum_text(text_input):
-#     values = text_input.strip().split()
-#     float_values = [float(x) for x in values]
+        if len(float_values) % 2 != 0:
+            raise ValueError(
+                "Spectrum data must have an even number of values (pairs of mz/intensity)"
+            )
 
-#     spectrum_data = []
-#     for i in range(0, len(float_values), 2):
-#         mz = float_values[i]
-#         intensity = float_values[i + 1]
-#         spectrum_data.append((mz, intensity))
+        spectrum_data = []
+        for i in range(0, len(float_values), 2):
+            mz = float_values[i]
+            intensity = float_values[i + 1]
+            spectrum_data.append((mz, intensity))
 
-#     return spectrum_data
+        return spectrum_data
+    except (ValueError, IndexError) as e:
+        raise ValueError(f"Invalid spectrum data format: {e}")

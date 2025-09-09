@@ -4,7 +4,12 @@ import psycopg2
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from db import init_pool
-from api.routes import history, generate_audio_with_data, popular
+from api.routes import (
+    history,
+    generate_audio_with_data,
+    generate_audio_with_custom_data,
+    popular,
+)
 
 
 def wait_for_database():
@@ -53,6 +58,7 @@ def serve_static_or_spa(path):
 
 app.route("/history", methods=["GET"])(history)
 app.route("/massbank/<algorithm>", methods=["POST"])(generate_audio_with_data)
+app.route("/custom/<algorithm>", methods=["POST"])(generate_audio_with_custom_data)
 app.route("/popular", methods=["GET"])(popular)
 
 if __name__ == "__main__":
