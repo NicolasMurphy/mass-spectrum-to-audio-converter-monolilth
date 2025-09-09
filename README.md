@@ -53,18 +53,10 @@ This project uses migrated data from MassBank hosted on Render, uses spectrometr
 
 3. **Create environment file:**
 
-   Create a `.env` file in the project root:
-
    ```bash
-   FLASK_ENV=development
-   DB_NAME=massbank
-   DB_USER=massbank_user
-   DB_PASSWORD=password
-   DB_HOST=postgres
-   DB_PORT=5432
-   ```
+   cp .env.example .env
 
-   **Note:** This is for local development only!
+   ```
 
 4. **Start the application:**
 

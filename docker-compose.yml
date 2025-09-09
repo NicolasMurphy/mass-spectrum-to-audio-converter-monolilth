@@ -16,9 +16,9 @@ services:
   postgres:
     image: postgres:17
     environment:
-      POSTGRES_DB: massbank
-      POSTGRES_USER: massbank_user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/mass_spectrum_db.sql:/docker-entrypoint-initdb.d/mass_spectrum_db.sql
