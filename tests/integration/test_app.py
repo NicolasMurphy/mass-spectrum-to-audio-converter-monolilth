@@ -9,6 +9,9 @@ def client():
     return app.test_client()
 
 
+# massbank tests
+
+
 def test_generate_audio_with_linear_algorithm(client):
     """Test linear algorithm endpoint with local database"""
     response = client.post(
@@ -129,3 +132,75 @@ def test_history_endpoint_returns_success(client):
         assert "compound" in data["history"][0]
         assert "accession" in data["history"][0]
         assert "created_at" in data["history"][0]
+
+
+# Custom tests
+
+
+def test_custom_linear_endpoint_success(client):
+    response = client.post(
+        "/custom/linear",
+        json={
+            "spectrum_text": "73.04018778 16.07433749\n75.05583784 2.042927662",
+            "offset": 200,
+            "duration": 3,
+            "sample_rate": 44100,
+        },
+        content_type="application/json",
+    )
+
+    assert response.status_code == 200
+    data = response.get_json()
+
+    assert "audio_base64" in data
+    assert data["compound"] == "Custom Compound"
+    assert data["accession"] == "CUSTOM-001"
+    assert "spectrum" in data
+    assert len(data["spectrum"]) == 2
+
+
+def test_custom_endpoint_missing_spectrum_text(client):
+    response = client.post(
+        "/custom/linear",
+        json={"duration": 3, "sample_rate": 44100},
+        content_type="application/json",
+    )
+
+    assert response.status_code == 400
+    data = response.get_json()
+    assert data["error"] == "spectrum_text is required"
+
+
+def test_custom_endpoint_spectrum_too_short(client):
+    response = client.post(
+        "/custom/linear",
+        json={"spectrum_text": "12"},
+        content_type="application/json",
+    )
+
+    assert response.status_code == 400
+    data = response.get_json()
+    assert data["error"] == "Spectrum data must be between 3 and 100,000 characters."
+
+
+def test_custom_endpoint_spectrum_too_long(client):
+    response = client.post(
+        "/custom/linear",
+        json={"spectrum_text": "1" * 100001},
+        content_type="application/json",
+    )
+    assert response.status_code == 400
+    data = response.get_json()
+    assert data["error"] == "Spectrum data must be between 3 and 100,000 characters."
+
+
+def test_custom_endpoint_invalid_spectrum(client):
+    response = client.post(
+        "/custom/linear",
+        json={"spectrum_text": "not numbers at all"},
+        content_type="application/json",
+    )
+
+    assert response.status_code == 400
+    data = response.get_json()
+    assert "Invalid spectrum data format" in data["error"]
