@@ -266,7 +266,7 @@ function App() {
                   Mass Spectrum to Audio Converter
                 </h1>
 
-                <div className="tabs tabs-boxed mb-4">
+                <div className="tabs tabs-lift tabs-sm mb-4">
                   <button
                     className={`tab ${
                       inputMode === "massbank" ? "tab-active" : ""
@@ -299,7 +299,7 @@ function App() {
                         </span>
                       </label>
                       <textarea
-                        className="textarea textarea-bordered h-32"
+                        className="textarea textarea-bordered h-32 w-full"
                         placeholder="Enter spectrum data (m/z intensity pairs)&#10;Example:&#10;73.04018778 16.07433749&#10;75.05583784 2.042927662"
                         value={spectrumText}
                         onChange={(e) => setSpectrumText(e.target.value)}

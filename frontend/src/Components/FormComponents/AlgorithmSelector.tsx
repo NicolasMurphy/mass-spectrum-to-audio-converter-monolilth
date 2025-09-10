@@ -6,7 +6,9 @@ export default function AlgorithmSelector({
 }: AlgorithmSelectorProps) {
   return (
     <fieldset className="form-control mb-4">
-      <legend className="label-text font-semibold mb-1">Algorithm</legend>
+      <div className="label">
+        <span className="label-text font-semibold mb-1">Algorithm</span>
+      </div>
       <div className="flex flex-col gap-2">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
