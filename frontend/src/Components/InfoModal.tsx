@@ -27,21 +27,72 @@ const InfoModal: React.FC = () => {
             </p>
           </div>
 
-          {/* Section 2: How to Use It */}
+          {/* Section 2: Input Modes */}
           <div>
-            <h4 className="font-semibold text-base mb-2">How to Use It</h4>
-            <ul className="text-sm space-y-1 list-disc list-inside">
-              <li>Enter a compound name (e.g., "caffeine", "aspirin")</li>
-              <li>Click Generate Audio</li>
-              <li>Optionally try different algorithms and parameters</li>
-              <li>
-                Play back the audio, play notes on the keyboard, or download the
-                file
-              </li>
-            </ul>
+            <h4 className="font-semibold text-base mb-2">Input Modes</h4>
+            <div className="space-y-3 text-sm">
+              <div>
+                <div className="font-medium">MassBank Tab</div>
+                <div className="ml-4 text-xs opacity-80">
+                  Search from ~36,000 compounds in the database. Just enter a
+                  compound name like "caffeine" or "aspirin".
+                </div>
+              </div>
+              <div>
+                <div className="font-medium">Custom Tab</div>
+                <div className="ml-4 text-xs opacity-80">
+                  Paste your own spectrum data from external sources like HMDB.
+                  Useful for compounds not in the MassBank database.
+                </div>
+                <div className="ml-4 text-xs opacity-80 mt-1">
+                  Format: m/z intensity pairs separated by spaces, tabs, or
+                  newlines:
+                </div>
+                <div className="ml-4 mt-1">
+                  <code className="text-xs bg-base-200 px-2 py-1 rounded block">
+                    73.04018778 16.07433749
+                    <br />
+                    75.05583784 2.042927662
+                  </code>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Section 3: Algorithms & Parameters */}
+          {/* Section 3: How to Use It */}
+          <div>
+            <h4 className="font-semibold text-base mb-2">How to Use It</h4>
+            <div className="space-y-2 text-sm">
+              <div>
+                <div className="font-medium mb-1">
+                  Step 1: Choose your input
+                </div>
+                <ul className="text-xs space-y-1 list-disc list-inside ml-4">
+                  <li>
+                    <strong>MassBank tab:</strong> Enter a compound name (e.g.,
+                    "caffeine", "aspirin")
+                  </li>
+                  <li>
+                    <strong>Custom tab:</strong> Paste your m/z intensity pairs
+                    in the text area
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-medium mb-1">Step 2: Generate audio</div>
+                <ul className="text-xs space-y-1 list-disc list-inside ml-4">
+                  <li>Optionally adjust algorithm and parameters</li>
+                  <li>Click Generate Audio</li>
+                  <li>
+                    Play back the audio, play notes on the keyboard, or download
+                    the file
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4: Algorithms & Parameters */}
           <div>
             <h4 className="font-semibold text-base mb-2">
               Algorithms & Parameters
