@@ -94,3 +94,8 @@ def validate_and_parse_parameters(data):
         "modulus": modulus,
         "base": base,
     }
+
+
+def validate_spectrum_text_range(text):
+    if not (3 <= len(text) <= 100000):
+        raise ValueError("Spectrum data must be between 3 and 100,000 characters.")
