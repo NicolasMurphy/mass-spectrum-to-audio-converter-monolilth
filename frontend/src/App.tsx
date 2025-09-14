@@ -198,7 +198,25 @@ function App() {
     };
   }, []);
 
-  const downloadName = `${compoundName}-${accession}.wav`;
+  const generateDownloadName = () => {
+    const now = new Date();
+    const timestamp =
+      now.getFullYear().toString() +
+      (now.getMonth() + 1).toString().padStart(2, "0") +
+      now.getDate().toString().padStart(2, "0") +
+      "-" +
+      now.getHours().toString().padStart(2, "0") +
+      now.getMinutes().toString().padStart(2, "0") +
+      now.getSeconds().toString().padStart(2, "0");
+
+    if (accession === "CUSTOM-001") {
+      return `CUSTOM-${timestamp}.wav`;
+    } else {
+      return `${compoundName}-${accession}-${timestamp}.wav`;
+    }
+  };
+
+  const downloadName = generateDownloadName();
 
   useEffect(() => {
     // Cleanup function to revoke object URLs and prevent memory leaks
