@@ -1,3 +1,7 @@
+### [2025-09-13]
+
+I have been using Github Issues to keep track of bugs, features, etc. So I will most likely not continue contributing to this dev log.
+
 ### [2025-09-03] Display peak count in spectrum tables
 
 - **Goals:**
