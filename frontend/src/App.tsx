@@ -367,12 +367,14 @@ function App() {
                   </button>
                 </form>
                 {status && <StatusMessage status={status} />}
-                {compoundName && accession && (
-                  <NameAndAccession
-                    compoundName={compoundName}
-                    accession={accession}
-                  />
-                )}
+                {compoundName &&
+                  accession &&
+                  !accession.startsWith("CUSTOM-") && (
+                    <NameAndAccession
+                      compoundName={compoundName}
+                      accession={accession}
+                    />
+                  )}
                 {audioUrl && (
                   <AudioPlayer
                     audioUrl={audioUrl}
