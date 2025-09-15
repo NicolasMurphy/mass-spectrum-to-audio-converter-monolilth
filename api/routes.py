@@ -137,12 +137,8 @@ def generate_audio_with_custom_data(algorithm):
     except ValueError as e:
         return {"error": str(e)}, 400
 
-    # dummy compound to reuse existing validation logic
-    data_with_dummy = data.copy()
-    data_with_dummy["compound"] = "dummy"
-
     try:
-        params = validate_and_parse_parameters(data_with_dummy)
+        params = validate_and_parse_parameters(data, require_compound=False)
     except ValueError as e:
         return {"error": str(e)}, 400
 

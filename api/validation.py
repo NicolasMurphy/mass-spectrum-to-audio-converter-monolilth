@@ -10,25 +10,27 @@ def validate_number_range(value, param_name):
         raise ValueError(f"{param_name} must be between -1,000,000 and 1,000,000.")
 
 
-def validate_and_parse_parameters(data):
+def validate_and_parse_parameters(data, require_compound=True):
     if not data:
         raise ValueError("No JSON data provided")
 
-    # Validate sample_rate BEFORE conversion
     raw_sr = data.get("sample_rate")
     if raw_sr is not None:
         if isinstance(raw_sr, float) or (isinstance(raw_sr, str) and "." in raw_sr):
             raise ValueError("Invalid sample rate. Must be an integer.")
 
-    # Parse and validate compound
-    compound = data.get("compound")
-    if not compound or not compound.strip():
-        raise ValueError("No compound provided")
+    if require_compound:
+        compound = data.get("compound")
+        if not compound or not compound.strip():
+            raise ValueError("No compound provided")
 
-    if len(compound) > 349:
-        raise ValueError("Compound name is too long. Maximum length is 349 characters.")
+        if len(compound) > 349:
+            raise ValueError(
+                "Compound name is too long. Maximum length is 349 characters."
+            )
+    else:
+        compound = data.get("compound", None)
 
-    # Parse all parameters with error handling
     try:
         offset = float(data.get("offset", 300))
     except (ValueError, TypeError):
@@ -75,16 +77,13 @@ def validate_and_parse_parameters(data):
         raise ValueError("Invalid base. Must be a float.")
     validate_number_range(base, "base")
 
-    # Validate ranges
-
     if not (0.01 <= duration <= 30):
         raise ValueError("Duration must be between 0.01 and 30 seconds.")
 
     if not 3500 <= sample_rate <= 192000:
         raise ValueError("Sample rate must be between 3500 and 192000.")
 
-    return {
-        "compound": compound,
+    result = {
         "offset": offset,
         "scale": scale,
         "shift": shift,
@@ -94,6 +93,11 @@ def validate_and_parse_parameters(data):
         "modulus": modulus,
         "base": base,
     }
+
+    if require_compound or compound is not None:
+        result["compound"] = compound
+
+    return result
 
 
 def validate_spectrum_text_range(text):
