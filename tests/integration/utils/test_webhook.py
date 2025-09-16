@@ -1,5 +1,5 @@
 import os
-from utils.webhook import send_webhook_notification
+from utils import send_webhook_notification
 
 
 def test_send_webhook_notification_success():
