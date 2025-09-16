@@ -54,7 +54,7 @@ def get_search_history(limit):
         ]
 
     except Exception as e:
-        print(f"Failed to fetch search history: {e}")
+        print(f"Failed to get recently generated compounds: {e}")
         return []
     finally:
         if cursor:
@@ -87,7 +87,7 @@ def get_popular_compounds(limit):
         return [{"compound": row[0], "search_count": row[1]} for row in rows]
 
     except Exception as e:
-        print(f"Failed to fetch popular compounds: {e}")
+        print(f"Failed to get most generated compounds: {e}")
         return []
     finally:
         if cursor:

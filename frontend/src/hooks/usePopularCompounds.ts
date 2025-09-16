@@ -25,8 +25,8 @@ export const usePopularCompounds = (limit: number = 20) => {
       const data = await res.json();
       setPopularCompounds(data.popular || []);
     } catch (err) {
-      console.error("Failed to fetch popular compounds:", err);
-      setError("Failed to load popular compounds");
+      console.error("Failed to get most generated compounds:", err);
+      setError("Failed to get most generated compounds");
       setPopularCompounds([]);
     } finally {
       setLoading(false);

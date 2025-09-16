@@ -28,19 +28,15 @@ export function useSearchHistory(limit: number = 100): UseSearchHistoryReturn {
           seen.add(entry.accession);
           uniqueHistory.push(entry);
         }
-        if (uniqueHistory.length >= 20) break; // limit display to 20
+        if (uniqueHistory.length >= 20) break;
       }
 
       setHistory(uniqueHistory);
       setError(null);
     } catch (err) {
-      // Silent failure for refetch, but show error on initial load
       if (loading) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred.");
-        }
+        console.error("Failed to get recently generated compounds:", err);
+        setError("Failed to get recently generated compounds");
       }
     } finally {
       setLoading(false);
@@ -48,7 +44,6 @@ export function useSearchHistory(limit: number = 100): UseSearchHistoryReturn {
   }, [limit, loading]);
 
   const refetchHistory = () => {
-    // Don't show loading state for refetch, just silently update
     fetchHistory();
   };
 
