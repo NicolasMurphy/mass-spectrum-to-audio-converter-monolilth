@@ -14,10 +14,6 @@ compound_service = CompoundDataService()
 notification_service = NotificationService()
 
 
-def serve_frontend():
-    return send_from_directory(".", "index.html")
-
-
 def history():
     try:
         limit = request.args.get("limit", default=20, type=int)

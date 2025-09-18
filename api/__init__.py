@@ -5,7 +5,6 @@ Provides route handlers and request validation.
 """
 
 from .routes import (
-    serve_frontend,
     history,
     generate_audio_with_data,
     generate_audio_with_custom_data,
@@ -18,7 +17,6 @@ from .validation import (
 )
 
 __all__ = [
-    "serve_frontend",
     "history",
     "generate_audio_with_data",
     "generate_audio_with_custom_data",
