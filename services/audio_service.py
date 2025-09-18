@@ -19,15 +19,15 @@ class AudioGenerationService:
         """
         wav_buffer, transformed_data = generate_combined_wav_bytes_and_data(
             spectrum,
-            offset=parameters.get("offset", 0),
-            scale=parameters.get("scale", 1),
-            shift=parameters.get("shift", 0),
+            algorithm=algorithm,
+            offset=parameters["offset"],
+            scale=parameters["scale"],
+            shift=parameters["shift"],
+            factor=parameters["factor"],
+            modulus=parameters["modulus"],
+            base=parameters["base"],
             duration=parameters["duration"],
             sample_rate=parameters["sample_rate"],
-            algorithm=algorithm,
-            factor=parameters.get("factor", 1),
-            modulus=parameters.get("modulus", 1000),
-            base=parameters.get("base", 2),
         )
 
         return {
